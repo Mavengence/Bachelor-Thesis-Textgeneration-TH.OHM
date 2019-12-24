@@ -1,26 +1,54 @@
-# Thesis Template
+<div style="border-bottom:none;">
+  <div align="center"> 
+    <img style="border-bottom:none;" sizes="200px" src="https://upload.wikimedia.org/wikipedia/commons/2/25/TH-Nuernberg-Logo.jpeg">
+    <h2>Computer Science IT-Project</h2>
+    <h1>DeepLearning: Autonomous Remote Control Car</h1>
+  </div>
+</div>
 
-Basic template for reports, bachelor and master theses at the [Technische Hochschule Nürnberg Georg Simon Ohm](https://www.th-nuernberg.de/).
-It is set up to be printed as a book including a coverpage.
-
-
-## Important!
-
-You need to download, fill and save-as-pdf the official [statement and copyright form](https://intern.ohmportal.de/fileadmin/Gelenkte_Doks/Abt/SZS/SB/SB_0050_FO_Pruefungsrechtliche_Erklaerung_und_Erklaerung_zur_Veroeffentlichung_der_Abschlussarbeit_public.pdf), in its most recent version.
-It will be included in the final `thesis.pdf`.
-
-
-## A few tips for writing your thesis:
-
-- Create a branch for your thesis; this allows you to easily sync with upstream (this repository).
-- Disable automatic hard line wrap (with newlines); use soft wrap instead. [(What's that about?)](https://stackoverflow.com/questions/319925/difference-between-hard-wrap-and-soft-wrap)
-- Write one sentence per line -- this makes for nice diffs in git.
-- For capitalization of headlines etc., follow the [IEEE Style Manual](https://journals.ieeeauthorcenter.ieee.org/your-role-in-article-production/ieee-editorial-style-manual/)
-- Use UTF-8 encoding on your files to make special characters wörk.
-- Keep your literature up to date -- add references to your bib file as you read them.
+## Abstract
+As our final project we set up a remote control car with a raspberry Pi to drive autonomously
 
 
-## Other resources regarding your thesis
+## Content
 
-- [Informationen und Vorlagen](https://intern.ohmportal.de/institutionen/fakultaeten/informatik/studierende/infos-zum-studium/abschlussarbeiten/informationen-und-vorlagen/page.html) (German, Ohm intranet)
-- [Wie schreibe ich eine Abschlussarbeit](https://www.in.th-nuernberg.de/Professors/Weber/Abschlussarbeit%20Methodik.pdf) by Prof. Dr. Rainer Weber (German, Ohm intranet).
+- [Donkeycar](https://github.com/Mavengence/Autonomous-RCCar-IT-Project-TH.OHM/tree/master/donkeycar) Repository
+- [Car](https://github.com/Mavengence/Autonomous-RCCar-IT-Project-TH.OHM/tree/master/mycar) Repository
+
+## Getting Started
+
+Clone the repository, to get our Notebooks, Presentation and Project Report.
+
+```
+git clone https://github.com/Mavengence/Autonomous-RCCar-IT-Project-TH.OHM.git
+```
+
+### Prerequisites
+
+- Of course you need git to get the source
+- If you want to compile the report or the presentation by ur self u need a LaTex Compiler for your OS and maybe an IDE which makes things easier
+- If you want to compile, train and play with our Code you need a python working environment. We used Jupyter Notebooks. The requiered packeges you can see in the Notebooks itself.
+
+### Run the Notebook
+
+```
+cd/you_cloned_repo_location jupyter notebook
+```
+
+### Deployment
+
+Just pull the repo, if you wanna change sth you can ask :)
+
+## Authors
+
+* **Tim Löhr** - *Coding, Report, Presentation* - [GitHub Mavengence](https://github.com/Mavengence)
+* **Timo Bohnstedt** - *Coding, Report, Presentation* - [GitHub Bohniti](https://github.com/bohniti)
+
+## License
+
+Pretty much the BSD license, just don't repackage it and call it your own please!
+Also if you do make some changes, feel free to make a pull request and help make things more awesome!
+
+## Acknowledgments
+
+The authors would like to thank [Prof. Dr. Florian Gallwitz](https://www.th-nuernberg.de/person/gallwitz-florian/) for a really good supervising of our group. Without him we wouldn't be able to have accomplished our success.
