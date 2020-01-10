@@ -25,7 +25,7 @@ git clone https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM.gi
 
 ## Author
 
-* **Tim Löhr** - *Coding, Report, Presentation* - [GitHub Mavengence](https://github.com/Mavengence)
+* **Tim Löhr** - *Coding, Report* - [GitHub Mavengence](https://github.com/Mavengence)
 
 ## License
 
