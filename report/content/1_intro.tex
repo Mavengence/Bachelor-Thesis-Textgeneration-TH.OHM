@@ -1,11 +1,20 @@
-\chapter{Einleitung}\label{ch:intro}
+\chapter{Intro}\label{ch:intro}
 
-In den letzten Monaten und Jahren bringen Neuronale Netze viele \textit{State-of-the-Art} Ergebnisse in beinahe allen möglichen Disziplinen des Maschinellen Lernens hervor. Eine der Disziplinen ist das Natural Language Processing, kurz \textit{NLP}. Unter diesem Begriff verbergen sich noch viele weitere weitverbreitete Disziplinen, unter Anderem sentiment analysis, machine translation, voice recognition und auch text generation. Da die Textgeneration auch \textit{Sprachmodellierung} genannt, ein Kernelement einiger NLP-Disziplinen ist, gibt es viele Vorgängerversionen. Vor einigen Jahren wurden hauptsächlich die beiden Ansätze des Regelbasierten-Sytems und des Templatebasierten-Systems (Figure \ref{rules_based}) verwendet, wohingegen \textit{State-of-the-Art} die Neuronalen Ende-zu-Ende Systemen sind.  Diese neuen Systeme bieten wesentlich mehr Flexibilität und skalieren weit bessere Ergebnisse mit wegen benötigten Daten, da die Komplexität und somit die benötigte Rechenleistung drastisch gestiegen ist. Aus dieser Tatsache heraus ergibt allerdings ein Komplexitätsproblem, da es sehr schwer wird die Entscheidungen des Neuronalen Netzes nachzuvollziehen. Das Neuronale Netz ist weitestgehend immer noch eine \textit{Black Box}, obwohl es erstaunlich gute Ergebnisse liefert, vor allem im NLP. Nichtsdestotrotz sind Neuronale Netz Modelle um Text zu verarbeiten schlecht zu verstehen, deswegen müssen heutzutage immer noch Kompromisse zwischen den Regelbasierten System geschlossen werden und Hybride Systeme verwendet werden. 
+In recent months and years, neural networks have produced many \textit{state-of-the-art} results in almost all possible disciplines of machine learning. One of the disciplines is Natural Language Processing, \textit{NLP} for short. This term covers many other hot research disciplines, including 
+
+\begin{itemize}
+\item Sentiment Analysis
+\item Machine Translation
+\item Voice Recognition
+\item Text Generation
+\end{itemize}
+
+Another term for text generation is denoted by \textit{Language Modelling}, because it uses the words and grammar as input for the model. In the last 5 years, there were mainly two approaches for modelling NLP, namely the rule-based system and the template-based system (Figure \ref{rules_based}). Today the \textit{State-of-the-Art} are the neural end-to-end systems, which lead to a far more advanced output. These new systems offer more flexibility and scale with a proportionately better results with less required data, because the complexity and thus the required computing power has increased. However, this fact leads to a complexity problem, because it becomes very difficult to understand the decisions of the neural network. The neural network is basically still a \textit{black box} to a large extent, although it gives surprisingly good results, especially in NLP. Nevertheless, neural network models for text processing are difficult to understand, so nowadays compromises between rule-based systems still have to be made and hybrid systems have to be used. 
 
 \begin{figure}
   \begin{center}
   \includegraphics[width=3.5in]{photos/regel_basiert}\\
-  \caption{Regelbasiertes- vs. Neuronales Text generations System}\label{rules_based}
+  \caption{Rule-based- vs. Neural-text-generations-ystem}\label{rules_based}
   \end{center}
 \end{figure}
 
@@ -18,14 +27,14 @@ Die natürliche Text Generation, auch \textit{NTG} genannt, hat wiederum viele n
 
 Um Sprachmodelle zu trainieren muss ihnen die Wahrscheinlich von auftretenden Wörtern in Abhängigkeit der vorangegangen Wörter beigebracht werden. Es gibt mehrere Ansätze um dieses Ziel zu erreichen. Sprachmodelle können auf Ebene der Wörter, ganzer Sätze oder sogar ganze Paragraphen trainiert werden. Die Granularität in welcher das Training stattfindet wird als \textit{n-grams} bezeichnet, wovon  \textit{n} die Anzahl der vorangegangen Wörter repräsentiert.
 
-\section{Fallbeispiel eines aktuellen NLP-Systems}
+\section{Case study of a current NLP system}
 
-\subsection{Fallbeispiel}
+\subsection{Case study}
 
 Image-to-Text | Captionbot Microsoft
 
-\subsection{Nützliche Einsatzgebiete von NLP-Systemen}
+\subsection{Useful application areas of NLP systems}
 
 IoT, Grammerly, ok
 
-\subsection{Nützliche Einsatzgebiete von NTG-Systemen}
+\subsection{Useful application areas of NTG systems}
