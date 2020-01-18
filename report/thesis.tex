@@ -28,7 +28,7 @@
 \newcommand{\logo}{figures/TH-Nuernberg-RGB.png}
 \newcommand{\keywords}{hot, fuzz}
  
- \DeclareUnicodeCharacter{0301}{\'{e}}
+\DeclareUnicodeCharacter{0301}{\'{e}}
 
 
 % custom head and foot
@@ -133,15 +133,17 @@
 \setcounter{tocdepth}{2}  % ...but don't include them in toc
 
 \frontmatter
-\include{cover}\cleardoublepage
+\include{cover}
 
 % download the following form and complete it (hit save in your editor)
 % https://intern.ohmportal.de/fileadmin/Gelenkte_Doks/Abt/SZS/SB/SB_0050_FO_Pruefungsrechtliche_Erklaerung_und_Erklaerung_zur_Veroeffentlichung_der_Abschlussarbeit_public.pdf
-\includepdf{SB_0050_FO_Pruefungsrechtliche_Erklaerung_und_Erklaerung_zur_Veroeffentlichung_der_Abschlussarbeit_public.pdf}\cleardoublepage
+\includepdf{SB_0050_FO_Pruefungsrechtliche_Erklaerung_und_Erklaerung_zur_Veroeffentlichung_der_Abschlussarbeit_public.pdf}
 
-\include{content/0_abstract}\cleardoublepage
+\include{content/0_abstract}
 
 \tableofcontents
+
+
 
 \mainmatter
 \include{content/1_intro}
@@ -155,15 +157,13 @@
 
 \backmatter
 \listoffigures
-\cleardoublepage
-
+\clearpage
 \listoftables
-\cleardoublepage
+\clearpage
 
 \renewcommand{\lstlistlistingname}{List of Listings}  % change for German thesis
 \lstlistoflistings
-\cleardoublepage
-
+\clearpage
 \bibliographystyle{wmaainf}
 \bibliography{refs}
 
