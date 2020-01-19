@@ -2,11 +2,64 @@
 
 \section{Relevant aspects of mathematics}
 
-Notationen etc.
+\subsection{Mathematical Notations}
+
+\subsection{N-gram Language Models (LM)}
+A language model (LM) s a a model that has assigned probabilities to a sequence of words to it. The gram indicates the amount of words the phrase contains. For example a bigram (2-gram) could be represented by \textit{"survey passed"}, whereas a trigram (3-gram) represents the same with an additional word, like \textit{"survey passed after"}. The \textit{N} indicates the amount of words in the sequence. For showing the probability of random variable \(X_i\) taking in the value  \(P(X_i = "survey")\), it is easier to just write P(survey). For the notation of representing the sequences of \textit{N} words, I use the notation of Dan Jurafsky and James H. Martin \cite{LM}. \textit{N} is represented as \((w_1 ... w_n)\) or equal as \(w_1^{n}\). In this way the expression \(w_1^{n-1}\) is the same as \((w_1, w_2, ... , w_n)\). The joint probability for every word in the sequence for the value \\
+\( P(X = w_1, Y = w_2, Z = w_3, ... W = w_n-1) \) will be denoted as \( P(w_1, w_2, ... , w_n) \). This probability can be decomposed into the \textbf{chain rule of probability}:
+
+% 
+
+\begin{equation}
+\begin{split}
+P(X_1 ... X_n) & = P(X_1)P(X_2|X_1)P(X_3|X_1^{2})...P(X_n|X_1^{n-1}) \\
+& = \prod_{k=1}^{n} P(X_k|X_1^{k-1})
+\end{split}
+\end{equation}
+
+Applying the chain rule to the words, the formula changes into \cite{LM}
+
+\begin{equation}\label{eq:w_assum}
+\begin{split}
+P(w_1^{n}) & = P(w_1)P(w_2|w_1)P(w_3|w_1^{2})...P(w_n|w_1^{n-1}) \\
+& = \prod_{k=1}^{n} P(w_k|w_1^{k-1})
+\end{split}
+\end{equation}
+
+With this equation one word is estimated by all prior words of the sentence. This approach is not really good, because language can be used in various new and creative ways and calculating all possible sentences for \textit{N-grams} is inefficient. The better approach is the \textbf{bigram} model. It computes the probability based on the one prior word with the following approximation:
+
+\begin{equation}\label{eq:bigram}
+\begin{split}
+P(w_n|w_1^n-1) \approx P(w_n|w_n-1)
+\end{split}
+\end{equation}
+
+This assumption that the probability only depends on the prior word is known as the \textbf{Markov} [A.A. Markov] assumption. This assumption can be extended to \textit{N-grams}. The general equation for the conditional probability of the next word in the sequence is
+
+\begin{equation}
+\begin{split}
+P(w_n|w_1^n-1) \approx P(w_n|w_n-N+1^{n-1})
+\end{split}
+\end{equation}
+
+Given the bigram assumption for the probability of an individual word, we can
+compute the probability of a complete word sequence by substituting Eq. \ref{eq:bigram} into
+Eq. \ref{eq:w_assum} \cite{LM}:
+
+
+\begin{equation} 
+\begin{split}
+P(w_1^{n}) \approx \prod_{k=1}^{n} P(w_k|w_k-1)
+\end{split}
+\end{equation}
+
+\subsection{Maximum Likelihood Estimation}
 
 \section{History of NLP and NTG}
 
 Zeitabfolge der geschichtlichen Hintergründe
+
+\(\frac{value - \mu}{\sigma}\)
 
 \section{Current trends in technology}\label{ss:trends}
 
