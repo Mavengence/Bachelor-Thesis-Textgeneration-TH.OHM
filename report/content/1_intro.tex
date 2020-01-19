@@ -1,5 +1,8 @@
 \chapter{Intro}\label{ch:intro}
 
+The boundary between Natural Language Processing (NLP) and Text Generation (TG), or the latest \textit{Neural Text Generation (NTP)}, is relatively blurred and overlap in many ways. Generally speaking, all of the NTG tasks are NLP based, but not all NLP tasks are NTG based.
+
+\section{Difference of NLP and NTG}
 In recent months and years, neural networks have produced many \textit{state-of-the-art} results in almost all possible disciplines of machine learning \cite{NTG2}. The roots of Neural Networks (NN) lie down almost 80 years ago in 1943, when \textbf{McCulloch-Pitts} \cite{NN} compared for the first time neuronal networks with the structure of the human brain. This first attempt to approach artificial neurons with neurons from the brain lead to the nowadays commonly used understanding of a simple neuron of a basic neural network (shown in figure \ref{neuron}). Those neurons connected together create an aritificial neuronal network, which can calculate any possible logical or arithmetic function. 
 
 \begin{figure}
@@ -15,8 +18,9 @@ The topic of this thesis \textit{textgeneration} is based from the Natural Langu
 \begin{itemize}
 \item Sentiment Analysis
 \item Machine Translation
-\item Voice Recognition
+\item Speech Recognition
 \item Text Generation (Neural Text Generation \textit{NTG})
+\item Chatbots
 \end{itemize}
 
 Another term for textgeneration is denoted by \textit{Language Modelling}, because generators use the words and grammar as input for the model. In the past five years were mainly two approaches for modelling NLP, namely the \textbf{rule-based} system and the \textbf{template-based} system (Figure \ref{rules_based}) \cite{NTG2}. Today neural end-to-end systems are is \textit{State-of-the-Art} \cite{End_to_End}. These new systems offer more flexibility and scale with proportionately better results and less data is required, because the complexity and thus the neccessary computing power has increased. However, this fact leads to a complexity problem, because it becomes very difficult to understand the decisions of the neural network. The neural network is still to a large extent basically a \textit{black box}, although it gives surprisingly good results, especially in NLP. Nevertheless, neural network models for text processing are difficult to understand, so nowadays compromises between rule-based systems still have to be made and hybrid systems are most commonly used. 
@@ -28,7 +32,7 @@ Another term for textgeneration is denoted by \textit{Language Modelling}, becau
   \end{center}
 \end{figure}
 
-The neural text generation, also called \textit{NTG}, has many other interesting application fields, including
+The neural text generation, also called \textit{NTG}, has many other interesting application fields, which overlap partly with NLP, including
 \begin{itemize}
 \item Speech recording and conversion to text
 \item Conversation systems e.g. chatbots
@@ -38,17 +42,24 @@ The neural text generation, also called \textit{NTG}, has many other interesting
 In order to train language models, they must be taught the probability of occurring words in relation to the preceding words. There are several approaches to achieve this goal. Language models can be trained on the level of words, whole sentences or even whole paragraphs. The granularity in which the training takes place is called \textit{n-grams}, where \textit{n} represents the number of preceding words.
 
 \section{Case study of a current NLP system}
+To give an insight about a use case, I will describe a well known case, \textit{Apple's} \textbf{Siri}. Siri uses multiple machine learning and NLP technologies to function properly on everyones mobile phone. Because this systems uses a combination of two hot research topics, it is especially interesting. The major technologies used are NTG and speech recognition. For Siri to fulfill the mobile phone users command, it needs to first understand first the human language itself, by recoginizing the words and generating them. Secondly it needs to further process those words to a context and figure out what the user wants. 
+The first task is rather simpler compared to figuring out the context, but still highly researched. When it comes to programming, the language gets split up into basically three parts.
+
+\begin{itemize}
+\item \textit{Syntax}: Composition of the phrases
+\item \textit{Semantics}: Meaning of the phrases
+\item \textit{Pragmatics}: Composition and context of the phrases
+\end{itemize}
+
+Siri gets activated when it recognizes the words \textit{"Hey Siri"}. This is achieved through the use of Recurrent Neural Networks (RNN), which will be further explained in chapter \ref{ss:nn}. Siri is able to avoid unintended activations which sound similar, but have a different meaning. This is especially challenging, because people all over the world have different accents and dialects, depending on their origins. 
+	
+	
+\begin{figure}
+  \begin{center}
+  \includegraphics[width=3.5in]{photos/siri1}\\
+  \caption{System diagram of personalized “Hey Siri” (Apple 2018)}\label{siri1}
+  \end{center}
+\end{figure}
 
 
 
-\subsection{Case study}
-
-Image-to-Text | Captionbot Microsoft
-
-\subsection{Useful application areas of NLP systems}
-
-IoT, Grammerly, ok
-
-\subsection{Useful application areas of NTG systems}
-
-Grammerly
