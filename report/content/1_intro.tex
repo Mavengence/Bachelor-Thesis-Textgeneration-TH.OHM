@@ -42,8 +42,26 @@ The neural text generation, also called \textit{NTG}, has many other interesting
 In order to train language models, they must be taught the probability of occurring words in relation to the preceding words. There are several approaches to achieve this goal. Language models can be trained on the level of words, whole sentences or even whole paragraphs. The granularity in which the training takes place is called \textit{n-grams}, where \textit{n} represents the number of preceding words.
 
 \section{Case study of a current NLP system}
-To give an insight about a use case, I will describe a well known case, \textit{Apple's} \textbf{Siri}. Siri uses multiple machine learning and NLP technologies to function properly on everyones mobile phone. Because this systems uses a combination of two hot research topics, it is especially interesting. The major technologies used are NTG and speech recognition. For Siri to fulfill the mobile phone users command, it needs to first understand first the human language itself, by recoginizing the words and generating them. Secondly it needs to further process those words to a context and figure out what the user wants. 
-The first task is rather simpler compared to figuring out the context, but still highly researched. When it comes to programming, the language gets split up into basically three parts.
+
+To give an insight about a current use case, I will describe the basic architecture of the famous \textbf{Siri} from Apple. There are many very interesting use cases and I will further discuss the most important hot research topics of 2019-2020 in chapter \ref{ss:trends}, but Siri combines two of the most relevant NLP tasks, namely Speech Recognition and Text Generation. Siri was first released in 2011 for the iPhone 4s, but at this time, users were still required to press the \textit{Home Button} to give Siri a command. For Siri to fulfill the user commands, it needs to understand first the human language itself by recoginizing the words and generate the according text out of it. Secondly it needs to further process those words to a context and figure out what the user wants. 
+
+\subsection{Hands-Free Access to Siri}
+For the release of the iPhone 6 (iOS 8) in 2015, Apple upgraded Siri to a large extend. Without the need to interacting with the iPhone physically, it can now detect the primary-users voice \textit{"Hey Siri"} to wake up automatically. Even though it might not sound like an innovation, still a lot is going on behind the scences to create an flowless experience. The following figure \ref{flow} \cite{siri1} shows the process of detecting the wake-up sentence \textit{"Hey Siri"}.
+
+\begin{figure}
+  \begin{center}
+  \includegraphics[width=4.5in]{photos/HeySiriFlow-1}\\
+  \caption{The Hey Siri flow on iPhone (Apple 2017)\cite{siri1}}\label{flow}
+  \end{center}
+\end{figure}
+
+Most of the high-tech technologies involved are stored on the cloud. The automatic speech recognition, the natural language interpretation and the various information devices are the major parts \cite{siri1}. \\
+The core In figure \ref{flow} is basically the acoustic model. The iPhone microphone listens constantly and converts all sounds into a stream of waveform samples. Those samples are transformed into a sequence of frames, which describe approximately 0.01 seconds in time. Those frames are fed into the Deep Neural Network (DNN) acoustic model and produce a log probability to calculate the probabilty of the current sound being the \textit{"Hey Siri"} activation sentence. 
+Adjustments to save the battery, limits of the processing capacities of the Centrul Processing Unit (CPU) and double security checks if the said senetence is really \textit{"Hey Siri"} are not revelant in this aspect.
+
+\subsection{Personalized Hey Siri}
+For the introduction of Apple's wake up feature \textit{"Hey Siri"} with the iPhone 6, Apple needs to use multiple machine learning and NLP technologies to function properly on all iPhones.
+The first task is rather simpler compared to figuring out the context, but still highly researched. When it comes to programming, the language gets split up into basically three parts \cite{siri2}.
 
 \begin{itemize}
 \item \textit{Syntax}: Composition of the phrases
@@ -51,15 +69,19 @@ The first task is rather simpler compared to figuring out the context, but still
 \item \textit{Pragmatics}: Composition and context of the phrases
 \end{itemize}
 
-Siri gets activated when it recognizes the words \textit{"Hey Siri"}. This is achieved through the use of Recurrent Neural Networks (RNN), which will be further explained in chapter \ref{ss:nn}. Siri is able to avoid unintended activations which sound similar, but have a different meaning. This is especially challenging, because people all over the world have different accents and dialects, depending on their origins. 
-	
+Siri gets activated when it recognizes the words \textit{"Hey Siri"}. This is achieved through the use of Recurrent Neural Networks (RNN) \cite{siri2}, multi-style training and curriculum learning. The RNN will be further explained in chapter \ref{ss:nn}. Siri is able to avoid unintended activations which sound similar, but have a different meaning. This is especially challenging, because people all over the world have different accents and dialects, depending on their origins. 
+
+When the phone is configurated, in the \textit{enrolment stage} the user is asked to repeat common phrases for a couple of times. This input is fed into a \textit{statistical model} for the user’s own voice. In the \textit{recognition stage}, the computer evaluates if the speech input fits to the primary-users-trained model accepts or rejects the request based on that decision.
+
 	
 \begin{figure}
   \begin{center}
-  \includegraphics[width=3.5in]{photos/siri1}\\
-  \caption{System diagram of personalized “Hey Siri” (Apple 2018)}\label{siri1}
+  \includegraphics[width=4.5in]{photos/siri1}\\
+  \caption{Block diagram of Personalized "Hey Siri" (Apple 2018)\cite{siri2}}\label{siri1}
   \end{center}
 \end{figure}
+
+Figure \ref{siri1} from Apple shows the very basic diagram for this process \cite{siri2}. The \textit{Feature Extraction} computes a fixed-length speaker vector for the input sentence \textit{"Hey Siri"}. This vector contains information about phonetics, background noise and the identity of the user. In the next step is the vector transformed in such a way, that the environmental background noise is being reduced to a minium with the help of the \textit{Fourier Transform}
 
 
 
