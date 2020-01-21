@@ -1,10 +1,10 @@
-\chapter{State of the Art}\label{ch:data}
+\chapter{State of the Art}\label{ch:sota}
 
 \section{Relevant aspects of mathematics}
 
 \subsection{Mathematical Notations}
 
-\subsection{N-gram Language Models (LM)}
+\subsection{N-gram Language Models (LM)}\label{ss:ngram}
 A language model (LM) s a a model that has assigned probabilities to a sequence of words to it. The gram indicates the amount of words the phrase contains. For example a bigram (2-gram) could be represented by \textit{"survey passed"}, whereas a trigram (3-gram) represents the same with an additional word, like \textit{"survey passed after"}. The \textit{N} indicates the amount of words in the sequence. For showing the probability of random variable \(X_i\) taking in the value  \(P(X_i = "survey")\), it is easier to just write P(survey). For the notation of representing the sequences of \textit{N} words, I use the notation of Dan Jurafsky and James H. Martin \cite{LM}. \textit{N} is represented as \((w_1 ... w_n)\) or equal as \(w_1^{n}\). In this way the expression \(w_1^{n-1}\) is the same as \((w_1, w_2, ... , w_n)\). The joint probability for every word in the sequence for the value \\
 \( P(X = w_1, Y = w_2, Z = w_3, ... W = w_n-1) \) will be denoted as \( P(w_1, w_2, ... , w_n) \). This probability can be decomposed into the \textbf{chain rule of probability}:
 
@@ -55,15 +55,18 @@ P(w_1^{n}) \approx \prod_{k=1}^{n} P(w_k|w_k-1)
 
 \subsection{Maximum Likelihood Estimation}
 
+MLE
+
 \section{History of NLP and NTG}
 
-Zeitabfolge der geschichtlichen Hintergründe
-
-\(\frac{value - \mu}{\sigma}\)
+Zeitabfolge der geschichtlichen Hintergründe von NTG 
 
 \section{Current trends in technology}\label{ss:trends}
 
 Neuronales Ende-zu-Ende
+Grammerly
+DeepL
+Summarizing
 
 \subsection{Application areas of NLP systems}
 Image-to-Text, Weatherforecast
