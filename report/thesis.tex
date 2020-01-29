@@ -13,15 +13,16 @@
 	    captions=tableheading,  % caption below table
     chapterprefix,
     listof=flat,
-    final
+    final,
+    xcolor=table
 ]{scrbook}
 
 
 % details about your thesis
-\newcommand{\titel}{IT-Based textgeneration using NLP methods}
+\newcommand{\titel}{IT-based text generation using NLP methods}
 \newcommand{\artderarbeit}{Bachelor Thesis}  % {Bachelorarbeit,Masterarbeit}
 \newcommand{\autor}{Tim Löhr}
-\newcommand{\studiengang}{Business Informatics and Management}  % {Informatik,Wirtschaftsinformatik,Medieninformatik}
+\newcommand{\studiengang}{Business Information Systems and Management}  % {Informatik,Wirtschaftsinformatik,Medieninformatik}
 \newcommand{\matrikelnr}{3060802}
 \newcommand{\erstgutachter}{Prof.\,Dr.~Alfred Holl}
 \newcommand{\zweitgutachter}{Prof.\,Dr.~Florian Gallwitz}
@@ -33,6 +34,7 @@
 
 % custom head and foot
 \usepackage[automark]{scrlayer-scrpage}
+\usepackage[table,xcdraw]{xcolor}
 \pagestyle{scrheadings}
 \ihead{\headmark}
 \chead{}
