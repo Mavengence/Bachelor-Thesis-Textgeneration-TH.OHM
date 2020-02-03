@@ -1,77 +1,54 @@
 \chapter{State of the Art}\label{ch:sota}
 
-\section{Relevant aspects of mathematics}
-
-\subsection{Mathematical Notations}
-
-\subsection{N-gram Language Models (LM)}\label{ss:ngram}
-A language model (LM) s a a model that has assigned probabilities to a sequence of words to it. The gram indicates the amount of words the phrase contains. For example a bigram (2-gram) could be represented by \textit{"survey passed"}, whereas a trigram (3-gram) represents the same with an additional word, like \textit{"survey passed after"}. The \textit{N} indicates the amount of words in the sequence. For showing the probability of random variable \(X_i\) taking in the value  \(P(X_i = "survey")\), it is easier to just write P(survey). For the notation of representing the sequences of \textit{N} words, I use the notation of Dan Jurafsky and James H. Martin \cite{LM}. \textit{N} is represented as \((w_1 ... w_n)\) or equal as \(w_1^{n}\). In this way the expression \(w_1^{n-1}\) is the same as \((w_1, w_2, ... , w_n)\). The joint probability for every word in the sequence for the value \\
-\( P(X = w_1, Y = w_2, Z = w_3, ... W = w_n-1) \) will be denoted as \( P(w_1, w_2, ... , w_n) \). This probability can be decomposed into the \textbf{chain rule of probability}:
-
-% 
-
-\begin{equation}
-\begin{split}
-P(X_1 ... X_n) & = P(X_1)P(X_2|X_1)P(X_3|X_1^{2})...P(X_n|X_1^{n-1}) \\
-& = \prod_{k=1}^{n} P(X_k|X_1^{k-1})
-\end{split}
-\end{equation}
-
-Applying the chain rule to the words, the formula changes into \cite{LM}
-
-\begin{equation}\label{eq:w_assum}
-\begin{split}
-P(w_1^{n}) & = P(w_1)P(w_2|w_1)P(w_3|w_1^{2})...P(w_n|w_1^{n-1}) \\
-& = \prod_{k=1}^{n} P(w_k|w_1^{k-1})
-\end{split}
-\end{equation}
-
-With this equation one word is estimated by all prior words of the sentence. This approach is not really good, because language can be used in various new and creative ways and calculating all possible sentences for \textit{N-grams} is inefficient. The better approach is the \textbf{bigram} model. It computes the probability based on the one prior word with the following approximation:
-
-\begin{equation}\label{eq:bigram}
-\begin{split}
-P(w_n|w_1^n-1) \approx P(w_n|w_n-1)
-\end{split}
-\end{equation}
-
-This assumption that the probability only depends on the prior word is known as the \textbf{Markov} [A.A. Markov] assumption. This assumption can be extended to \textit{N-grams}. The general equation for the conditional probability of the next word in the sequence is
-
-\begin{equation}
-\begin{split}
-P(w_n|w_1^n-1) \approx P(w_n|w_n-N+1^{n-1})
-\end{split}
-\end{equation}
-
-Given the bigram assumption for the probability of an individual word, we can
-compute the probability of a complete word sequence by substituting Eq. \ref{eq:bigram} into
-Eq. \ref{eq:w_assum} \cite{LM}:
+\section{Background and Theory}
+\subsection{Prerequisites}
+\subsection{Encoder}
+\subsection{Decoder}
 
 
-\begin{equation} 
-\begin{split}
-P(w_1^{n}) \approx \prod_{k=1}^{n} P(w_k|w_k-1)
-\end{split}
-\end{equation}
+\section{History of Text Generation}\label{ss:history}
 
-\subsection{Maximum Likelihood Estimation}
+nlg-survey-long
 
-MLE
+\subsection{Text Generation Tasks}
+raditionally, the nlg problem of converting input data into output text was addressed by splitting it up into a number of subproblems. The following six are frequently found in many nlg systems (Reiter and Dale, 1997, 2000); their role is illustrated in Figure 1:
+\begin{itemize}
+	\item Content determination: Deciding which information to include in the text under construction
+	\item Text structuring: Determining in which order information will be pre- sented in the text
+	\item Sentence aggregation: Deciding which information to present in individual sentences
+	\item Lexicalisation: Finding the right words and phrases to express informa- tion
+	\item Referring expression generation: Selecting the words and phrases to iden- tify domain objects
+	\item Linguistic realisation: Combining all words and phrases into well-formed sentences
+\end{itemize}
 
-\section{History of NLP and NTG}\label{ss:history}
+\subsection{Architectures and Approaches}
 
-Zeitabfolge der geschichtlichen Hintergründe von NTG 
+nlg-survey-long Kapitel 3
 
-The roots of Neural Networks (NN) lie down almost 80 years ago in 1943 when \textbf{McCulloch-Pitts} \cite{NN} compared for the first time neuronal networks with the structure of the human brain. 
+\begin{itemize}
+	\item Rule-based, modular approaches
+	\item Planning-based approaches
+	\item Data-driven approaches
+\end{itemize}
 
-\section{Current trends in technology}\label{ss:trends}
 
-Neuronales Ende-zu-Ende
-Grammerly
-DeepL
-Summarizing
+\subsection{Neural Text Generation}
+NTG with Supervised Learning
+NTG with Reinforcement Learning
+NTG with GAN's
 
-\subsection{Application areas of NLP systems}
-Image-to-Text, Weatherforecast
+\section{Current Trends in Text Summarization Technology}\label{ss:trends}
 
-\subsection{Application areas of NTG systems}
-Speech Recognition, Machine Translation
+\subsection{Summarization Factors}
+Single Doc - Multi Doc
+Input Factors
+Purpose Factors
+output factors
+neural-text-summary
+
+\subsection{Extractive}
+\subsection{Abstractive}
+\subsection{Combinational Approach}
+\subsection{Reinforcement Learning}
+\subsection{Evaluation}
+ROGUE
