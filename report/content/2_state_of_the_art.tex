@@ -30,7 +30,6 @@ LSTM's can be enrolled the same way like RNN's, but there is a core difference b
 
 \begin{itemize}		
 	\item Forget Gate
-	\item Forget Gate
 	\item Input Gate
 	\item Cell State
 	\item Output Gate
@@ -63,7 +62,7 @@ The main idea of the LSTM is, that it can decide which information to remove, to
 The Long Short Term Memory paved the way for the sequence to sequence models.
 \subsubsection{N-Grams}\label{ss:ngram}
 
-\subsection{Sequence to Sequence}
+\subsection{Sequence to Sequence}\label{ss:seq2seq}
 In the year 2014, Google invented a new way to translate language by learning a statistical model with a neural machine translation approach \cite{seq2seq}. Google called it Sequence to Sequence model \cite{seq2seq}, often shortened down to seq2seq, which consists of an encoder and a decoder. 
 
 Before that, language translation was originally processed by rule-based systems \cite{chen-goodman}. The systems computed their work by breaking down sentences into plenty of chunks and translating them phrase-by-phrase, but this approach created not easily understandable language.
@@ -99,6 +98,45 @@ Figure \ref{enc-dec} makes use of an Long Short Term Memory cell, which captures
 
 
 \subsection{Encoder and Decoder}
+
+In the following, the encoder and then the decoder will be explained to have a better insight in how this technology works. The prototype from Chapter \ref{ch:proto} is based on this kind of model. As already mentioned a sequence to sequence model is often referred to as a encoder-decoder model. The sequence to sequence model itself is built using a Recurrent Neural Network or a Long Short Term Memory as explained in the last Section \ref{ss:seq2seq}.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/encoderdecoder.jpeg}\\
+		\caption{Encoder-decoder sequence to sequence model \cite{encdec}}\label{encdecseq}
+	\end{center}
+\end{figure}
+
+Figure \ref{encdecseq} shows, that the encoder decoder model is built up from actually three parts:
+
+\begin{itemize}
+	\item Encoder
+	\item Intermediate (encoder) Vector
+	\item Decoder
+\end{itemize}
+
+
+The \textbf{Encoder} iteratively integrates the words in a sentence into the hidden state \textit{h} if the Long Short Term Memory cell.
+Figure \ref{lstm3} shows a single LSTM cell with the input cell state \textit{C} at the time step \textit{t-1}  and the input of the hidden state \textit{h} at the same time step \textit{t-1}. This is necessary for the cell to compute both the input words, but also the knowledge from prior words. Words are represented as latent vectors in the sequence to sequence models and are stored in a vocabulary table. Each fixed length vector stands for a word in the vocabulary, for example a dimension of 300. In a simple case, the number of words in the vocabulary is fixed like 50.000 words, hence the dimension of the vocabulary table in Figure \ref{voctable} is [50000 x 300]. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=3.5in]{photos/w1-16}\\
+		\caption{Snippet of an example vocabulary table \cite{mugan}}\label{voctable}
+	\end{center}
+\end{figure}
+
+A stack Multiple recurrent units (three in Figure \ref{encdecseq}) accept each a single element as an input, gains information and propagates it forward to the next cell in the next time step. The hidden state of \textit{h3} is calculated based on the prior two cells.
+
+
+
+The \textbf{Encoder Vector}
+...
+
+The \textbf{Decoder}
+...
+
 \subsection{Attention}
 In general, the explanation of the sequence to sequence models just covered the very basic idea of the model. To achieve the state-of-the-art result, not only a single vector can be used for encoding the entire input sequence, but multiple vectors each capable of capturing other information. 
 
