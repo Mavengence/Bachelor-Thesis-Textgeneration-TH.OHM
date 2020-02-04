@@ -1,17 +1,115 @@
 \chapter{State of the Art}\label{ch:sota}
 
+The goal of this chapter is to survey the development of the text generation from the old days until 2020. I can not go into detail for every single state of the art technology at each time step, because the focus is on the current state of the art. Briefly introducing the Recurrent Neural Network and Long Short Term Memory is necessary to understand the difference of the bad performing old technologies and the state of the art technologies nowadays. Since those two networks can fill up a thesis by themselves, I will provide only the basic information to understand the concept. Most of the text generation research results directly benefit the text summarization itself too, for that reason I cover up the development of text generation and its general architecture, such as text summarization, which approaches my prototype as well.  
+
 \section{Background and Theory}
-\subsection{Prerequisites}
-\subsection{Encoder}
-\subsection{Decoder}
+
+\subsection{Recurrent Neural Networks}
+Even though I introduced the neuron in a neural network as a kind of brain cell imitation, the neuron of a basic neural network will forget everything when it is shut down, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist \cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/RNN-unrolled}\\
+		\caption{Recurrent Neural Network with integrated loops \cite{olah}}\label{rnn}
+	\end{center}
+\end{figure}
+
+Figure \ref{rnn} shows an unrolled Recurrent Neural Network. The input \(x_t\) on time step \textit{t}, is passed to the neural network \textit{A}. The network looks at the input on this time step and outputs \(h_t\) at the same time step. This loop allows the network to pass information from one time step to another. The picture \ref{rnn} shows, that the learned parameter from input \textins{x} on time step \textins{t} will be passed as additional information to the next time step \textins{t + 1} and so on. For example if a RNN wants to predict the next word in the sentence "Since I am living in Hong Kong .. by now I speak fluent \textit{Cantonese}". The network needs to remember that the target country is Hong Kong to predict the language Cantonese. Theoretically with this approach it is possible to retain information from many time steps ago, but unfortunately, as the time span back grows, RNN's become unable to learn the information from too long ago cells. This phenomenon was explained by Sepp Hochreiter in 1991 \cite{Hochreiter:91} under the name \textit{vanishing gradient problem}. The solution to this problem is the Long Short Term Memory, short LSTM.
+
+\subsection{Long Short Term Memory}\label{ss:lstm}
+Long Short Term Memory cells were first proposed by Sepp Hochreiter and Jürgen Schmidhuber in 1997 \cite{hochreiter1997long}. The LSTM is a special kind of Recurrent Neural Network, because it is able to remember long-term dependencies and informatiom. The goal of the cell is to solve the vanishing gradient problem of the Recurrent Neural Network. Inputs into this cell can be stored for a long period of time, without forgetting them, as in Recurrent Neural Networks. The LSTM is designed to avoid the loss of information (vanishing gradient problem), by intentionally ledging on to certain information over plenty of time steps. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/LSTM3-SimpleRNN}\\
+		\caption{The repeating module in an Recurrent Neural Network contains one single layer \cite{olah}}\label{lstm}
+	\end{center}
+\end{figure}
+
+LSTM's can be enrolled the same way like RNN's, but there is a core difference between the Recurrent Neural Network in Figure \ref{lstm} and the Long Short Term Memory in Figure \ref{lstm2}. The LSTM has four gates instead of one like the RNN. The four gates are:
+
+\begin{itemize}		
+	\item Forget Gate
+	\item Forget Gate
+	\item Input Gate
+	\item Cell State
+	\item Output Gate
+\end{itemize}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/LSTM3-C-line}\\
+		\caption{Cell State of the Long Short Term Memory which acts as data highway \cite{olah}}\label{lstm3}
+	\end{center}
+\end{figure}
+
+The \textbf{Forget Gate} decides what information should be thrown away or kept. Information from the previous hidden state and information from the current input is passed through a sigmoid function. A sigmoid function takes an input and returns high values closer to 1 and smaller values closer to 0. The closer to 0 means to forget the state, and the closer to 1 means to keep the state.
+
+The \textbf{Input Gate} updates the cell state. That decides which values will be updated by computing the values to be between 0 and 1 like the Forget Gate. Important information is closer to 1 and 0 means less important.
+
+The \textbf{Cell State} is the core of the LSTM. It is the horizontal line shown in Figure \ref{lstm3}. The cell state acts like the information highway in the cell. With only some minor linear computation, it runs through the entire cell. This way information can pass very easily through the cell. 
+
+The \textbf{Output Gate} decides what the hidden state of the next LSTM cell should be. The hidden state contains information on previous inputs and it is also used for predictions. The hidden state denotes the state which is passed from the output gate on time step \textit{t} to the input gate for the LSTM cell on time step \textit{t+1}.
 
 
-\section{History of Text Generation}\label{ss:history}
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/LSTM3-chain}\\
+		\caption{The repeating module in an LSTM contains four interacting layers \cite{olah}}\label{lstm2}
+	\end{center}
+\end{figure}
 
-nlg-survey-long
+The main idea of the LSTM is, that it can decide which information to remove, to forget, which to store and when to use it. It can also decide when to move the previous state information to the next, like the RNN shown in Figure \ref{rnn}. Even though many variations of the LSTM occupy the state of the art performance, the LSTM is used in many real business cases in production, like the Google translater or weather forecasting.
+The Long Short Term Memory paved the way for the sequence to sequence models.
+\subsubsection{N-Grams}\label{ss:ngram}
+
+\subsection{Sequence to Sequence}
+In the year 2014, Google invented a new way to translate language by learning a statistical model with a neural machine translation approach \cite{seq2seq}. Google called it Sequence to Sequence model \cite{seq2seq}, often shortened down to seq2seq, which consists of an encoder and a decoder. 
+
+Before that, language translation was originally processed by rule-based systems \cite{chen-goodman}. The systems computed their work by breaking down sentences into plenty of chunks and translating them phrase-by-phrase, but this approach created not easily understandable language.
+
+After rule-based systems, statistical models have taken over the. Given a source text in e.g. German (\textit{f}), what is the most suitable translation into e.g. English (\textit{e})? The statistical model p(\textit{g}|\textit{e}) is trained on multiple texts (corpus) and finally outputs p(\textit{e}), which is calculated only on the target corpus in English. 
+
+\begin{center}
+\begin{math}
+\hat{e} = argmax_{e}(e|g) = argmax_{e} p(g|e) p(e)
+\label{eq:rule}
+\end{math}
+\end{center}
+
+The formula means, among all Baysian probabilities p(\textit{g}|\textit{e})p(\textit{e}), select the pair of words (translation), select the most likely to be the best translation (argmax). Even though this approach produces good results, it looses the wider semantical view, and so it is especially not effective for a good summarization technique.
+
+For the first time, neural networks in form of feed-forward fully-connected neural networks produced such good results, that they replaced all non-network techniques. Affine matrix transformations are stacked together and are followed by non-linearities to the input and each following hidden layer \cite{Bengio} Page 1141-1142. However, these models require a fixed content length for their calculations, which makes them again not flexible enough to produce human-like translations. 
+
+Even if a LSTM (Section \ref{ss:lstm}) was used to map sequences of words from one language to another, it will most likely produce errors or bad results. A single LSTM cell needs the same input length and output length, which is unrealistic for translating multilingual. For example the English "He is running" translated into German is "Er rennt". The LSTM itself can not translate that, because of the different word length. 
+The Long Short Term Memory cell from Section \ref{ss:req} was invented independently from the sequence to sequence models, but
+finally three employees of Google published a paper about their approach to make use of the LSTM to create a sequence to sequence model, also called encoder-decoder model.
+The basic idea is that the encoder converts an input text to a latent vector of length \text{N} and the decoder generates an output vector of length \textit{V} by using the latent encoded vector. It is called a latent vector, because it is not accessible during the training time (manipulating it), for example in a normal Feed Forward Neural Network, the output of a hidden layer in the network can not be manipulated. The initial use of encoder-decoder models was for machine translation.
+
+Technologies for a specific field in the machine learning environment and especially text generation can often be used cross functional. The encoder-decoder model found its way into text summarization and automated email reply by Google \cite{google} as well. Figure \ref{enc-dec} illustrates the model for Google's automated email reply.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=5.5in]{photos/encoder_decoder}\\
+		\caption{LSTM encoder-decoder model for automated E-Mail reply}\label{enc-dec}
+	\end{center}
+\end{figure}
+
+Figure \ref{enc-dec} makes use of an Long Short Term Memory cell, which captures situations, writing styles and tones. The network generalizes more flexible and accurate than a rule-based model ever could \cite{google}. 
+
+
+\subsection{Encoder and Decoder}
+\subsection{Attention}
+In general, the explanation of the sequence to sequence models just covered the very basic idea of the model. To achieve the state-of-the-art result, not only a single vector can be used for encoding the entire input sequence, but multiple vectors each capable of capturing other information. 
+
+
+\section{Text Generation}\label{ss:history}
+
+In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all of it. The goal of the text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
+Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
 
 \subsection{Text Generation Tasks}
-raditionally, the nlg problem of converting input data into output text was addressed by splitting it up into a number of subproblems. The following six are frequently found in many nlg systems (Reiter and Dale, 1997, 2000); their role is illustrated in Figure 1:
+Traditionally, the nlg problem of converting input data into output text was addressed by splitting it up into a number of subproblems. The following six are frequently found in many nlg systems (Reiter and Dale, 1997, 2000); their role is illustrated in Figure 1:
 \begin{itemize}
 	\item Content determination: Deciding which information to include in the text under construction
 	\item Text structuring: Determining in which order information will be pre- sented in the text
@@ -46,9 +144,14 @@ Purpose Factors
 output factors
 neural-text-summary
 
-\subsection{Extractive}
-\subsection{Abstractive}
+\subsection{Extractive and Abstractive}
+\subsubsection{Excractive}
+
+\subsubsection{Abstractive}
+
 \subsection{Combinational Approach}
+
 \subsection{Reinforcement Learning}
+
 \subsection{Evaluation}
 ROGUE
