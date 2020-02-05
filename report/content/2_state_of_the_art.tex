@@ -4,6 +4,7 @@ The goal of this chapter is to survey the development of the text generation fro
 
 \section{Background and Theory}
 
+
 \subsection{Recurrent Neural Networks}
 Even though I introduced the neuron in a neural network as a kind of brain cell imitation, the neuron of a basic neural network will forget everything when it is shut down, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist \cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
 
@@ -14,7 +15,17 @@ Even though I introduced the neuron in a neural network as a kind of brain cell 
 	\end{center}
 \end{figure}
 
-Figure \ref{rnn} shows an unrolled Recurrent Neural Network. The input \(x_t\) on time step \textit{t}, is passed to the neural network \textit{A}. The network looks at the input on this time step and outputs \(h_t\) at the same time step. This loop allows the network to pass information from one time step to another. The picture \ref{rnn} shows, that the learned parameter from input \textins{x} on time step \textins{t} will be passed as additional information to the next time step \textins{t + 1} and so on. For example if a RNN wants to predict the next word in the sentence "Since I am living in Hong Kong .. by now I speak fluent \textit{Cantonese}". The network needs to remember that the target country is Hong Kong to predict the language Cantonese. Theoretically with this approach it is possible to retain information from many time steps ago, but unfortunately, as the time span back grows, RNN's become unable to learn the information from too long ago cells. This phenomenon was explained by Sepp Hochreiter in 1991 \cite{Hochreiter:91} under the name \textit{vanishing gradient problem}. The solution to this problem is the Long Short Term Memory, short LSTM.
+Figure \ref{rnn} shows an unrolled Recurrent Neural Network. The input \(x_t\) on time step \textit{t}, is passed to the neural network \textit{A}. The network looks at the input on this time step and outputs the hidden state \(h_t\) at the same time step \textit{t}. This loop allows the network to pass information from one time step to another. The picture \ref{rnn} shows, that the learned parameter from input \textins{x} on time step \textins{t} will be passed as additional information to the next time step \textins{t + 1} and so on. For example if a RNN wants to predict the next word in the sentence "Since I am living in Hong Kong .. by now I speak fluent \textit{Cantonese}". The network needs to remember that the target country is Hong Kong to predict the language Cantonese. At each time step \textit{t}, the hidden state \textit{\(h_t\)} of the Recurrent Neural Network is updated by:
+
+\begin{center}
+\begin{math}
+\boldsymbol{h_{(t)}} = f(\boldsymbol{h_{(t-1)}}, x_{t})
+\end{math}
+\end{center}
+
+where \(f\) is a non-linear activation function and \textit{x} is the input in form of a word. The function \(f\) can be in the simplest case a sigmoid function which has either 0 or 1 as output, or the more complex and effective Long Short Term Memory cell, explained in the next Section \ref{ss:lstm} \cite{hochreiter1997long}. The Recurrent Neural Network is trained to predict for example the next word in a sentence or sequence. This prediction is possible due of the learned probability distribution over a sequence. The output at each time step \textit{t} is a conditional distribution \(p(x_{t}|x_{t-1},...,x_{1})\).
+
+Theoretically with this approach it is possible to retain information from many time steps ago, but unfortunately, as the time span back grows, RNN's become unable to learn the information from too long ago cells. This phenomenon was explained by Sepp Hochreiter in 1991 \cite{Hochreiter:91} under the name \textit{vanishing gradient problem}. The solution to this problem is the Long Short Term Memory, short LSTM.
 
 \subsection{Long Short Term Memory}\label{ss:lstm}
 Long Short Term Memory cells were first proposed by Sepp Hochreiter and Jürgen Schmidhuber in 1997 \cite{hochreiter1997long}. The LSTM is a special kind of Recurrent Neural Network, because it is able to remember long-term dependencies and informatiom. The goal of the cell is to solve the vanishing gradient problem of the Recurrent Neural Network. Inputs into this cell can be stored for a long period of time, without forgetting them, as in Recurrent Neural Networks. The LSTM is designed to avoid the loss of information (vanishing gradient problem), by intentionally ledging on to certain information over plenty of time steps. 
@@ -117,8 +128,8 @@ Figure \ref{encdecseq} shows, that the encoder decoder model is built up from ac
 \end{itemize}
 
 
-The \textbf{Encoder} iteratively integrates the words in a sentence into the hidden state \textit{h} if the Long Short Term Memory cell.
-Figure \ref{lstm3} shows a single LSTM cell with the input cell state \textit{C} at the time step \textit{t-1}  and the input of the hidden state \textit{h} at the same time step \textit{t-1}. This is necessary for the cell to compute both the input words, but also the knowledge from prior words. Words are represented as latent vectors in the sequence to sequence models and are stored in a vocabulary table. Each fixed length vector stands for a word in the vocabulary, for example a dimension of 300. In a simple case, the number of words in the vocabulary is fixed like 50.000 words, hence the dimension of the vocabulary table in Figure \ref{voctable} is [50000 x 300]. 
+The \textbf{Encoder} iteratively integrates the words in a sentence into the hidden state \textit{h} into the Long Short Term Memory cell.
+Figure \ref{lstm3} shows a single LSTM cell with the input cell state \textit{C} at the time step \textit{t-1}  and the input of the hidden state \textit{h} at the same time step \textit{t-1}. This is necessary for the cell to compute both the input words, but also the knowledge from prior words. Words are represented as latent vectors in the sequence to sequence models and are stored in a vocabulary table. Each fixed length vector stands for a word in the vocabulary, for example the vector length is fixed to a dimension of 300. In a simple case, the number of words in the vocabulary is fixed to e.g. 50.000 words, hence the dimension of the vocabulary table in Figure \ref{voctable} is [50000 x 300]. 
 
 \begin{figure}
 	\begin{center}
@@ -127,19 +138,52 @@ Figure \ref{lstm3} shows a single LSTM cell with the input cell state \textit{C}
 	\end{center}
 \end{figure}
 
-A stack Multiple recurrent units (three in Figure \ref{encdecseq}) accept each a single element as an input, gains information and propagates it forward to the next cell in the next time step. The hidden state of \textit{h3} is calculated based on the prior two cells.
+A connection of multiple recurrent units (three in Figure \ref{encdecseq}) where each accept a single element as an input, gains information and propagates it forward to the next cell and accordingly the next time step. In the example of Figure \ref{encdecseq}, the hidden state of \textit{h3} is calculated based on the prior two cells.
 
 
+The \textbf{Encoder Vector} is the last hidden state of all the encoder cells, in this example the encoder vector is located at the output of cell three. The vector tries to combine all of the information from the prior encoded words with the purpose to help the decoder make accurate predictions. Basically, the encoder vector is the initial input for the decoder part of the model.
 
-The \textbf{Encoder Vector}
-...
+The \textbf{Decoder} unrolls the encoder vector from meaning space into a target sentence. The meaning space (shown in Figure \ref{meaningspace}) is a mapping of concepts and ideas that we may want to express to points in a continuous, high-dimensional grid \cite{mugan}. 
+The minimum requirement for the meaning space is to consist at least of the last state of the encoder Recurrent Neural Network (encoder vector). The decoder computes a probability distribution for each word in the encoder vector to generate the next state. In the example case, the output is generated by multiplying the hidden state in the encoder vector \textit{h} by the output matrix of size [300 x 50000]. The product of this matrix multiplication is a vector of size [50,000], that can be normalized with a \textit{softmax} into a probability distribution over words in the vocabulary. The network can then choose the word with the highest probability, because the softmax squeeses all outputs into a summed up probability of 1. For example:
 
-The \textbf{Decoder}
-...
+\begin{tcolorbox}
+	"Since I am living in Hong Kong, by now I speak fluent ... "
+	
+	\begin{itemize}
+		\item Cat: 0.01
+		\item running: 0.005
+		\item Cantonese: \textbf{0.5}
+		\item Mandarin: 0.3
+		\item French: 0.015
+	\end{itemize}
+
+	The chosen word is \textbf{Cantonese}, because it is the highest probability among all probabilities which are summed up to 100\%
+\end{tcolorbox}
+ 
 
 \subsection{Attention}
 In general, the explanation of the sequence to sequence models just covered the very basic idea of the model. To achieve the state-of-the-art result, not only a single vector can be used for encoding the entire input sequence, but multiple vectors each capable of capturing other information. 
 
+
+In the encoder and decoder model, the length of the state vector \textit{h} does not change for the input and output. As shown in the example of Section \ref{ss:seq2seq}, sentences translated into another language can have a different word length. For the model to automatically adjust the length of the output, is to use the technology called \textit{attention} \cite{attention} \cite{attention2}.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/w1-11}\\
+		\caption{Attention mechanism for Spanish-English translation \cite{mugan}}\label{attention1}
+	\end{center}
+\end{figure}
+
+Figure \ref{attention1} shows the basic concept of attention. The Long Short Term Memory is not starting to right before time step \textit{t = 6} at state \textit{\(h_{6}\)}. Attention enables the network to look at all prior encoded states of the words, takes the weighted average probability of the vectors and also uses this as additional information. Attention also projects its vectors into the meaning space (Figure \ref{meaningspace}. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=3.5in]{photos/w1-21}\\
+		\caption{Meaning Space of the Attention model \cite{mugan}}\label{meaningspace}
+	\end{center}
+\end{figure}
+
+Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
 \section{Text Generation}\label{ss:history}
 
@@ -157,6 +201,14 @@ Traditionally, the nlg problem of converting input data into output text was add
 	\item Linguistic realisation: Combining all words and phrases into well-formed sentences
 \end{itemize}
 
+\subsubsection{Content Determination}
+\subsubsection{Text structuring}
+\subsubsection{Sentence aggregation}
+\subsubsection{Lexicalisation}
+\subsubsection{Referring expression}
+\subsubsection{Linguistic realisation}
+
+
 \subsection{Architectures and Approaches}
 
 nlg-survey-long Kapitel 3
@@ -167,11 +219,16 @@ nlg-survey-long Kapitel 3
 	\item Data-driven approaches
 \end{itemize}
 
+\subsubsection{Rule-based approach}
+\subsubsection{Planning-based approach}
+\subsubsection{Data-driven approach}
+
 
 \subsection{Neural Text Generation}
-NTG with Supervised Learning
-NTG with Reinforcement Learning
-NTG with GAN's
+
+\subsubsection{Supervised Learning}
+\subsubsection{Reinforcement Learning}
+\subsubsection{GANs}
 
 \section{Current Trends in Text Summarization Technology}\label{ss:trends}
 
