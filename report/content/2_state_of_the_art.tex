@@ -1,6 +1,51 @@
 \chapter{An evolutionary view on the State of the Art}\label{ch:sota}
 
-The goal of this chapter is to survey the development of the text generation from the old days until 2020. I can not go into detail for every single state of the art technology at each time step, because the focus is on the current state of the art. Briefly introducing the Recurrent Neural Network and Long Short Term Memory is necessary to understand the difference of the bad performing old technologies and the state of the art technologies nowadays. Since those two networks can fill up a thesis by themselves, I will provide only the basic information to understand the concept. Most of the text generation research results directly benefit the text summarization itself too, for that reason I cover up the development of text generation and its general architecture, such as text summarization, which approaches my prototype as well.  
+The goal of this chapter is to survey the development of the text generation from the old days until 2020. 
+
+As conducted from the Introduction Chapter 1, Text Generation is the generic term for the output part of an automatic text summarizer. The research on Neural Text Generation and other fields had a major impact on the development of automatic text summarizers. In this chapter, I begin with the definition of a text generator in general and its historical development. I state out the most important steps from a basic text generator to a neural text generator. In the following I focus on the text summarizer and its personal historical evolution with the impacts of the neural text generators. There are several human-like summarizing state of the art technologies nowadays for the automatic text summarizers, but they are developed under a large scale data set and computional high demanding power. I am going to mention which parts are the fundamentals for my prototype and which technologies are state of the art, but not possible to achieve with a basic home computer.
+
+\section{Text Generation}\label{ss:history}
+
+Text Generation, Language modeling or Natural Language Generation are different words for basically the same meaning, but I will keep the denotation of Text Generation. A widely-cited survey from Reiter and Dale 1997 (Page 57-87) \cite{reiter} characterizes Text Generation as 'the sub-field of Artificial Intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information' \cite{reiter}. This definition rather implies a data-to-text approach instead of the text-to-text approach from Table \ref{tab:nlp_table}, but in 1997 the rule-based approach dominated the neural end-to-end (Neural Text Generation) methods (Figure \ref{rules_based}). For that reason, in 2003 Evans declares Text Generation as rather difficult to define \cite{evans} (Page 144-151). Most researchers agree on the output synthesis part of the input-output system (e.g. Text Summarization or Image caption generation) is, namely text. Whereas the input part can be not as easily distinguished \cite{mcdonald} (Page 191-197).
+
+
+
+\subsection{Text Generation Tasks}
+Traditionally, the nlg problem of converting input data into output text was addressed by splitting it up into a number of subproblems. The following six are frequently found in many nlg systems (Reiter and Dale, 1997, 2000); their role is illustrated in Figure 1:
+\begin{itemize}
+	\item Content determination: Deciding which information to include in the text under construction
+	\item Text structuring: Determining in which order information will be presented in the text
+	\item Sentence aggregation: Deciding which information to present in individual sentences
+	\item Lexicalisation: Finding the right words and phrases to express information
+	\item Referring expression generation: Selecting the words and phrases to identify domain objects
+	\item Linguistic realization: Combining all words and phrases into well-formed sentences
+\end{itemize}
+
+\subsubsection{Content Determination}
+\subsubsection{Text structuring}
+\subsubsection{Sentence aggregation}
+\subsubsection{Lexicalisation}
+\subsubsection{Referring expression}
+\subsubsection{Linguistic realisation}
+
+
+\subsection{Architectures and Approaches}
+
+
+nlg-survey-long Kapitel 3
+
+\begin{itemize}
+	\item Rule-based, modular approaches
+	\item Planning-based approaches
+	\item Data-driven approaches
+\end{itemize}
+
+\subsubsection{Rule-based approach}
+\subsubsection{Planning-based approach}
+\subsubsection{Data-driven approach}
+
+
+\subsection{Neural Text Generation}
 
 \section{Background and Theory}
 
@@ -185,43 +230,7 @@ Figure \ref{attention1} shows the basic concept of attention. The Long Short Ter
 
 Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
-\section{Text Generation}\label{ss:history}
-\subsection{Text Generation Tasks}
-Traditionally, the nlg problem of converting input data into output text was addressed by splitting it up into a number of subproblems. The following six are frequently found in many nlg systems (Reiter and Dale, 1997, 2000); their role is illustrated in Figure 1:
-\begin{itemize}
-	\item Content determination: Deciding which information to include in the text under construction
-	\item Text structuring: Determining in which order information will be presented in the text
-	\item Sentence aggregation: Deciding which information to present in individual sentences
-	\item Lexicalisation: Finding the right words and phrases to express information
-	\item Referring expression generation: Selecting the words and phrases to identify domain objects
-	\item Linguistic realization: Combining all words and phrases into well-formed sentences
-\end{itemize}
 
-\subsubsection{Content Determination}
-\subsubsection{Text structuring}
-\subsubsection{Sentence aggregation}
-\subsubsection{Lexicalisation}
-\subsubsection{Referring expression}
-\subsubsection{Linguistic realisation}
-
-
-\subsection{Architectures and Approaches}
-
-
-nlg-survey-long Kapitel 3
-
-\begin{itemize}
-	\item Rule-based, modular approaches
-	\item Planning-based approaches
-	\item Data-driven approaches
-\end{itemize}
-
-\subsubsection{Rule-based approach}
-\subsubsection{Planning-based approach}
-\subsubsection{Data-driven approach}
-
-
-\subsection{Neural Text Generation}
 
 
 \subsubsection{Supervised Learning}
@@ -229,6 +238,13 @@ nlg-survey-long Kapitel 3
 \subsubsection{GANs}
 
 \section{Text Summarization}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=5.5in]{photos/summ}\\
+		\caption{Research fields with influence on the development of text summarization}\label{summ}
+	\end{center}
+\end{figure}
 
 
 \section{Current Trends in Text Summarization Technology}\label{ss:trends}
@@ -265,4 +281,4 @@ Figure \ref{abex} shows a simplified process of the abstractive or extractive ap
 \subsection{Reinforcement Learning}
 
 \subsection{Evaluation}
-ROGUE
+ROGUEcd
