@@ -95,8 +95,6 @@ nlg-survey-long Kapitel 3
 
 
 \section{Advanced Approaches for Text Generation}
-
-
 \subsection{Recurrent Neural Networks}
 Even though I introduced the neuron in a neural network as a kind of brain cell imitation, the neuron of a basic neural network will forget everything when it is shut down, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist \cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
 
@@ -256,15 +254,13 @@ The minimum requirement for the meaning space is to consist at least of the last
 \subsection{Attention}
 In general, the explanation of the sequence to sequence models just covered the very basic idea of the model. To achieve the state-of-the-art result, not only a single vector can be used for encoding the entire input sequence, but multiple vectors each capable of capturing other information. 
 
-
-In the encoder and decoder model, the length of the state vector \textit{h} does not change for the input and output. As shown in the example of Section \ref{ss:seq2seq}, sentences translated into another language can have a different word length. For the model to automatically adjust the length of the output, is to use the technology called \textit{attention} \cite{attention} \cite{attention2}.
-
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=4.5in]{photos/w1-11}\\
 		\caption{Attention mechanism for Spanish-English translation \cite{mugan}}\label{attention1}
 	\end{center}
 \end{figure}
+In the encoder and decoder model, the length of the state vector \textit{h} does not change for the input and output. As shown in the example of Section \ref{ss:seq2seq}, sentences translated into another language can have a different word length. For the model to automatically adjust the length of the output, is to use the technology called \textit{attention} \cite{attention} \cite{attention2}.
 
 Figure \ref{attention1} shows the basic concept of attention. The Long Short Term Memory is not starting to right before time step \textit{t = 6} at state \textit{\(h_{6}\)}. Attention enables the network to look at all prior encoded states of the words, takes the weighted average probability of the vectors and also uses this as additional information. Attention also projects its vectors into the meaning space (Figure \ref{meaningspace}. 
 
@@ -276,13 +272,6 @@ Figure \ref{attention1} shows the basic concept of attention. The Long Short Ter
 \end{figure}
 
 Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
-
-
-
-
-\subsubsection{Supervised Learning}
-\subsubsection{Reinforcement Learning}
-\subsubsection{GANs}
 
 \section{Structure of Text Summarization}
 
