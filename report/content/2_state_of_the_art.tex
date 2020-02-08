@@ -21,7 +21,7 @@ For the Text Generation input-output system, the system can be divided into six 
 	\item \textbf{Linguistic realization}: Combining all words and phrases into well-formed sentences
 \end{itemize}
 
-These six tasks can be though of an early decision processes. They suggest both a chronological order in which the tasks need to be solved, as well as an distinction between strategy and tactics. This distinction goes back to Thompson H. in 1977, where he first declared this two parts \cite{thompson}. Still, when it comes to modern neural state of the art Text Generation, the steps intersect in some ways. In the following comes a brief introduction to each of the steps.
+These six tasks can be though of an early decision processes. They suggest both a chronological order in which the tasks need to be solved, as well as an distinction between strategy and tactics. This distinction goes back to Thompson H. in 1977, where he first declared this two parts \cite{thompson}. Still, when it comes to modern neural state of the art Text Generation, the steps intersect in some ways. In the following comes a brief introduction to each of the steps. For the headline example is no aggregation necessary.
 
 \subsubsection{Content Determination}
 
@@ -50,9 +50,28 @@ For our example the content was already predefined in the first step, now the im
 
 \subsubsection{Sentence aggregation}
 
+By combining separate sentences with similar meaning into one, the generated text becomes potentially more fluid and enhances the readability \cite{dal} (Pages 383-414) \cite{cheng-mellish2000} (Pages 183-193). For example, an aggregation makes sense for a football games and its results published in the Google News. Google could web scrape the live tickers of goals and after collecting all the data a possible result would be:
 
+\begin{tcolorbox}
+	\begin{center}
+		(1) Mario Götze scored after 19 minutes and 23 seconds \\
+		(2) Mario Götze scored after 20 minutes and 30 seconds \\
+		(3) Mario Götze scored after 60 minutes and 11 seconds
+	\end{center}
+\end{tcolorbox}
+
+This is obviously not redundant, because it contains new information in every sentence, but for summarizing it, the sentences can be aggregates into:
+
+\begin{tcolorbox}
+	\begin{center}
+		(4) Mario Götze scored 3 times within 51 minutes
+	\end{center}
+\end{tcolorbox}
+
+Aggregation is not an easy task, because it is not intuitive for an algorithm to detect semantic similarities and at the same time new information in that. Furthermore it depends highly on the to achieving output which kind of aggregation the text should undergo. A general approach was proposed by White and Howcraft (2015). They designed an algorithm to detect parallel verb phrases (\textit{scored after}) in multiple (three) sentences and elide the subject and the verb in the generated sentence \cite{white-howcroft-2015-inducing} (Pages 28-37). 
 
 \subsubsection{Lexicalisation}
+
 \subsubsection{Referring expression}
 \subsubsection{Linguistic realisation}
 
