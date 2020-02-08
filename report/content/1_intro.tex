@@ -117,7 +117,22 @@ As an illustration and example for my entire thesis, besides of my own prototype
 
 \textbf{Google News Headline Summarization}
 
-Google has its own news section on this link \textit{https://news.google.com}. 
+Google has its own news section on this link \textit{https://news.google.com}. Google News automatically generates the news headlines for multi language news articles \cite{google}. Google proposes that for people to digest the large amount of daily information better, they created the long-term goal at the \textit{Google Brain} department to summarize news articles and their headlines as good as possible. The search engine Google is known for its accurate any many search results when using this engine. Google does the same for Google News. Google scrapes news articles all over the world, automatically summarizes it and out of that, it generates the headline of the summarized news article out of it \cite{google}. 
+The achieve their state of the art results, Google makes use of a Deep Learning technique called \textit{sequence-to-sequence} learning, which will be explained in Section \ref{ss:seq2seq}. Table \ref{tab:google} shows an example for generated headlines of a summarization. Due to the structure of a news article, for a good result the model who generates the headlines only needs the first few lines of an article.  
 
+All examples from this thesis will be conducted from the perspective of an news article to keep it uniform, whether a long text will be summarized to a shorter text, or only one or two sentences for a headline will be extracted and summarized from an article. 
+
+
+\begin{table}[]
+	\begin{tabular}{|c|c|l}
+		\cline{1-2}
+		\textbf{Input: Article 1st sentence}                                                                                                                                                                                                                                 & \textbf{Model-written headline}                                                                 &  \\ \cline{1-2}
+		\begin{tabular}[c]{@{}c@{}}metro-goldwyn-mayer reported a third-quarter \\ net loss of dlrs 16 million due mainly to the \\ effect of accounting rules adopted this year\end{tabular}                                                                                & \begin{tabular}[c]{@{}c@{}}mgm reports 16 million \\ net loss on higher revenue\end{tabular}    &  \\ \cline{1-2}
+		\begin{tabular}[c]{@{}c@{}}starting from july 1, the island province of hainan in \\ southern china will implement strict market \\ access control on all incoming livestock and animal \\ products to prevent the possible spread of epidemic diseases\end{tabular} & \begin{tabular}[c]{@{}c@{}}hainan to curb \\ spread of diseases\end{tabular}                    &  \\ \cline{1-2}
+		\begin{tabular}[c]{@{}c@{}}australian wine exports hit a record 52.1 million liters\\  worth 260 million dollars (143 million us) in september, \\ the government statistics office reported on monday\end{tabular}                                                  & \begin{tabular}[c]{@{}c@{}}australian wine exports\\  hit record high in september\end{tabular} &  \\ \cline{1-2}
+	\end{tabular}
+	\captionof{table}{ The first column shows the first sentence of a news article which is the model input, and the second column shows what headline the model has written \cite{google}.} 
+	\label{tab:google}
+\end{table}
 
 

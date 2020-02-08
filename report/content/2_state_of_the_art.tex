@@ -186,19 +186,15 @@ Figure \ref{attention1} shows the basic concept of attention. The Long Short Ter
 Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
 \section{Text Generation}\label{ss:history}
-
-In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all of it. The goal of the text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
-Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
-
 \subsection{Text Generation Tasks}
 Traditionally, the nlg problem of converting input data into output text was addressed by splitting it up into a number of subproblems. The following six are frequently found in many nlg systems (Reiter and Dale, 1997, 2000); their role is illustrated in Figure 1:
 \begin{itemize}
 	\item Content determination: Deciding which information to include in the text under construction
-	\item Text structuring: Determining in which order information will be pre- sented in the text
+	\item Text structuring: Determining in which order information will be presented in the text
 	\item Sentence aggregation: Deciding which information to present in individual sentences
-	\item Lexicalisation: Finding the right words and phrases to express informa- tion
-	\item Referring expression generation: Selecting the words and phrases to iden- tify domain objects
-	\item Linguistic realisation: Combining all words and phrases into well-formed sentences
+	\item Lexicalisation: Finding the right words and phrases to express information
+	\item Referring expression generation: Selecting the words and phrases to identify domain objects
+	\item Linguistic realization: Combining all words and phrases into well-formed sentences
 \end{itemize}
 
 \subsubsection{Content Determination}
@@ -210,6 +206,7 @@ Traditionally, the nlg problem of converting input data into output text was add
 
 
 \subsection{Architectures and Approaches}
+
 
 nlg-survey-long Kapitel 3
 
@@ -226,11 +223,20 @@ nlg-survey-long Kapitel 3
 
 \subsection{Neural Text Generation}
 
+
 \subsubsection{Supervised Learning}
 \subsubsection{Reinforcement Learning}
 \subsubsection{GANs}
 
+\section{Text Summarization}
+
+
 \section{Current Trends in Text Summarization Technology}\label{ss:trends}
+
+In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all of it. The goal of the text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
+Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
+
+
 
 \subsection{Summarization Factors}
 Single Doc - Multi Doc
@@ -240,6 +246,16 @@ output factors
 neural-text-summary
 
 \subsection{Extractive and Abstractive}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=5in]{photos/abex}\\
+		\caption{Simplified Abstraction Extraction process}\label{abex}
+	\end{center}
+\end{figure}	
+
+Figure \ref{abex} shows a simplified process of the abstractive or extractive approach. Both approaches can be applied decoupled from each other. The source documents, either single document or multi document go in as well with the topic of the topic (scientific, article, ...). The parameters are the compression rate \(\tau\), the type, etc. 
+
 \subsubsection{Excractive}
 
 \subsubsection{Abstractive}
