@@ -6,9 +6,7 @@ As conducted from the Introduction Chapter 1, Text Generation is the generic ter
 
 \section{Text Generation}\label{ss:history}
 
-Text Generation, Language modeling or Natural Language Generation are different words for basically the same meaning, but I will keep the denotation of Text Generation. A widely-cited survey from Reiter and Dale 1997 (Page 57-87) \cite{reiter} characterizes Text Generation as 'the sub-field of Artificial Intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information' \cite{reiter}. This definition rather implies a data-to-text approach instead of the text-to-text approach from Table \ref{tab:nlp_table}, but in 1997 the rule-based approach dominated the neural end-to-end (Neural Text Generation) methods (Figure \ref{rules_based}). For that reason, in 2003 Evans declares Text Generation as rather difficult to define \cite{evans} (Page 144-151). Most researchers agree on the output synthesis part of the input-output system (e.g. Text Summarization or Image caption generation) is, namely text. Whereas the input part can be not as easily distinguished \cite{mcdonald} (Page 191-197).
-
-
+Text Generation, Language modeling or Natural Language Generation are different words for basically the same meaning, but I will keep the denotation of Text Generation. A widely-cited survey from Reiter and Dale 1997 (Page 57-87) \cite{reiter} characterizes Text Generation as 'the sub-field of Artificial Intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information' \cite{reiter}. This definition rather implies a data-to-text approach instead of the text-to-text approach from Table \ref{tab:nlp_table}, but in 1997 the rule-based approach dominated the neural end-to-end (Neural Text Generation) methods (Figure \ref{rules_based}). For that reason, in 2003 Evans declares Text Generation as rather difficult to define \cite{evans} (Page 144-151). Most researchers agree on the output synthesis part of the input-output system (e.g. Text Summarization or Image caption generation \cite{mitchell}) is, namely text. Whereas the input part can be not as easily distinguished \cite{mcdonald} (Page 191-197).
 
 \subsection{Text Generation Tasks}
 Traditionally, the nlg problem of converting input data into output text was addressed by splitting it up into a number of subproblems. The following six are frequently found in many nlg systems (Reiter and Dale, 1997, 2000); their role is illustrated in Figure 1:
@@ -45,10 +43,9 @@ nlg-survey-long Kapitel 3
 \subsubsection{Data-driven approach}
 
 
-\subsection{Neural Text Generation}
+
 
 \section{Background and Theory}
-
 
 \subsection{Recurrent Neural Networks}
 Even though I introduced the neuron in a neural network as a kind of brain cell imitation, the neuron of a basic neural network will forget everything when it is shut down, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist \cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
@@ -230,27 +227,14 @@ Figure \ref{attention1} shows the basic concept of attention. The Long Short Ter
 
 Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
-
-
-
-\subsubsection{Supervised Learning}
-\subsubsection{Reinforcement Learning}
-\subsubsection{GANs}
+\subsection{Neural Text Generation}
 
 \section{Text Summarization}
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=5.5in]{photos/summ}\\
-		\caption{Research fields with influence on the development of text summarization}\label{summ}
-	\end{center}
-\end{figure}
-
-
-\section{Current Trends in Text Summarization Technology}\label{ss:trends}
-
-In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all of it. The goal of the text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
+In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all the information. The goal of text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
 Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
+
+As mention from the Section \ref{ss:history}, there is a text-to-text and data-to-text approach. At the time 2020, the transition is widely blurred, because for example the following extractive approach for text summarization is clearly a text-to-text method. It uses only the input document and nothing more. On the other side the abstractive approach is actually a data-to-text methods, because it takes into account multiple inputs, such as the text, opinion or another vocabulary.
 
 
 
@@ -265,6 +249,13 @@ neural-text-summary
 
 \begin{figure}
 	\begin{center}
+		\includegraphics[width=5.5in]{photos/summ}\\
+		\caption{Research fields with influence on the development of text summarization}\label{summ}
+	\end{center}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
 		\includegraphics[width=5in]{photos/abex}\\
 		\caption{Simplified Abstraction Extraction process}\label{abex}
 	\end{center}
@@ -272,9 +263,12 @@ neural-text-summary
 
 Figure \ref{abex} shows a simplified process of the abstractive or extractive approach. Both approaches can be applied decoupled from each other. The source documents, either single document or multi document go in as well with the topic of the topic (scientific, article, ...). The parameters are the compression rate \(\tau\), the type, etc. 
 
-\subsubsection{Excractive}
+\textbf{Extractive}
 
-\subsubsection{Abstractive}
+\textbf{Abstractive}
+
+
+\section{Current Trends in Text Summarization Technology}\label{ss:trends}
 
 \subsection{Combinational Approach}
 
