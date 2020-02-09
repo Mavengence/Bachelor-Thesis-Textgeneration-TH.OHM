@@ -72,7 +72,24 @@ Aggregation is not an easy task, because it is not intuitive for an algorithm to
 
 \subsubsection{Lexicalisation}
 
+After the sentences have been aggregated and finalized, the next step is lexicalisation, which converts the sentences into natural language. A single event can be expressed by natural language in multiple ways. For example the scoring event from the last section could be expressed as \textit{scored three goals} or \textit{goaled for three times}. The complexity for the lexicalisation step correlates with the amount of alternative sentences available. Furthermore it is important if there summary is limited with an amount of variation \cite{Theune} (Pages 47-86). Whether or not the text shall be processed with lexical variation in its generated sentences or not depends on the application field. In needs to be decided in advance. For example the soccer game is more likely to be converted into a different styles than a weather forecast. Another important difficulty is to design the way on how the lexicalisation cares about gradable properties. For example if the liveticker was:
+
+\begin{tcolorbox}
+	\begin{center}
+		(1) Mario Götze scored fast after 3 minutes and 23 seconds
+	\end{center}
+\end{tcolorbox}
+
+Then the systems needs to know whether the football player scored fast in a way that it is an early stage of the game, or he ran in such a fast way and scored with the pace. Humans tend to perceive different, as Power and Williams (2014) pointed out in an evaluation. A timestamp expression of \textit{00:00} can be perceived as \textit{midnight}, \textit{late evening} or simply even \textit{evening} for some people \cite{Power} (Pages 113-134).
+
+
 \subsubsection{Referring expression}
+
+Referring Expression Generation is highly characterized by Dale and Reiter in 1997. They came up with the idea to identify words and phrases as domain entities. Nowadays this is also known as \textit{Named Entity Recognition}. This step shows some similarity to lexicalisation, but Dale and Reiter pointed out that expression referring is \textit{a discrimination task, where the system needs to communicate sufficient information to distinguish one domain entity from other domain entities} \cite{reiter2}. From the previous example, \textit{Mario Götze} can be denoted with his name, another way would be calling him \textit{football professional} or \textit{the athlete}. Many factors play a role in how to determine which expressions and factors play a role in a particular context. Referring expression generation can basically be broken down into two steps.
+The first step is to decide the shape of referring expression. What type of reference should be used (e.g., a proper name or described with his/her job) \cite{named}. The second is to determine the content of the referring expression (e.g., Mario Götze or the athlete) \cite{named}.
+Rule-based approaches as well as the state of the art Machine Learning approaches have been proposed to solve this task \cite{reiter2}.  
+
+The usual limitation of previous referring expression generation systems is that they are not able to generate referring expressions for new, unseen entities \cite{anja} (Pages 294-327). With the use of modern Machine Learning approaches, this limitation has overcome.
 \subsubsection{Linguistic realisation}
 
 
