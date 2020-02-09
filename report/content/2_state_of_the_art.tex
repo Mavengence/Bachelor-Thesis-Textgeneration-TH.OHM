@@ -4,7 +4,7 @@ The goal of this chapter is to survey the development of the text generation fro
 
 As conducted from the Introduction Chapter 1, Text Generation is the generic term for the output part of an automatic text summarizer. The research on Neural Text Generation and other fields had a major impact on the development of automatic text summarizers. In this chapter, I begin with the definition of a text generator in general and its historical development. I state out the most important steps from a basic text generator to a neural text generator. In the following I focus on the text summarizer and its personal historical evolution with the impacts of the neural text generators. There are several human-like summarizing state of the art technologies nowadays for the automatic text summarizers, but they are developed under a large scale data set and computional high demanding power. I am going to mention which parts are the fundamentals for my prototype and which technologies are state of the art, but not possible to achieve with a basic home computer.
 
-\section{Structure of Text Generation }\label{ss:history}
+\section{The Structure of Text Generation }\label{ss:history}
 
 Text Generation, Language modeling or Natural Language Generation are different words for basically the same meaning, but I will keep the denotation of Text Generation. A widely-cited survey from Reiter and Dale 1997 (Page 57-87) \cite{reiter} characterizes Text Generation as 'the sub-field of Artificial Intelligence and computational linguistics that is concerned with the construction of computer systems than can produce understandable texts in English or other human languages from some underlying non-linguistic representation of information' \cite{reiter}. This definition implies rather a data-to-text approach instead of the text-to-text approach from Table \ref{tab:nlp_table}, but in 1997 the rule-based approach dominated the neural end-to-end (Neural Text Generation) methods (Figure \ref{rules_based}). For that reason, in 2003 Evans declares Text Generation as quite difficult to define \cite{evans} (Page 144-151). Most researchers agree on text as the output synthesis part of the input-output system (e.g. Text Summarization or Image caption generation \cite{mitchell}). Whereas the input part can be not as easily distinguished \cite{mcdonald} (Page 191-197).
 
@@ -27,7 +27,7 @@ These six tasks can be though of an early decision processes. They suggest both 
 
 The first step is to determine which content should be present in the generated output text. Usually there is more information stored in the input than in the output. For this reason a certain \textit{choice} must be undertaken for the content. As mention in the case study (Section \ref{ss:case}, the headline can be summarized very precisely given only the first few sentences of the news. In this special case the determined content could be the first three sentences. For shorten a longer document into a summary, the key points need to be abstraced into a collection of preverbal messages and semantic representations of information, often expressed in the form of a logical or database like style \cite{gatt}. This means basically to group semtantical similar words and phrases together, to remove redundancies. This step followed for the most time a rule-based approach, but in recent years researchers developed a data-driven approach (more in Section \ref{ss:archi}). For example, Barzilay and Lee (2004) developed a method to determine the content through Hidden Markov Models (HMM) \cite{lee} (Pages 113-120). Hidden Markow Models are stochastical models named after the russian mathematician A. A. Markow. They chain up different states of a system, in our case different topics of one or many news articles. This topics automatically will be clustered together as sentences based on the natural language semantical meaning \cite{gatt}. 
 
-\subsubsection{Text structuring}
+\subsubsection{Text Structuring}
 
 After successfully deciding which contents will be used in the generated text, the structure or order of this fragments need to be determind. Given the example article from Table \ref{tab:google}:
 
@@ -48,7 +48,7 @@ A good news headline should give all necessary information for the reader, namel
 
 For our example the content was already predefined in the first step, now the important words and sentences will be reorder based on this four questions. Generalization approaches for the ordering task have already been proposed. Lapatas approach \cite{lapata} (Page 471-484) tries to find an optimal ordering of \textit{information-bearing-items}. This method can even be applied to multi document input, which is more difficult to solve than single document inputs (explained in Section \ref{ss:multidoc}).
 
-\subsubsection{Sentence aggregation}
+\subsubsection{Sentence Aggregation}
 
 By combining separate sentences with similar meaning into one, the generated text becomes potentially more fluid and enhances the readability \cite{dal} (Pages 383-414) \cite{cheng-mellish2000} (Pages 183-193). For example, an aggregation makes sense for a football games and its results published in the Google News. Google could web scrape the live tickers of goals and after collecting all the data a possible result would be:
 
@@ -70,7 +70,7 @@ This is obviously not redundant, because it contains new information in every se
 
 Aggregation is not an easy task, because it is not intuitive for an algorithm to detect semantic similarities and at the same time new information in that. Furthermore it depends highly on the to achieving output which kind of aggregation the text should undergo. A general approach was proposed by White and Howcraft (2015). They designed an algorithm to detect parallel verb phrases (\textit{scored after}) in multiple (three) sentences and elide the subject and the verb in the generated sentence \cite{white-howcroft-2015-inducing} (Pages 28-37). 
 
-\subsubsection{Lexicalisation}
+\subsubsection{Lexicalisation}\label{ss:lex}
 
 After the sentences have been aggregated and finalized, the next step is lexicalisation, which converts the sentences into natural language. A single event can be expressed by natural language in multiple ways. For example the scoring event from the last section could be expressed as \textit{scored three goals} or \textit{goaled for three times}. The complexity for the lexicalisation step correlates with the amount of alternative sentences available. Furthermore it is important if there summary is limited with an amount of variation \cite{Theune} (Pages 47-86). Whether or not the text shall be processed with lexical variation in its generated sentences or not depends on the application field. In needs to be decided in advance. For example the soccer game is more likely to be converted into a different styles than a weather forecast. Another important difficulty is to design the way on how the lexicalisation cares about gradable properties. For example if the liveticker was:
 
@@ -83,15 +83,50 @@ After the sentences have been aggregated and finalized, the next step is lexical
 Then the systems needs to know whether the football player scored fast in a way that it is an early stage of the game, or he ran in such a fast way and scored with the pace. Humans tend to perceive different, as Power and Williams (2014) pointed out in an evaluation. A timestamp expression of \textit{00:00} can be perceived as \textit{midnight}, \textit{late evening} or simply even \textit{evening} for some people \cite{Power} (Pages 113-134).
 
 
-\subsubsection{Referring expression}
+\subsubsection{Referring Expression}
 
 Referring Expression Generation is highly characterized by Dale and Reiter in 1997. They came up with the idea to identify words and phrases as domain entities. Nowadays this is also known as \textit{Named Entity Recognition}. This step shows some similarity to lexicalisation, but Dale and Reiter pointed out that expression referring is \textit{a discrimination task, where the system needs to communicate sufficient information to distinguish one domain entity from other domain entities} \cite{reiter2}. From the previous example, \textit{Mario Götze} can be denoted with his name, another way would be calling him \textit{football professional} or \textit{the athlete}. Many factors play a role in how to determine which expressions and factors play a role in a particular context. Referring expression generation can basically be broken down into two steps.
 The first step is to decide the shape of referring expression. What type of reference should be used (e.g., a proper name or described with his/her job) \cite{named}. The second is to determine the content of the referring expression (e.g., Mario Götze or the athlete) \cite{named}.
 Rule-based approaches as well as the state of the art Machine Learning approaches have been proposed to solve this task \cite{reiter2}.  
 
 The usual limitation of previous referring expression generation systems is that they are not able to generate referring expressions for new, unseen entities \cite{anja} (Pages 294-327). With the use of modern Machine Learning approaches, this limitation has overcome.
-\subsubsection{Linguistic realisation}
+Many tools, for example the \textit{Natural Language Processing Toolkit NLTK} allow the easy transformation from the lexicalized sentence into its named entities. The sentence \textit{Mario Götze scored fast after 3 minutes and 23 seconds} will be transformed into:
 
+\begin{tcolorbox}
+	\begin{flushleft}
+		(1) [('Mario', 'NNP'), \\
+		(2) ('Götze', 'NNP'), \\
+		(3) ('scored', 'VBD'),\\
+		(4) ('fast', 'RB'),\\
+		(5) ('after', 'IN'),\\
+		(6) ('3', 'CD'),\\
+		(7) ('minutes', 'NNS'), \\
+		(8) ('and', 'CC'),\\
+		(9) ('23', 'CD'),\\
+		(10) (Seconds', 'NNS')]
+	\end{flushleft}
+
+	\begin{itemize}
+		\item \textbf{NNP} = noun, proper, singular (1,2)
+		\item \textbf{VBD} = verb, past tense (3)
+		\item \textbf{RB} = adverb (4)
+		\item \textbf{IN} = preposition or conjunction (5)
+		\item \textbf{CD} = numeral, cardinal (6, 9)
+		\item \textbf{NNS} = noun, common, plural (7, 10)
+		\item \textbf{CC} = conjunction, coordinating (8)
+	\end{itemize}
+\end{tcolorbox}
+\subsubsection{Linguistic Realization}
+
+Finally after detecting all relevant words and structures of the input text, it only needs to be combined into a well-formed sentence. Usually referred to as linguistic realisation, this task involves ordering constituents of a sentence, as well as generating the correct morphological shapes (e.g verb conjugations) \cite{gatt} (Pages 18-20). The special task in this step is whether the generated output needs to make use of words not present in the given text. In the case of text summarization, this is often referred to as an \textit{abstractive} or \textit{extractive} approach (shown in Section \ref{ss:exabs}). This task can be thought of an non-isomorphic (not reservable, because the same word can have different named entities dependent on the sentence) structure \cite{ballesteros-etal-2015-data} (Pages 387-397). The three most common approaches for the realization are:
+
+\begin{itemize}
+	\item Human-crafted templates
+	\item Human-crafted grammar-based systems
+	\item Statistical approaches
+\end{itemize}
+
+The most modern and widely used way is the statistical approach, but within that, there are several different methods to make us of the statistics. Just to give an example, Bohnet et al. (2010) \cite{bohnet-etal-2010-broad} (Pages 98-106) describe a realizer with underspecified dependency structures as input, Support Vector Machine (SVM) based environment. The classifiers are organised in a cascade to decode semantic input into the corresponding syntactic features. A Support Vector Machine is an algorithm to classify input whether it belongs to a specific topic or e.g. named entity from the last section or not. This can also be referred to as being a \textbf{Deep Learning} approach and it was applied on a common metric for measuring the accuracy of a generated e.g. text summarization called BLEU. This metric will be explained in Section \ref{ss:ev}. Furthermore, the more decision the statistical generating system makes and the more complex it becomes, the more abstract will the output be \cite{gall} (Page 21). This paves the way for an stochastical end-to-end system, like Konstas and Lapata showed in 2013 \cite{Konstas:Lapata:2013}. This presents a step words the automated text summarizations.
 
 \subsection{Architectures and Approaches}\label{ss:archi}
 
@@ -290,7 +325,7 @@ Figure \ref{attention1} shows the basic concept of attention. The Long Short Ter
 
 Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
-\section{Structure of Text Summarization}
+\section{The Structure of Text Summarization}
 
 In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all the information. The goal of text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
 Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
@@ -311,7 +346,7 @@ neural-text-summary
 \subsubsection{Input}
 \subsubsection{Output}
 \subsection{Single Document and Multi Document}\label{ss:multidoc}
-\subsection{Extractive and Abstractive}
+\subsection{Extractive and Abstractive}\label{ss:exabs}
 
 
 \begin{figure}
@@ -333,7 +368,7 @@ Figure \ref{abex} shows a simplified process of the abstractive or extractive ap
 \subsubsection{Extractive}
 \subsubsection{Abstractive}
 
-\subsection{Evaluation}
+\subsection{Evaluation}\label{ss:ev}
 ROGUE
 BLEU
 
