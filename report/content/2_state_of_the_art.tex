@@ -23,7 +23,7 @@ For the Text Generation input-output system, the system can be divided into six 
 
 These six tasks can be though of an early decision processes. They suggest both a chronological order in which the tasks need to be solved, as well as an distinction between strategy and tactics. This distinction goes back to Thompson H. in 1977, where he first declared this two parts \cite{thompson}. Still, when it comes to modern neural state of the art Text Generation, the steps intersect in some ways. In the following comes a brief introduction to each of the steps. For the headline example is no aggregation necessary.
 
-\subsubsection{Content Determination}
+\subsubsection{Content Determination}\label{ss:content}
 
 The first step is to determine which content should be present in the generated output text. Usually there is more information stored in the input than in the output. For this reason a certain \textit{choice} must be undertaken for the content. As mention in the case study (Section \ref{ss:case}, the headline can be summarized very precisely given only the first few sentences of the news. In this special case the determined content could be the first three sentences. For shorten a longer document into a summary, the key points need to be abstraced into a collection of preverbal messages and semantic representations of information, often expressed in the form of a logical or database like style \cite{gatt}. This means basically to group semtantical similar words and phrases together, to remove redundancies. This step followed for the most time a rule-based approach, but in recent years researchers developed a data-driven approach (more in Section \ref{ss:archi}). For example, Barzilay and Lee (2004) developed a method to determine the content through Hidden Markov Models (HMM) \cite{lee} (Pages 113-120). Hidden Markow Models are stochastical models named after the russian mathematician A. A. Markow. They chain up different states of a system, in our case different topics of one or many news articles. This topics automatically will be clustered together as sentences based on the natural language semantical meaning \cite{gatt}. 
 
@@ -130,8 +130,16 @@ The most modern and widely used way is the statistical approach, but within that
 
 \subsection{Architectures and Approaches}\label{ss:archi}
 
+After the overview of the six main tasks for Text Generation systems, this section focuses on the way those tasks can be organized together. There are three main approaches for the Text Generation architecture shown in the dark boxes in Figure \ref{architecture}. The light boxes illustrate the outputs from the main stages.
 
-nlg-survey-long Kapitel 3
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/architecture}\\
+		\caption{Classical 3-stage Text Generation architecture, after Reiter and Dale (2000) \cite{reiter2} }\label{architecture}
+	\end{center}
+\end{figure}
+
+Since the design of the modules in Figure \ref{architecture}, a lot has changed. The modular view is challenged by the planning-based and data-driven approach, because the modular view is not flexible enough for modern requirements, still it provides a good sequence structure and the original idea remains until now. The following three approaches will be explained in more detail in this section:
 
 \begin{itemize}
 	\item Rule-based, modular approaches
@@ -140,7 +148,25 @@ nlg-survey-long Kapitel 3
 \end{itemize}
 
 \subsubsection{Rule-based approach}
+
+The rule-based, or modular approach shown in Figure \ref{architecture}, is a classical approach from the early Artificial Intelligence research. It is designed to show a clear division between the sub-tasks, but with sometimes big variations among them. The three-stage architecture was originally called \textit{consensius pipeline}, because the it is in the design of a pipeline and it was the de-facto standard in the year 2000 \cite{reiter2}. This pipeline share many similarities with the state of the art architecture used for text summarization in the year 2001 introduced by Mani et. al. \cite{mani}. It can be broken down into the following steps \cite{gatt} (Page 23):
+
+\begin{itemize}
+	\item \textbf{Analysis} of the source text (single or multi document). This first stage includes \textit{Text Planning}, which shares similar aspects with the Text Planner from Figure \ref{architecture}. One of the tasks for this step is \textit{Content Determination}.
+	\item \textbf{Transformation} of the selected input. This phase includes processing steps like \textit{Text Structuring} and \textit{Text Aggregation} on the selected text. It is especially important when it comes to abstractive text summarization (Section \ref{ss:exabs}). This phase shares a number of similarities to the \textit{Sentence Planner} from Figure \ref{architecture}.
+	\item \textbf{Synthesis} produces the summary of the input based on the transformed selected input. The higher the abstraction level of the output should be, the more important is this phase. It can be seen as the \textit{Realiser} with the methods of the \textit{Linguistic Realiser} from the previous section.
+\end{itemize}
+
+The strict breakdown into clear stages (modules) comes with the cost of decreased flexibility. There is not always a rule for each task and the state of the art results are achieved by abstractive based methods for Text Generation. Those alternative approaches with a better abstraction level come on the other hand with the cost of blurred boundaries in the single stages. Even in the rule-based architectures have been many developments proposed, but for the sake of simplicity I want to discuss the modern approaches in more details than this old ones.
+
 \subsubsection{Planning-based approach}
+
+In the Artificial Intelligence field, the planning problem can be described as the process of detecting a sequence of one or more actions to satisfy an to achieving goal \cite{gatt} (Page 25). The classical planning-based approached was introduced by Fikes and Nilsson back in 1971 \cite{Fikes:71} (Pages 189-208). The idea was to to store actions into tuples containing of the preconditions and effects of the action respectively. In this way, planning-based means to regard language as an action \cite{clark}. 
+
+Basically no restriction prevents the actions from choosing a type that can be inserted into a plan, plan-based approaches cut across the edges of many Natural Text Generation tasks that are normally strictly stacked in the classical pipeline architecture (Figure \ref{architecture}) \cite{gatt}. This means that the plan-based approach does not rely on the pipeline architecture, but steps are whirled together and follow different sequences than usually. This allows the input to be more flexibly processed. The most modern way for an planning-approach is the \textit{stochastical planning using Reinforcement Learning}. Reinforcement Learning means, that the algorithm has an implemented reward and punishment variable, which allows the algorithm to notice by itself when a certain action will be rewarded or punished. The reward and punishment need to manually configured. The Text Generation process could be modeled by an Long Short Term Memory (explained in Section \ref{ss:lstm}. The time transitions \textit{t} and the following \textit{t+1}, ... , are associated with a reinforcement signal, via the reward or punishement function to adjust the behaviour of the wanted output. 
+	
+Rieser et al. (2011) pointed out that this approach is effective in optimising information presentation when generating restaurant recommendations \cite{rieser}. Janarthanam and Lemon (2014) applied this method to improve the choice of information for selecting in a referring expression, given the knowledge of the user.  As the user acquires new knowledge in the course of a dialogue, the system learned to adapt its behaviour by changing its internal user-model \cite{janarthanam-lemon-2014-adaptive} (Pages 883-920).
+
 \subsubsection{Data-driven approach}
 
 
