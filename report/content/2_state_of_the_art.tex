@@ -147,7 +147,7 @@ Since the design of the modules in Figure \ref{architecture}, a lot has changed.
 	\item Data-driven approaches
 \end{itemize}
 
-\subsubsection{Rule-based approach}
+\subsubsection{Rule-based approach}\label{ss:rule}
 
 The rule-based, or modular approach shown in Figure \ref{architecture}, is a classical approach from the early Artificial Intelligence research. It is designed to show a clear division between the sub-tasks, but with sometimes big variations among them. The three-stage architecture was originally called \textit{consensius pipeline}, because the it is in the design of a pipeline and it was the de-facto standard in the year 2000 \cite{reiter2}. This pipeline share many similarities with the state of the art architecture used for text summarization in the year 2001 introduced by Mani et. al. \cite{mani}. It can be broken down into the following steps \cite{gatt} (Page 23):
 
@@ -157,7 +157,32 @@ The rule-based, or modular approach shown in Figure \ref{architecture}, is a cla
 	\item \textbf{Synthesis} produces the summary of the input based on the transformed selected input. The higher the abstraction level of the output should be, the more important is this phase. It can be seen as the \textit{Realiser} with the methods of the \textit{Linguistic Realiser} from the previous section.
 \end{itemize}
 
-The strict breakdown into clear stages (modules) comes with the cost of decreased flexibility. There is not always a rule for each task and the state of the art results are achieved by abstractive based methods for Text Generation. Those alternative approaches with a better abstraction level come on the other hand with the cost of blurred boundaries in the single stages. Even in the rule-based architectures have been many developments proposed, but for the sake of simplicity I want to discuss the modern approaches in more details than this old ones.
+The strict breakdown into clear stages (modules) comes with the cost of decreased flexibility. There is not always a rule for each task and the state of the art results are achieved by abstractive based methods for Text Generation. Those alternative approaches with a better abstraction level come on the other hand with the cost of blurred boundaries in the single stages. The basic idea is to create hand-crafted templates for all possible circumstances. To keep up with the football example, a template could look like this:
+
+\begin{tcolorbox}
+	goals(
+		\begin{addmargin}[1cm]{1cm}
+			player-name = 'Mario Götze',\\
+			minute = 19,\\
+			seconds = 23,\\
+			player-number = 10
+		\end{addmargin}
+		
+	)\\
+	
+	foul(
+		\begin{addmargin}[1cm]{1cm}
+			by-player = 'Mario Götze',\\
+			to-player = 'Thomas Müller',\\
+			minute = '20',\\
+			second = '12'
+		\end{addmargin}
+	)
+\end{tcolorbox}
+
+Even for a single football game it is obviously not possible to create a template with all possibilities. There may be some cases in which the possible combination of semantic units is not as big as in a single football game. In this cases a rule-based template could make sense, but for the most modern use-cases this approach is obsolete.
+
+Even in the rule-based architectures have been many developments proposed, but for the sake of simplicity I want to discuss the modern approaches in more details than this old ones.
 
 \subsubsection{Planning-based approach}
 
@@ -169,8 +194,16 @@ Rieser et al. (2011) pointed out that this approach is effective in optimising i
 
 \subsubsection{Data-driven approach}
 
+Data-driven models experience recently more and more attention in the Text Generation community. They provide the flexibility and potential to overcome the templates based approaches. Even in the past six years, there have been plenty of studies which show the successes of data-driven models. For example on Dinu and Baroni (2014) recommend that the Text Generation can be performed by using different distributional semantic models \cite{dinu-baroni-2014-make} (Pages 624–633). Another example is from Swanson in 2014 as well, where he performed Text Generation with language modeling on a specified vocabulary constraint \cite{swanson-etal-2014-natural} (Page 124). All of this methods and data-driven approaches in general require a lot of training data. The first step in general for such system is to build up an so-called \textit{corpus}. A corpus can be viewed as a kind of template as well, but the way it is used is completely different. The corpus is created through the training of a huge training data set. It consists of a basic set of utterances and it can be further manually extended and redefined \cite{elena} (Page 4). The data-driven model can even be used for a general purpose Machine Translation system, which can respectively even be adapted to a specific domain itself (shown by Wang et al. \cite{wang-hirst-2009-extracting} Pages 471–477). The corpus contains now a set of vocabulary which can be extended through adding new training instances (e.g. user inputs or synonyms) into the \textit{lexicon}. 
+Extending and diversifying the corpus enhances the quality of the interaction between
+the system and the user and further enriches the conversational level, mostly the systems response. This can be regarded as a higher abstraction level, used for the modern text summarization systems.
 
-
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=3.5in]{photos/corpus}\\
+		\caption{Example Corpus from \cite{elena} Page 103}\label{corpus}
+	\end{center}
+\end{figure}
 
 \section{Advanced Approaches for Text Generation}
 \subsection{Recurrent Neural Networks}
