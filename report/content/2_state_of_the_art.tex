@@ -414,7 +414,7 @@ This three factors will be explained in the following.
 
 Even though I cannot explain the single state of the art steps at each time in Figure \ref{hist}, I think it provides an good overview on the development of automatic text summarization. Everything started with Peter Luhn from Germany in 1958.
 
-\subsection{Input}
+\subsection{Input}\label{ss:input}
 
 The input has two crucial variables, that can change the way how to process the summary completely. The input variable denotes whether the input comes from a \textbf{single-document} or from a \textbf{multi-document}. 
 
@@ -445,9 +445,9 @@ Figure \ref{single} shows a standardized pipeline, also called \textit{Natural L
 The \textbf{Latent Semantic Analysis} \cite{Deerwester90indexingby} is a model which allows semantics to be represented from the following ideas: two words are semantically close if they appear in similar contexts and two contexts are similar if they contain semantically close words. The words in a (large) corpus are represented in the occurrence matrix S. The matrix S stores, for every single word in the corpus, the contexts in which the words appeared and additionally also their appearance frequency \cite{juan} (Page 73). This technique measure therefore relationships between different words. After finishing this process, the Latent Semantic Analysis assumes accordingly that words close in meaning occur in similar pieces of text.
 
 \textbf{Graph-based approaches} conduct to represent content of textual information from single documents. There are countless variations of graph-based approaches and I have already used one so far. In Section \ref{ss:ref} for the Box \ref{box:1}, the part-of-the-speech tagging is a method in the graph-based approaches. In general, the vertices or nodes are assimilated to semantic collections of words and sentences and the edges of the nodes represent the relations between each words and collections. 
-Another widely used approach is \textit{bag-of-word}. I used that as an example in Section \ref{ss:data} for Figure \ref{corpus}. Different unique words are packed together into a corpus and each occurrence of the word is counted and summed together. The PAGERANK algorithm from Lawrence Page in 1998 \cite{brin1998anatomy} (Pages 107-118) paved the way for the success in web page retrieval (scraping): web pages are ranked by their popularity in the network (how often each page is clicked by users), rather than by the amount or quality of their content. This type of algorithm computes the importance of the vertex of the graph, based on the general information gathered from a recursive analysis of the complete graph, rather than a local analysis of a vertex \cite{juan} (Page 77).
+Another widely used approach is \textit{bag-of-word}. I used that as an example in Section \ref{ss:data} for Figure \ref{corpus}. Different unique words are packed together into a corpus and each occurrence of the word is counted and summed together. The ANK algorithm from Lawrence Page in 1998 \cite{brin1998anatomy} (Pages 107-118) paved the way for the success in web page retrieval (scraping): web pages are ranked by their popularity in the network (how often each page is clicked by users), rather than by the amount or quality of their content. This type of algorithm computes the importance of the vertex of the graph, based on the general information gathered from a recursive analysis of the complete graph, rather than a local analysis of a vertex \cite{juan} (Page 77).
 
-\subsubsection{Multi-Document}
+\subsubsection{Multi-Document}\label{ss:multi}
 
 Multi-document summarization faces different problems than the single-document summarization. The sentence extraction methods (Latent Semantic Analysis and graph-based approaches) can also be applied to multi-document summarization. The problem of redundancy in the documents is can be always present in multi-document summarization. The typically does not happen in the single-document case. Redundancy has a huge impact on the coherence and the cohesion of this new type of extract \cite{juan} (Page 109). Multi-document summarization is basically the extension of single document summarization, but like already said, redundancy is not the only issue. The basic pipeline is shown in Figure \ref{multi}. 
 
@@ -489,9 +489,15 @@ There are two ways to calculate the importance of a sentence. First, as a functi
 
 \subsection{Purpose}
 
-\textbf{Informative vs Indicative}
+\textbf{Types of Summaries}
 
-The informative summary contains the informative part of the original text. The main ideas from the text should be transmitted, for example the abstract of research articles, where authors try to present the essential core of the reasearch, is an informative summary. Whereas an indicative summary tries to transmit the relevant contents of the original document in such a way, so that the readers can chose documents that match with their interests to read further. An indicative summary is not meant to be a substitute for the original document. The opposite is the informative summary, which can replace the original documents as far as the important contents is concerned and by how much it was shortened down.
+The \textit{informative summary} contains the informative part of the original text. The main ideas from the text should be transmitted, for example the abstract of research articles, where authors try to present the essential core of the reasearch, is an informative summary. Whereas an indicative summary tries to transmit the relevant contents of the original document in such a way, so that the readers can chose documents that match with their interests to read further.
+
+An \textit{indicative summary} is not meant to be a substitute for the original document. The opposite is the informative summary, which can replace the original documents as far as the important contents is concerned and by how much it was shortened down.
+
+The \textit{keyword summary} tries to summarize the text into only keywords. Words will be weighted by their importance and the most crucial ones are selected without caring for the grammar.
+
+The \textit{headline summary} is the type of summary from the case study in Section \ref{ss:case}. The entire text gets compressed into a single sentence. It is a single line summary.
 
 \textbf{Generic vs. user-oriented}
 
@@ -503,9 +509,66 @@ General-purpose summarizers can be used across any domains with barely no modifi
 
 \subsection{Output}\label{ss:exabs}
 
+During this thesis I have already mentioned the two core differences between text summarization. The extractive and abstractive approach. I use the definition of See et al. from 2017, where he regards the extractive summarizer as an explicit selection method for text snippets inside the single- or multi-document. While the abstractive summarizer generates novel text snippets to describe summaries from a higher point of view by using vocabulary not included in the source input \cite{see-etal-2017-get} (Pages 1073-1083). 
 
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=5in]{photos/abex}\\
+		\caption{Simplified Abstraction Extraction process}\label{abex}
+	\end{center}
+\end{figure}
+
+Figure \ref{abex} shows the general model pipeline for either the extractive or abstractive approach. There is also a relatively new combinational approach, which will be explained in Section \ref{ss:trends} (\textit{Advanced Approaches for Text Summarization}). The topic input into the automatic text summarizer has already been explained in the multi-document Section \ref{ss:multi}. The parameter input contains for example the compression rate \(\tau\). This could a a value like 15\%, which means that the length of the original input document will be reduced by 85\%.
 
 \subsubsection{Extractive}
+	
+The aim of the extractive approach is to give an overview about the source document. This is done by selection fragments of the text (words, sentences or paragraphs) that contain the essential information of the input text or texts. It can be seen as an copy and paste action for the most important fragments. Figure \ref{extract} shows the basic structure of an extractive summarizer, where the selection part is one of the three categorical types. The extractive approach has still some valid use cases, because:
+
+\begin{itemize}
+	\item \textbf{Pros}: The approach is robust, because it uses existing natural-language phrases that are taken directly from the input.
+	\item \textbf{Cons}: It lacks in flexibility since it cannot use novel words or connectors. Furthermore it cannot paraphrase like a human could do it. Sometimes the approach even applied wrong grammar.
+\end{itemize}
+
+According to Radev et av. in the 2002, extractive text summarization can be categorized as three different types \cite{ts-intro} (Pages 399-408):
+
+\begin{itemize}
+	\item Surface-level
+	\item Intermediate-level
+	\item Deep parsing techniques
+\end{itemize}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4in]{photos/extract}\\
+		\caption{General architecture of an extraction-based summarization system \cite{juan} (Page 31)}\label{extract}
+	\end{center}
+\end{figure}
+
+
+The \textbf{surface-level} algorithms scratches on the linguistic easy understandable parts on the text. It cannot detect deep connections and abstractive features. It rather uses certain linguistic elements to detect the most important segments of a document \cite{juan} (Page 32). The mentioned inventor of automatic text summarizer Luhn \cite{textmining1958} used a surface-level techniques weight the occurrences of words in sentences. This technique is good for headline or keyword summarization. 
+
+The \textbf{intermediate-level} categorization digs deeper into the meaning of certain paragraphs. It uses linguistic information to find relations between lexical semantic sequences. This approach is more appropriate for extractive text summary than the surface-level approach.
+
+The \textbf{deep parsing techniques} approaches make use of deep linguistic techniques that exploit the discursive structure of the input document or documents. It can find good relations in the text and one of the earliest methods was published by Marcu in the year 2002 \cite{marcu}. He split the text into discursive units and uses a minimal set of relations, called discourse segmentation. An algorithm weights and orders the elements accordingly. The highest weighted elements will be selected for the summary.
+
+Even though I proposed in the Section \ref{ss:input} for the single-document and multi-document different methods to compute the weights for the words, the extractive approach and the abstractive approach can be applied for both single- and multi-documents. The most common methods for the extractive approach to calculate weights are:
+
+\begin{itemize}
+	\item Graph-based (both single-document and multi-document) like PAGERANK and Textrank
+	\item Luhn's algorithm \cite{textmining1958}, 
+	\item Topic-driven (Section \ref{ss:multi}) 
+	\item Neural Network approach (Section \ref{ss:neuralgen} - \textit{Advanced Approaches for Text Summarization})
+\end{itemize}
+
+\subsubsection{Abstractive}
+
+\subsection{Evaluation}\label{ss:ev}
+
+
+
+\section{Advanced Approaches for Text Summarization}\label{ss:trends}
+
+\subsection{Neural Text Summarization}\label{ss:neuralgen}
 
 \begin{figure}
 	\begin{center}
@@ -513,27 +576,6 @@ General-purpose summarizers can be used across any domains with barely no modifi
 		\caption{Research fields with influence on the development of text summarization}\label{summ}
 	\end{center}
 \end{figure}
-
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=5in]{photos/abex}\\
-		\caption{Simplified Abstraction Extraction process}\label{abex}
-	\end{center}
-\end{figure}	
-
-Figure \ref{abex} shows a simplified process of the abstractive or extractive approach. Both approaches can be applied decoupled from each other. The source documents, either single document or multi document go in as well with the topic of the topic (scientific, article, ...). The parameters are the compression rate \(\tau\), the type, etc. 
-
-
-\subsubsection{Abstractive}
-
-\subsection{Evaluation}\label{ss:ev}
-ROGUE
-BLEU
-
-
-\section{Advanced Approaches for Text Summarization}\label{ss:trends}
-
-\subsection{Neural Text Summarization}
 
 \subsection{Combinational Approach}
 
