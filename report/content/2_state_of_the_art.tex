@@ -196,11 +196,15 @@ Rieser et al. (2011) pointed out that this approach is effective in optimising i
 
 Data-driven models experience recently more and more attention in the Text Generation community. They provide the flexibility and potential to overcome the templates based approaches. Even in the past six years, there have been plenty of studies which show the successes of data-driven models. For example on Dinu and Baroni (2014) recommend that the Text Generation can be performed by using different distributional semantic models \cite{dinu-baroni-2014-make} (Pages 624–633). Another example is from Swanson in 2014 as well, where he performed Text Generation with language modeling on a specified vocabulary constraint \cite{swanson-etal-2014-natural} (Page 124). All of this methods and data-driven approaches in general require a lot of training data. The first step in general for such system is to build up an so-called \textit{corpus}. A corpus can be viewed as a kind of template as well, but the way it is used is completely different. The corpus is created through the training of a huge training data set. It consists of a basic set of utterances and it can be further manually extended and redefined \cite{elena} (Page 4). The data-driven model can even be used for a general purpose Machine Translation system, which can respectively even be adapted to a specific domain itself (shown by Wang et al. \cite{wang-hirst-2009-extracting} Pages 471–477). The corpus contains now a set of vocabulary which can be extended through adding new training instances (e.g. user inputs or synonyms) into the \textit{lexicon}. 
 Extending and diversifying the corpus enhances the quality of the interaction between
-the system and the user and further enriches the conversational level, mostly the systems response. This can be regarded as a higher abstraction level, used for the modern text summarization systems.
+the system and the user and further enriches the conversational level, mostly the systems response. This can be regarded as a higher abstraction level, used for the modern text summarization systems. 
+
+It can be seen in Figure \ref{corpus}, that the there is a total amount of 34283 words in the English part of the TownInfo corpus and that there are only 462 distinct tokens. This includes even varied units as proper names and numerals. This example shows an approach to translate from English into French and vice versa. All of the \textit{Advanced Approaches for Text Summarization} (Section \ref{ss:trends}) are fully data-driven. For this reason I provide no more examples.
+
+The prototype from Chapter 3 is based on a data-driven approach as well, because my text summarizer makes use of Long Short Term Memory cells. More specifically, it is an enhanced modification, namely an Attention model. This data-driven approach will be explained in the next Section \textit{Advanced Approaches for Text Generation}.
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=3.5in]{photos/corpus}\\
+		\includegraphics[width=3in]{photos/corpus}\\
 		\caption{Example Corpus from \cite{elena} Page 103}\label{corpus}
 	\end{center}
 \end{figure}
