@@ -83,7 +83,7 @@ After the sentences have been aggregated and finalized, the next step is lexical
 Then the systems needs to know whether the football player scored fast in a way that it is an early stage of the game, or he ran in such a fast way and scored with the pace. Humans tend to perceive different, as Power and Williams (2014) pointed out in an evaluation. A timestamp expression of \textit{00:00} can be perceived as \textit{midnight}, \textit{late evening} or simply even \textit{evening} for some people \cite{Power} (Pages 113-134).
 
 
-\subsubsection{Referring Expression}
+\subsubsection{Referring Expression}\label{ss:ref}
 
 Referring Expression Generation is highly characterized by Dale and Reiter in 1997. They came up with the idea to identify words and phrases as domain entities. Nowadays this is also known as \textit{Named Entity Recognition}. This step shows some similarity to lexicalisation, but Dale and Reiter pointed out that expression referring is \textit{a discrimination task, where the system needs to communicate sufficient information to distinguish one domain entity from other domain entities} \cite{reiter2}. From the previous example, \textit{Mario Götze} can be denoted with his name, another way would be calling him \textit{football professional} or \textit{the athlete}. Many factors play a role in how to determine which expressions and factors play a role in a particular context. Referring expression generation can basically be broken down into two steps.
 The first step is to decide the shape of referring expression. What type of reference should be used (e.g., a proper name or described with his/her job) \cite{named}. The second is to determine the content of the referring expression (e.g., Mario Götze or the athlete) \cite{named}.
@@ -92,7 +92,7 @@ Rule-based approaches as well as the state of the art Machine Learning approache
 The usual limitation of previous referring expression generation systems is that they are not able to generate referring expressions for new, unseen entities \cite{anja} (Pages 294-327). With the use of modern Machine Learning approaches, this limitation has overcome.
 Many tools, for example the \textit{Natural Language Processing Toolkit NLTK} allow the easy transformation from the lexicalized sentence into its named entities. The sentence \textit{Mario Götze scored fast after 3 minutes and 23 seconds} will be transformed into:
 
-\begin{tcolorbox}
+\begin{tcolorbox}\label{box:1}
 	\begin{flushleft}
 		(1) [('Mario', 'NNP'), \\
 		(2) ('Götze', 'NNP'), \\
@@ -192,7 +192,7 @@ Basically no restriction prevents the actions from choosing a type that can be i
 	
 Rieser et al. (2011) pointed out that this approach is effective in optimising information presentation when generating restaurant recommendations \cite{rieser}. Janarthanam and Lemon (2014) applied this method to improve the choice of information for selecting in a referring expression, given the knowledge of the user.  As the user acquires new knowledge in the course of a dialogue, the system learned to adapt its behaviour by changing its internal user-model \cite{janarthanam-lemon-2014-adaptive} (Pages 883-920).
 
-\subsubsection{Data-driven approach}
+\subsubsection{Data-driven approach}\label{ss:data}
 
 Data-driven models experience recently more and more attention in the Text Generation community. They provide the flexibility and potential to overcome the templates based approaches. Even in the past six years, there have been plenty of studies which show the successes of data-driven models. For example on Dinu and Baroni (2014) recommend that the Text Generation can be performed by using different distributional semantic models \cite{dinu-baroni-2014-make} (Pages 624–633). Another example is from Swanson in 2014 as well, where he performed Text Generation with language modeling on a specified vocabulary constraint \cite{swanson-etal-2014-natural} (Page 124). All of this methods and data-driven approaches in general require a lot of training data. The first step in general for such system is to build up an so-called \textit{corpus}. A corpus can be viewed as a kind of template as well, but the way it is used is completely different. The corpus is created through the training of a huge training data set. It consists of a basic set of utterances and it can be further manually extended and redefined \cite{elena} (Page 4). The data-driven model can even be used for a general purpose Machine Translation system, which can respectively even be adapted to a specific domain itself (shown by Wang et al. \cite{wang-hirst-2009-extracting} Pages 471–477). The corpus contains now a set of vocabulary which can be extended through adding new training instances (e.g. user inputs or synonyms) into the \textit{lexicon}. 
 Extending and diversifying the corpus enhances the quality of the interaction between
@@ -381,7 +381,7 @@ Figure \ref{attention1} shows the basic concept of attention. The Long Short Ter
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=3.5in]{photos/w1-21}\\
+		\includegraphics[width=5in]{photos/w1-21}\\
 		\caption{Meaning Space of the Attention model \cite{mugan}}\label{meaningspace}
 	\end{center}
 \end{figure}
@@ -393,24 +393,119 @@ Sequence to sequence models can be entirely built up from the attention model \c
 In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all the information. The goal of text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
 Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
 
-As mention from the Section \ref{ss:history}, there is a text-to-text and data-to-text approach. At the time 2020, the transition is widely blurred, because for example the following extractive approach for text summarization is clearly a text-to-text method. It uses only the input document and nothing more. On the other side the abstractive approach is actually a data-to-text methods, because it takes into account multiple inputs, such as the text, opinion or another vocabulary.
+As mention from the Section \ref{ss:history}, there is a text-to-text and data-to-text approach. The text-to-text method is mostly used in the context where a single document is the only input for generating the text. It can be seen as an extractive approach.  On the other side the abstractive approach is actually a data-to-text methods, because it takes into account multiple inputs, such as the text, opinion or another vocabulary.
+
+Jones et al. in 1999 defined and classified text summarization by the following three summarization factors \cite{Jones98automaticsummarising:} (Pages 1-12):
+
+\begin{itemize}
+	\item \textbf{Input}: single and multi document
+	\item \textbf{Purpose}: informative and indicative
+	\item \textbf{Output}: extractive and abstractive
+\end{itemize}
+
+This three factors will be explained in the following.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=5.5in]{photos/history}\\
+		\caption{Highlights of automatic text summarization \cite{juan} (Page 17)}\label{hist}
+	\end{center}
+\end{figure}
+
+Even though I cannot explain the single state of the art steps at each time in Figure \ref{hist}, I think it provides an good overview on the development of automatic text summarization. Everything started with Peter Luhn from Germany in 1958.
+
+\subsection{Input}
+
+The input has two crucial variables, that can change the way how to process the summary completely. The input variable denotes whether the input comes from a \textbf{single-document} or from a \textbf{multi-document}. 
+
+\subsubsection{Single-Document}\label{ss:sd}
+The most simple task for an automized summarization system is a generic single document summary. This was first introduced by Peter Luhn's work in 1958, an extractive method to summarize a text \cite{textmining1958}.  Even though this first approach was first proposed over 60 years ago, it is still not completely solved. The pipeline for a single document summary is as follows \cite{juan} (Page 69):
+
+\begin{itemize}
+	\item \textit{Preprocessing}: Split sentences into words, cut stopwords (and, that, there, ..) out and filter out punctuation 
+	\item \textit{Extraction}: Calculate and combine similarity measure between words and/or sentences, sort and select the sentences
+	\item \textit{Generarion}: Assemble, postprocess and reformulate extracted sentences
+\end{itemize}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/single_doc}\\
+		\caption{General architecture of a extraction-based single-document summarization system \cite{juan} (Page 70)}\label{single}
+	\end{center}
+\end{figure}
+
+Figure \ref{single} shows a standardized pipeline, also called \textit{Natural Language Processing Pipeline}. For measuring the similarity between words and sentences, several methods are possible to achieve this goal. It would exceed this thesis if I explain all different methods, but I still want to mention them, because it is the core part of the original pipeline middle-step:
+
+\begin{itemize}
+	\item Latent Semantic Analysis (LSA)
+	\item Graph-based approaches
+	\item Statistical metrics
+\end{itemize}
+
+The \textbf{Latent Semantic Analysis} \cite{Deerwester90indexingby} is a model which allows semantics to be represented from the following ideas: two words are semantically close if they appear in similar contexts and two contexts are similar if they contain semantically close words. The words in a (large) corpus are represented in the occurrence matrix S. The matrix S stores, for every single word in the corpus, the contexts in which the words appeared and additionally also their appearance frequency \cite{juan} (Page 73). This technique measure therefore relationships between different words. After finishing this process, the Latent Semantic Analysis assumes accordingly that words close in meaning occur in similar pieces of text.
+
+\textbf{Graph-based approaches} conduct to represent content of textual information from single documents. There are countless variations of graph-based approaches and I have already used one so far. In Section \ref{ss:ref} for the Box \ref{box:1}, the part-of-the-speech tagging is a method in the graph-based approaches. In general, the vertices or nodes are assimilated to semantic collections of words and sentences and the edges of the nodes represent the relations between each words and collections. 
+Another widely used approach is \textit{bag-of-word}. I used that as an example in Section \ref{ss:data} for Figure \ref{corpus}. Different unique words are packed together into a corpus and each occurrence of the word is counted and summed together. The PAGERANK algorithm from Lawrence Page in 1998 \cite{brin1998anatomy} (Pages 107-118) paved the way for the success in web page retrieval (scraping): web pages are ranked by their popularity in the network (how often each page is clicked by users), rather than by the amount or quality of their content. This type of algorithm computes the importance of the vertex of the graph, based on the general information gathered from a recursive analysis of the complete graph, rather than a local analysis of a vertex \cite{juan} (Page 77).
+
+\subsubsection{Multi-Document}
+
+Multi-document summarization faces different problems than the single-document summarization. The sentence extraction methods (Latent Semantic Analysis and graph-based approaches) can also be applied to multi-document summarization. The problem of redundancy in the documents is can be always present in multi-document summarization. The typically does not happen in the single-document case. Redundancy has a huge impact on the coherence and the cohesion of this new type of extract \cite{juan} (Page 109). Multi-document summarization is basically the extension of single document summarization, but like already said, redundancy is not the only issue. The basic pipeline is shown in Figure \ref{multi}. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=4.5in]{photos/multidoc}\\
+		\caption{Extraction based multidocument summarization system \cite{juan} (Page 110)}\label{multi}
+	\end{center}
+\end{figure}
+
+Multi-document input are likely to have the same or a similar topic, but it is not necessary. The first automation system was developed by McKeown and Radev in 1995 until 1998 \cite{radev-mckeown-1998-generating} (Pages 469-500). My case study example Google News is a typical example for multi-document summarization, because Google multiple sources of information (scrape news from different other websites), collect the information and process them through the pipeline (Figure \ref{multi}). The key task is therefore not only detecting and eliminating redundancy, but also notice novelty and ensure that the generated summary is coherent and without missing points \cite{Das07asurvey} (Page 11).
+ 
+The input for the summarization system are multiple documents such as \(D_{1}, D_{2},..., D_{n}\), where \textit{D} is single document and \textit{n} is the total number of single-document, combined into a multi-document input.
+The preprocessing step in the multi-document summarization is quite similar, but the same as in the single-document summarization. The four steps for the multi-document are:
+ 
+\begin{itemize}
+	\item \textbf{Sentence segmentation}: Each document \textit{D} is segmented for itself as \(D = {S_{1}, S_{2},..., S_{m}}\), where every \textit{S} denotes a single sentence in document \textit{D}. The number of sentences is denoted as \textit{m}.
+	\item \textbf{Tokenization}: Words of each sentence \textit{S} are tokenized into \(T = {t_{1}, t_{2},..., t_{k}}\) \textit{k} terms \textit{t}, where every \textit{t} represents a distinct term occurring in \textit{D}. 
+	\item \textbf{Stop word removal}: The most commonly used words in every language are stored in a so-called stop-word-table. Words from that table occurring in a document \textit{D} are removed. Example words are 'a', 'an' or 'the'. As already mentioned in the single-document summarization
+	\item \textbf{Stemming}: converts words back into the base form. For example (houses -> house, running -> run). This is done to avoid redundancy.
+\end{itemize}
+ 
+ 
+After preprocessing the documents into word form, weights are computed to get a sentence informative score. This score is calculated for every sentence accordingly and is used as the input for a chosen optimization algorithm. This happens in the \textit{Extraction} box of Figure \ref{multi}. Like for the single-document, there are multiple methods to calculate extraction weights:
+
+\begin{itemize}
+	\item Abstraction and Information Fusion
+	\item Topic-driven summarization
+	\item Graph Spreading Activation
+\end{itemize}
+
+\textbf{Abstraction and Information Fusion} contains basically of two steps. At first, like in the most methods, a similarity measurement on word or sentence level is computed. When using an abstractive approach (Section \ref{ss:exabs}), the TFIDF score is commonly used. TFIDF is an information retrieval technique that weighs a term’s frequency (TF) and its inverse document frequency (IDF). Every term has its respective TF and IDF score. The product of the TF and IDF scores of a term is called the TFIDF weight of that term \cite{Ramos_usingtf-idf}. For each term, a vector is calculated that represents matches on the different features. Decision rules that were trained and learned from the data are used to classify each pair of text as either similar or dissimilar. This further feeds a subsequent algorithm that imputes the most related terms in the same topic-theme \cite{Das07asurvey} (Page 13). Once this scores and vectors are computed, the second step \textit{information fusion} starts. This step decides which information should be used for generating the final summary. Rather than just selecting a sentence that holds as a group representative, an algorithm which compares predicated argument structures of the terms. Within each topic, the algorithm needs to determine which terms are used and repeated often enough to be included into the summary.
+
+\textbf{Topic-driven summarization} techniques aim to detect words that describe the topic of the multiple input documents. An advance of the initial idea of Luhn (proposed in Section \ref{ss:sd}) was to use the log-likelihood ratio test to identify special words known as the \textit{topic signatures} \cite{textmining1958}. The log-likelihood is often used in statistical approaches for the text summarization. 
+There are two ways to calculate the importance of a sentence. First, as a function which contains the number of its topic signatures, or as the proportion of all the topic signatures in each sentence respectively. While the first method gives usually higher scores to longer sentences, the second approach measures the occurrences of the topic words \cite{dunning-1993-accurate}.
+
+\textbf{Graph Spreading Activation} is a similar approach than the graph-based approach from the single-document summarization. The PAGERANK algorithm can be used for this approach, or other alternations like LexRank and TextRank. 
+
+
+\subsection{Purpose}
+
+\textbf{Informative vs Indicative}
+
+The informative summary contains the informative part of the original text. The main ideas from the text should be transmitted, for example the abstract of research articles, where authors try to present the essential core of the reasearch, is an informative summary. Whereas an indicative summary tries to transmit the relevant contents of the original document in such a way, so that the readers can chose documents that match with their interests to read further. An indicative summary is not meant to be a substitute for the original document. The opposite is the informative summary, which can replace the original documents as far as the important contents is concerned and by how much it was shortened down.
+
+\textbf{Generic vs. user-oriented}
+
+Generic systems generate summaries that consider all of the given information from the documents. On the other hand try user-oriented systems to produce personalized summaries that concentrate on specific information from the original documents. Like News could only summarize the conservative or right-wing news, if someone only searches for right-wing content.
+
+\textbf{General purpose vs. domain-specific}
+
+General-purpose summarizers can be used across any domains with barely no modification needed. In contrary, domain-specific systems are programmed to process documents for a specific domain, like the research, news or book summarizing domain.
+
+\subsection{Output}\label{ss:exabs}
 
 
 
-\subsection{Summarization Factors}
-
-Single Doc - Multi Doc
-Input Factors
-Purpose Factors
-output factors
-neural-text-summary
-
-\subsection{Input and Output Factors}
-\subsubsection{Input}
-\subsubsection{Output}
-\subsection{Single Document and Multi Document}\label{ss:multidoc}
-\subsection{Extractive and Abstractive}\label{ss:exabs}
-
+\subsubsection{Extractive}
 
 \begin{figure}
 	\begin{center}
@@ -428,7 +523,7 @@ neural-text-summary
 
 Figure \ref{abex} shows a simplified process of the abstractive or extractive approach. Both approaches can be applied decoupled from each other. The source documents, either single document or multi document go in as well with the topic of the topic (scientific, article, ...). The parameters are the compression rate \(\tau\), the type, etc. 
 
-\subsubsection{Extractive}
+
 \subsubsection{Abstractive}
 
 \subsection{Evaluation}\label{ss:ev}
@@ -437,6 +532,8 @@ BLEU
 
 
 \section{Advanced Approaches for Text Summarization}\label{ss:trends}
+
+\subsection{Neural Text Summarization}
 
 \subsection{Combinational Approach}
 
