@@ -210,7 +210,7 @@ The prototype from Chapter 3 is based on a data-driven approach as well, because
 \end{figure}
 
 \section{Advanced Approaches for Text Generation}
-\subsection{Recurrent Neural Networks}
+\subsection{Recurrent Neural Networks}\label{ss:rnn}
 Even though I introduced the neuron in a neural network as a kind of brain cell imitation, the neuron of a basic neural network will forget everything when it is shut down, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist \cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
 
 \begin{figure}
@@ -313,7 +313,7 @@ Technologies for a specific field in the machine learning environment and especi
 Figure \ref{enc-dec} makes use of an Long Short Term Memory cell, which captures situations, writing styles and tones. The network generalizes more flexible and accurate than a rule-based model ever could \cite{google}. 
 
 
-\subsection{Encoder and Decoder}
+\subsection{Encoder and Decoder}\label{ss:encdec}
 
 In the following, the encoder and then the decoder will be explained to have a better insight in how this technology works. The prototype from Chapter \ref{ch:proto} is based on this kind of model. As already mentioned a sequence to sequence model is often referred to as a encoder-decoder model. The sequence to sequence model itself is built using a Recurrent Neural Network or a Long Short Term Memory as explained in the last Section \ref{ss:seq2seq}.
 
@@ -366,7 +366,7 @@ The minimum requirement for the meaning space is to consist at least of the last
 \end{tcolorbox}
  
 
-\subsection{Attention}
+\subsection{Attention}\label{ss:atten}
 In general, the explanation of the sequence to sequence models just covered the very basic idea of the model. To achieve the state-of-the-art result, not only a single vector can be used for encoding the entire input sequence, but multiple vectors each capable of capturing other information. 
 
 \begin{figure}
@@ -562,9 +562,102 @@ Even though I proposed in the Section \ref{ss:input} for the single-document and
 
 \subsubsection{Abstractive}
 
+The abstractive method for automatic text summarization is one of latest achievements in the research for good automated summaries. When a system is based on an abstractive method, it means that it deeply understands the text and seeks to generate grammatically correct and human-like coherent sentences. One of the first approaches was the \textit{FRUMP} system. It was one of the first systems who used semantic representation for the input text to generate summaries. This system was built in 1982 by Gerald Francis DeJong \cite{Dej82} (Pages 149-176).
+
+
+The core features of FRUMP's algorithm was a complex architecture with the goal to understand documents written in natural language and it had a hard-coded so-called knowledge structure \cite{Dej82} to simulate human behavior. But still the module for understanding the input was conducted by a rather superficial analysis of the text. Frump's algorithm still made a lot mistakes. Taking into account the pros and cons from the extractive approach, the abstractive approach has different strengths and weaknesses:
+
+\begin{itemize}
+	\item \textbf{Pros}: Generates summaries in a more fluent way, by using words which are not included in the original input documents
+	\item \textbf{Cons}: It is also a much more complex problem for the model to generate coherent phrases and connectors.
+\end{itemize}
+
+
+Nowadays both he extractive and abstractive methods still are in use. It only depends on the to achieving task what to approach to chose. As I pointed out, the abstractive approach is more complex to use and requires more computitional power. There are even ways to collaborate with the human, as in the \textbf{Aided Summarization}:
+
+\begin{itemize}
+	\item Combines automatic methods together with human input.
+	\item The algorithm suggests important information from the input document or documents and the human decide whether to use it or not. It uses information retrieval and text mining.
+\end{itemize}
+
+One of the pioneers for abstractive summarization, Banko et al. (2000) recommends to use a machine translatation model for the abstractive summarization model \cite{banko-etal-2000-headline} (Pages 318-325). I mentioned in the beginning of the thesis that sometimes innovative approaches for one discipline, in the example machine translation, can benefit other disciplines (text summarization). A machine translation model converts a source language into the to translating target language and the text summarization system converts a source document or documents into a target summary.
+
+The most common methods for the abstractive approach are:
+
+\begin{itemize}
+	\item The encoder-decoder model (Section \ref{ss:encdec} - \textit{Advanced Approaches for Text Summarization})
+	\item A neural attention model (Section \ref{ss:atten} - \textit{Advanced Approaches for Text Summarization})
+	\item A sequence to sequence approach (Section \ref{ss:seq2seq} - \textit{Advanced Approaches for Text Summarization})
+\end{itemize}
+
+The \textbf{encoder-decoder} model from Section \ref{ss:encdec} (Encoder-Decoder) was originally invented for the use of machine translation. 
+This model is also commonly used as an abstractive approach for text summarization. The text summarization model which used encoder-decoder model achieved state of the art results on the two sentence-level summarization datasets \textit{DUC-2004} and \textit{Gigaword}. Those two datasets are commonly used for evaluating the results of a summarization on a standardized way. This will be explained in the next section.
+The encoder-decoder model still faces some problems when using it directly for the text summarization. It needs to modified to work properly:
+
+\begin{itemize}
+	\item Set the focus on the important sentences and keywords.
+	\item Handle the novel, rare or made-up words in source document.
+	\item Handle a really long document.
+	\item Make more human-readable summary.
+	\item Use a large vocabulary.
+\end{itemize}
+
+
+A \textbf{neural attention} model for sentence summarization is another applied abstractive method for text summary. I already explained how an attention model is built up in Section \ref{ss:atten}. To overcome issues, the attention model needs to take care of the following points:
+
+\begin{itemize}
+	\item Set the focus on the important sentences abd keywords, like the encoder-decoder, since attention is encoder-decoder based too.
+	\item Handle the novel, rare or made-up words in source document as well. 
+	\item Use beam-search to generate summary
+	\item Use the n-gram match term as the loss function
+\end{itemize}
+
+Beam-search is basically just an approximate search strategy to choose the best possible results from all available \textit{candidates} \cite{beam} (Pages 174-178). 
+
+N-grams are groups of \textit{N} consecutive words that can be extracted from
+a sentence. It can also be applied to characters instead of words. For example \cite{py} (Page 181):
+
+\begin{tcolorbox}
+	\begin{center}
+		\textit{Mario Götze scored 3 times within 51 minutes} \\ 
+	\end{center}
+	
+	It can be decomposed into the 2-gram:\\
+	
+	('Mario', 'Mario Götze', 'Götze', 'Götze scored', 'scored', 'scored 3', '3', '3 times', 'times',
+	'times within', 'within', 'within 51', '51', '51 minutes', 'minutes')
+\end{tcolorbox}
+
+Relations of words can be better concluded out of the n-gram method.
+
+
+The \textbf{Sequence-to-Sequence Recurrent Neural Networks} for abstractive Text Summarization. As with the previous two methods, this method has also already been introduced in Section \ref{ss:seq2seq} and Section \ref{ss:rnn}. This model uses slightly different approaches and faces therefore partly the same, but more issues:
+
+\begin{itemize}
+	\item Set the focus on the important sentences abd keywords, like the encoder-decoder, since sequence to sequence models are encoder-decoder based too.
+	\item Add enhanced features like named entity tags from Section \ref{ss:ref} or TFIDF scores from Section \ref{ss:multi}. 
+	\item Use a large vocabulary
+	\item Use a subset of pre-trained models with a vocabulary \cite{jean-etal-2015-using} (Pages 1-10).
+\end{itemize}
+
+All of this methods achieving better results than the extractive approaches, but there are still even more advanced approach possible (Section \ref{ss:trends}). 
+
 \subsection{Evaluation}\label{ss:ev}
 
+Evaluating automatically generated summaries has always been from the beginning on a really difficult task. New methods needed to be created especially for the summarization discipline. It is divided basically into two different approach to measure the quality of the generated summary \cite{Jones98automaticsummarising:} (Pages 1-12):
 
+\begin{itemize}
+	\item The \textbf{intrinsic evaluation} directly evaluates the output of a summarized text. 
+	\item The \textbf{extrinsic evaluation} evaluates summaries based on their performance of the down-stream tasks that the generated summary was computed for.
+\end{itemize}
+
+Until today, there is no single best summarization evaluation method. The manual by hand evaluation is too expensive, as stated out by Lin in 2004 \cite{lin-2004-rouge} (Pages 74-81). For that reason he published a method for a cheap automated evaluation metric \textit{ROUGE}. Nowadays this approach is often coupled together with additional human ratings for the best result. ROGUE stands for Recall-Oriented Understudy for Gisting Evaluation. It is a set of methods that can automatically determine the quality of an generated summary by comparing it to a professional human created summary for the same input text. The three most widely ROUGE based methods are \cite{yue} (Pages 2-3):
+
+\begin{itemize}
+	\item \textbf{ROUGE-N}: it calculates the percentage of overlapped n-grams with the reference summaries. It requires the one by one matches of all the words in n-grams. It compares the reference and generated summary therefore one by one. The number of words \textit{n} needs to be predefined
+	\item \textbf{ROUGE-L}: it calculates the amount of the most one by one identical words. It therefore automatically identifies the longest in-sequence word overlapping without n being predefined.
+	\item \textbf{ROUGE-SU}: is not as straight forward as the other two. It measures the percentage of skip-bigrams (2-grams) and unigrams (1-grams) which overlap. When applying skip-bigrams without constraints on the distance between the words, it usually produces incorrect bigram matches. For that reason the skip distances is limited by a certain number like 4 (ROUGE-SU4) \cite{lin-2004-rouge}.
+\end{itemize}
 
 \section{Advanced Approaches for Text Summarization}\label{ss:trends}
 
