@@ -651,12 +651,29 @@ Evaluating automatically generated summaries has always been from the beginning 
 	\item The \textbf{extrinsic evaluation} evaluates summaries based on their performance of the down-stream tasks that the generated summary was computed for.
 \end{itemize}
 
+\textbf{Intrinsic Evaluation}
+
 Until today, there is no single best summarization evaluation method. The manual by hand evaluation is too expensive, as stated out by Lin in 2004 \cite{lin-2004-rouge} (Pages 74-81). For that reason he published a method for a cheap automated evaluation metric \textit{ROUGE}. Nowadays this approach is often coupled together with additional human ratings for the best result. ROGUE stands for Recall-Oriented Understudy for Gisting Evaluation. It is a set of methods that can automatically determine the quality of an generated summary by comparing it to a professional human created summary for the same input text. The three most widely ROUGE based methods are \cite{yue} (Pages 2-3):
 
 \begin{itemize}
 	\item \textbf{ROUGE-N}: it calculates the percentage of overlapped n-grams with the reference summaries. It requires the one by one matches of all the words in n-grams. It compares the reference and generated summary therefore one by one. The number of words \textit{n} needs to be predefined
 	\item \textbf{ROUGE-L}: it calculates the amount of the most one by one identical words. It therefore automatically identifies the longest in-sequence word overlapping without n being predefined.
 	\item \textbf{ROUGE-SU}: is not as straight forward as the other two. It measures the percentage of skip-bigrams (2-grams) and unigrams (1-grams) which overlap. When applying skip-bigrams without constraints on the distance between the words, it usually produces incorrect bigram matches. For that reason the skip distances is limited by a certain number like 4 (ROUGE-SU4) \cite{lin-2004-rouge}.
+\end{itemize}
+
+An more advanced evaluation metric called \textbf{Pyramid} was also published by Nenkova and Passonneau in 2004 \cite{nenkova-passonneau-2004-evaluating} (Pages 145-152). Based on the assumption that there is no single best summary, but a variety of summaries can represent the input document in the same quality, Pyramid tries to evaluate summaries based on semantically matching content units. 
+
+Another well known approach which is originated from machine translation is \textbf{BLEU}, which means Bilingual Evaluation Understudy. BLEU can also be applied for evaluating text summaries. BLEU is calculated in general on the n-gram co-occerance between the generated summary and the ideal human written summary. It measure how many of the words or n-grams in the machine generated summary appeared in the  reference summary from a human. Not to be mixed up with ROGUE, which counts how many of the words or n-grams in the human reference summary appeared in the machine generated summary. Both approaches are relatively similar and can be used for evaluating, but they are not the same.
+
+\textbf{Extrinsic Evaluation}
+
+This approach has three most commonly methods, namely \cite{journals/cai/SteinbergerJ09} (Pages 10-11):
+
+\begin{itemize}
+	\item \textbf{Document categorization}: the quality of a summary can be measured by its suitability for surrogating a full document for categorization. This means, is the summary categorizes in the correct way? For example is the summary of the topic international news? 
+	\item \textbf{Information retrieval}: a summary should capture the core points of a document, then an information retrieval 
+	machine indexed on a set of summaries should generate a good summary. 
+	\item \textbf{Question Answering}: multiple choice with a single answer to be selected should measure how many of the questions randomly chosen people answered correctly under different conditions based on the generated summary.
 \end{itemize}
 
 \section{Advanced Approaches for Text Summarization}\label{ss:trends}
@@ -671,5 +688,10 @@ Until today, there is no single best summarization evaluation method. The manual
 \end{figure}
 
 \subsection{Combinational Approach}
+
+\begin{itemize}
+	\item \textbf{Pointer-Generator Network}
+	\item \textbf{Extract then Abstract model}
+\end{itemize}
 
 \subsection{Reinforcement Learning}
