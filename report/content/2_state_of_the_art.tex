@@ -371,22 +371,16 @@ In general, the explanation of the sequence to sequence models just covered the 
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=4.5in]{photos/w1-11}\\
-		\caption{Attention mechanism for Spanish-English translation \cite{mugan}}\label{attention1}
+		\includegraphics[width=6.5in]{photos/attenion}\\
+		\caption{Baseline sequence-to-sequence model with attention \cite{see-etal-2017-get} }\label{attention1}
 	\end{center}
 \end{figure}
+
 In the encoder and decoder model, the length of the state vector \textit{h} does not change for the input and output. As shown in the example of Section \ref{ss:seq2seq}, sentences translated into another language can have a different word length. For the model to automatically adjust the length of the output, is to use the technology called \textit{attention} \cite{attention} \cite{attention2}.
 
-Figure \ref{attention1} shows the basic concept of attention. The Long Short Term Memory is not starting to right before time step \textit{t = 6} at state \textit{\(h_{6}\)}. Attention enables the network to look at all prior encoded states of the words, takes the weighted average probability of the vectors and also uses this as additional information. Attention also projects its vectors into the meaning space (Figure \ref{meaningspace}. 
+Figure \ref{attention1} shows the basic concept of attention for a summarization task of a news article.  The attention model tries to identify relevant words and meanings in the source text to generate novel words. This means to generate words which are not included in the input document, for example using the word \textit{to beat} in the abstractive summary instead of won \cite{see-etal-2017-get}.
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=5in]{photos/w1-21}\\
-		\caption{Meaning Space of the Attention model \cite{mugan}}\label{meaningspace}
-	\end{center}
-\end{figure}
-
-Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
+Attention enables the network to look at all prior encoded states of the words, takes the weighted average probability of the vectors and also uses this as additional information. Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
 \section{The Structure of Text Summarization}
 
@@ -678,7 +672,7 @@ This approach has three most commonly methods, namely \cite{journals/cai/Steinbe
 
 \section{Advanced Approaches for Text Summarization}\label{ss:trends}
 
-\subsection{Neural Text Summarization}\label{ss:neuralgen}
+Since deep learning received more and more attraction, neural-based summarizers had an considerable influence on automatic summarization. Compared to the traditional models (extractive and party abstractive models), neural-based models achieve better performance with by relying less on the human intervention if the training data is big enough.
 
 \begin{figure}
 	\begin{center}
@@ -687,11 +681,52 @@ This approach has three most commonly methods, namely \cite{journals/cai/Steinbe
 	\end{center}
 \end{figure}
 
-\subsection{Combinational Approach}
+The four white boxes in Figure \ref{summ} have been introduced throughout this thesis. The next step to an even better (human-like) summary is the use of neural text generation, the state of the art approach. In the following, combinational approaches and the reinforcement approach will be introduced. Those methods rely completely on neural networks (neural text generation), but achieve currently in 2020 the best state of the art results. Neural-based approaches are promising for text summarization in terms of the generated human-like summary when large data sets are available for training. Still many challenges and issues with neural-based models remain unsolved. Future research directions such as the combinational approach or even adding the reinforcement learning are still in research.
+
+\subsection{Combinational Approach}\label{ss:neuralgen}
 
 \begin{itemize}
 	\item \textbf{Pointer-Generator Network}
 	\item \textbf{Extract then Abstract model}
 \end{itemize}
 
-\subsection{Reinforcement Learning}
+
+The \textbf{Pointer Generator Network} proposed from See, Manning and Liu in 2017 \cite{see-etal-2017-get} makes use of an attention based distribution to generate a probability. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/pointer}\\
+		\caption{The image describes the combination of the weights and the vocabulary distribution \cite{see-etal-2017-get} }\label{pointer}
+	\end{center}
+\end{figure}
+
+Figure \ref{pointer} is based on the attention model (Figure \ref{attention1} from Section \ref{ss:atten}). 
+This model switches the decoder(generator) and the pointer network by a probability \(p_{gen}\).
+Furthermore it combines the vocabulary distribution and attention with \(p_{gen}\) and the (1 - \(p_{gen}\)) weight (Figure \ref{pointer}). The reason for choosing this probability multiplications exceed this bachelor thesis. The point for me to include it is to introduce the current state of the art models
+
+The \textbf{extract then abstract model} uses extractive model first to select the sentence from a document or documents and then secondly it adopts the abstractive model to the selected sentences. 
+Basically saying, the model combines a query focused extractive and abstractive model. It extract the important sentences with an extractive approach and calculate then the relevance score for each word according to the query uses that as input for a pre-trained abstractive model.
+
+
+
+\subsection{Transfer Learning}
+
+It is effective to reuse already learned models to make a new text summarization model. That is called \textit{Transfer Learning}. It allows to make a model by a tiny amount of new data and in a short period of time. This feature leads to domain-specific summarization.
+
+\textbf{BERT} is the representative model that enables getting good representation of sentences. Several methods are proposed to create summaries by BERT.
+
+\textit{Fine-tune BERT for Extractive Summarization}
+
+\begin{itemize}
+	\item Use the pre-trained models
+	\item Get good sentence representation.
+	\item BERT generates token based features. Therefore there is a need to convert token based features to sentence based representation. Liu and Lapata (2019) \cite{liu-lapata-2019-text} use \textit{Segmentation Embedding} to notice sentence boundaries and use the first token of the segmentation as the sentence embedding.
+\end{itemize}
+
+\textit{Pretraining-Based Natural Language Generation for Text Summarization}
+
+\begin{itemize}
+	\item How to use the pre-trained model?
+	\item Getting good sentence representation and refine a generated sentence.
+	\item BERT is trained to predict the masked token, so this approach can not generate a sequence. Haoyu et al. \cite{bert} use this method to generate the first summarization by an ordinary transformer model and then drop some tokens to let it fill by the BERT algorithm. The final summarization is created by the so-called input BERT representation and refined sentence representation made by BERT as well.
+\end{itemize}
