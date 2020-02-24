@@ -16,7 +16,8 @@
 
 /projects/.DS_Store
 /projects/.ipynb_checkpoints
-
+/projects/__pycache__
+/projects/amazon-fine-food-reviews/Reviews.csv
 ## Intermediate documents:
 *.dvi
 *.xdv
