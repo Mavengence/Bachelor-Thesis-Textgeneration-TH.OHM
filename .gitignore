@@ -14,6 +14,9 @@
 *.cb2
 .*.lb
 
+/projects/.DS_Store
+/projects/.ipynb_checkpoints
+
 ## Intermediate documents:
 *.dvi
 *.xdv
