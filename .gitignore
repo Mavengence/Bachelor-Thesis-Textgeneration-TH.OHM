@@ -22,6 +22,7 @@
 # *.ps
 # *.eps
 CS4487_Group_Project_CIFAR10_PyTorch.ipynb
+/project/amazon-fine-food_reviews/Reviews.csv
 /models/model_92.json
 /models/model_92.h5
 /models/model_88.h5
