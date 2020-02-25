@@ -13,6 +13,7 @@
 *.cb
 *.cb2
 .*.lb
+<<<<<<< HEAD
 /project/amazon-fine-food-reviews/Reviews.csv
 /project/amazon-fine-food-reviews/.DS_Store
 /project/.DS_Store
@@ -20,6 +21,9 @@
 /project/.ipynb_checkpoints
 /project/__pycache__
 /projects/amazon-fine-food-reviews/Reviews.csv
+=======
+
+>>>>>>> parent of 7b4002a... update
 ## Intermediate documents:
 *.dvi
 *.xdv
