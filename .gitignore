@@ -13,13 +13,10 @@
 *.cb
 *.cb2
 .*.lb
-/project/amazon-fine-food-reviews/Reviews.csv
-/project/amazon-fine-food-reviews/.DS_Store
-/project/.DS_Store
-/project/model.h5
-/project/.ipynb_checkpoints
-/project/__pycache__
-/projects/amazon-fine-food-reviews/Reviews.csv
+
+/projects/.DS_Store
+/projects/.ipynb_checkpoints
+
 ## Intermediate documents:
 *.dvi
 *.xdv
