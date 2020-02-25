@@ -14,6 +14,7 @@
 *.cb2
 .*.lb
 
+/project/.ipynb_checkpoints
 /projects/.DS_Store
 /projects/.ipynb_checkpoints
 /project/.DS_Store
