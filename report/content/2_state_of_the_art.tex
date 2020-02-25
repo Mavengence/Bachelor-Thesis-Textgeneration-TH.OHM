@@ -4,7 +4,7 @@ The goal of this chapter is to survey the development of the text generation fro
 
 As conducted from the Introduction Chapter 1, Text Generation is the generic term for the output part of an automatic text summarizer. The research on Neural Text Generation and other fields had a significant impact on the development of automatic text summarizers. In this chapter, I begin with the definition of a text generator in general and its historical development. I state the most important steps from a basic text generator to a neural text generator. In the following, I focus on the text summarizer and its historical evolution with the impacts of the neural text generators. There are several human-like summarizing state of the art technologies nowadays for the automatic text summarizers, but they are developed under a large scale data set and computational high demanding power. This chapter is therefor the background knowledge for my prototype, but it also provides a peek into the latest state of the art technology which cannot be applied at home with a low power computer, but is only possible for big companies like Google.
 
-\section{The Structure of Text Generation }\label{ss:history}
+\section{Text Generation Concepts}\label{ss:history}
 
 Text Generation, Language Modeling or Natural Language Generation are different words with basically the same meaning, but I will keep the denotation of text generation throughout this thesis. A widely-cited survey from Reiter and Dale 1997 (Page 57-87) \cite{reiter} characterizes text generation as 'the sub-field of Artificial Intelligence and computational linguistics that is concerned with the construction of computer systems than can produce readable texts in English or other human languages from some underlying non-linguistic representation of information' \cite{reiter}. This definition implies rather a data-to-text approach instead of the text-to-text approach from Table \ref{tab:nlp_table}, but in 1997 the rule-based approach dominated the neural end-to-end (Neural Text Generation) methods (Figure \ref{rules_based}). For that reason, in 2003 Evans declares Text Generation as quite difficult to define \cite{evans} (Page 144-151). Most researchers agree on the text as the output synthesis part of the input-output system (e.g. Text Summarization or Image caption generation \cite{mitchell}), whereas the input part cannot be as easily distinguished \cite{mcdonald} (Page 191-197).
 
@@ -211,7 +211,7 @@ The prototype from Chapter 3 is based on a data-driven approach as well, because
 	\end{center}
 \end{figure}
 
-\section{Advanced Approaches for Text Generation}
+\section{Advanced Approaches for Text Generation}\label{ss:aatg}
 \subsection{Recurrent Neural Networks}\label{ss:rnn}
 Even though I introduced the neuron in a neural network as a kind of brain cell imitation, the neuron of a basic neural network will forget everything when it is shut down, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist \cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
 
@@ -383,7 +383,7 @@ Figure \ref{attention1} shows the basic concept of attention for a summarization
 
 Attention enables the network to look at all prior encoded states of the words, takes the weighted average probability of the vectors and also uses this as additional information. Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
-\section{The Structure of Text Summarization}
+\section{Text Summarization Concepts}
 
 In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all the information. The goal of text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
 Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
@@ -515,7 +515,7 @@ During this thesis I have already mentioned the two core differences between tex
 
 Figure \ref{abex} shows the general model pipeline for either the extractive or abstractive approach. There is also a relatively new combinational approach, which will be explained in Section \ref{ss:trends} (\textit{Advanced Approaches for Text Summarization}). The topic input into the automatic text summarizer has already been explained in the multi-document Section \ref{ss:multi}. The parameter input contains for example the compression rate \(\tau\). This could a a value like 15\%, which means that the length of the original input document will be reduced by 85\%.
 
-\subsubsection{Extractive}
+\subsubsection{Extractive}\label{ss:extractive}
 	
 The aim of the extractive approach is to give an overview about the source document. This is done by selection fragments of the text (words, sentences or paragraphs) that contain the essential information of the input text or texts. It can be seen as an copy and paste action for the most important fragments. Figure \ref{extract} shows the basic structure of an extractive summarizer, where the selection part is one of the three categorical types. The extractive approach has still some valid use cases, because:
 
@@ -555,7 +555,7 @@ Even though I proposed in the Section \ref{ss:input} for the single-document and
 	\item Neural Network approach (Section \ref{ss:neuralgen} - \textit{Advanced Approaches for Text Summarization})
 \end{itemize}
 
-\subsubsection{Abstractive}
+\subsubsection{Abstractive}\label{ss:abstractive}
 
 The abstractive method for automatic text summarization is one of latest achievements in the research for good automated summaries. When a system is based on an abstractive method, it means that it deeply understands the text and seeks to generate grammatically correct and human-like coherent sentences. One of the first approaches was the \textit{FRUMP} system. It was one of the first systems who used semantic representation for the input text to generate summaries. This system was built in 1982 by Gerald Francis DeJong \cite{Dej82} (Pages 149-176).
 

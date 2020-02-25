@@ -16,6 +16,9 @@
 
 /projects/.DS_Store
 /projects/.ipynb_checkpoints
+/project/.DS_Store
+/project/amazon-fine-food-reviews/Reviews.csv
+/project/model.h5
 
 ## Intermediate documents:
 *.dvi

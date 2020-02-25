@@ -1,7 +1,5 @@
 \chapter{Prototype}\label{ch:proto}
 
-Prototype: attention based 11
-
 %\begin{lstlisting}[language=Python,caption={This is an example of inline listing},captionpos=b]
 %x = 1
 %if x == 1:
@@ -14,52 +12,146 @@ Prototype: attention based 11
 
 %\lstinputlisting[language=Python,caption={This is an example of included listing},captionpos=b]{listings/example.py}
 
-\section{Objective}
+In this third section of my thesis I finally present my self programmed prototype. The State of the Art chapter was structured in such a way, that it focuses on the necessary information for understanding my prototype. Hence I only gave some additional information about techniques which produce even more accurate results, but this is out of scope for my thesis. This section is divided into four sections, starting with the objective (Section \ref{ss:obj}) of this prototype. I propose my requirements for this prototype and what I expect to achieve from it. The next step is the technical concept (Section \ref{ss:tc}), which models the data flows and processes inside the program. After I explain which steps my algorithm goes through, I present snippets of my code in Section \ref{ss:imp} to further illustrate it. This code will be evaluated in Section \ref{ss:eval}.
 
-Textsummarization  
+\section{Objective}\label{ss:obj}
 
-\section{Technical concept}
+\textit{"I don't have time to read the entire report, please give me a brief summary"}. Many years ago the challenge was to find the right information for a specific tasks, nowadays the internet provides more information than anyone could ever read. Depending on the type of document or article, it is not always necessary to read it from the beginning to the end. Throughout my thesis I often used my case study \textit{News Headline Summarization from Google} for illustrating certain concepts. I chose a different topic for my case study than my actual prototype to show another kind of task which automatic text summarization is capable of.
 
-Fachkonzept - Proto
+I chose the \textbf{Amazon Fine Food Reviews} provided from \textit{Stanford Network Analysis Project} hosted on the website Kaggle \footnote{https://www.kaggle.com/snap/amazon-fine-food-reviews/}. This website is commonly known for providing data-sets from private and organizational publishers. 
 
-\subsection{Structure}
+The project's objective is to build and train a model that can compute relevant summaries for reviews written about fine foods sold on Amazon. 
 
-The different steps of Text Generation
+This dataset contains around 500.000 entries with each entry containing one review from the amazon fine foods and its summary. The data is collected for 8 years from October 2012 until now. 
+
+\section{Technical concept}\label{ss:tc}
+
+An example review needs to pass from the given data-set file to the predicted summary a lot of processes and transformations. The technical concept illustrates all necessary steps without yet going into the programming detail itself. The purpose of this section is to take all the previous explanations into a combined example and show the entire process from the beginning to the end. 
+
+The processing steps follow in chronological order:
 
 \begin{itemize}
-\item Importing Dependencies
-\item Loading the Data
-\item Creating Character/Word mappings
-\item Data Preprocessing
-\item Modelling
-\item Generating text
+	\item Data pre-processing
+	\item Build the Model
+	\item Train the Model
+	\item Generating Summary
 \end{itemize}
 
-\subsection{Neuronal Net}\label{ss:nn}
+This steps will be explained in the following Subsection.
 
-LSTM
+\subsection{Data Pre-processing}
 
-RNN
+The computer does not understand words. It is not possible to feed the words from a review subsequently into a recurrent neural network and expect that the algorithm will learn it somehow. Performing pre-processing is a crucial step before feeding inputs into the neural network model. The data must be normalized into a clean and not messy way. The following is an example from the original dataset:
 
-\subsection{Process Modeling}
+\begin{tcolorbox}
+	\textbf{Review} \\
+	I can remember buying this candy as a kid and the quality hasn't dropped in all these years. Still a superb product you won't be disappointed with. \\
+	
+	\textbf{Summary} \\
+	Delicious product!
+\end{tcolorbox}
 
-NLP Bilder
+For all the words occurring in the review and summary a vocabulary dictionary needs to be created. This dictionary can be used to convert the words into numbers and respectively numbers is what the recurrent neural network wants as an input. For creating the two vocabulary dictionaries it needs to be carefully though of how to handle the data. If the same word e.g. \textit{Still} and \text{still} is once with a capital letter and the second time without, the encoding (\textit{UTF-8}) is different and hence the computer regards this as two different words. Furthermore the text can include punctuation, quotation marks or parenthesis. Therefore I defined a chronological order of text transformation steps to normalize the text:
 
-\subsection{Data flow modelling}
+\begin{tcolorbox}
+	\begin{itemize}
+		\item Convert all words into lowercase
+		\item Remove occurring HTML tags
+		\item Contraction mapping
+		\item Remove (‘s)
+		\item Remove any text inside the parenthesis ( )
+		\item Eliminate punctuations and special characters
+		\item Remove stopwords
+		\item Remove short words
+	\end{itemize}
+\end{tcolorbox}
 
-Attention summarization 
+\textbf{Contraction mapping} describes the process of mapping contracted words into their original two words. For example \textit{haven't} will be mapped back to \textit{have not}. This is important, because only this way the algorithm can detect the word \textit{not} to be negative connotated. If a review says something is not bad, then the algorithm can summarize it by computing the word good. This relation can only be learned by the algorithm by providing it all the necessary words.
 
-+ NLP Bilder
+\textbf{Remove stopwords} limits the vocabulary size, which reduces the models training time dramatically. I have already explained stopwords in Section \ref{ss:sd}. Those are words like and, that or there. 
 
-\section{Implementation}
+\textbf{Remove short words}, because they most likely don't play a vital role in predicting the output. Words like it, in or at not necessarily appear in the stoowords dictionary. For this reason I remove them manually, because they almost don't affect the text's meaning, but after removing the reduce the training time further. 
+
+After applying all of the pre-processing steps, the example will look as the following:
+
+\begin{tcolorbox}
+	\textbf{Cleaned Review} \\
+	remember buying candy kid quality dropped years still superb product disappointed \\
+	
+	\textbf{Cleaned Summary} \\
+	delicious product
+\end{tcolorbox}
+
+The data is now clean and normalized. Furthermore it can be check whether some data is duplicated and remove this data respectively. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/dist_seq}\\
+		\caption{Distribution of the sequences to estimate the maximum length for the review and summary}\label{dist_seq}
+	\end{center}
+\end{figure}
+
+In order to build the mentioned vocabulary, the text needs to be \textbf{Tokenized}. This means selecting all the single words of a sentence and store all the words uniquely in the vocabulary for the review and the other vocabulary for the summary. The only thing left is to compare the word counts of all sentences and take the median value for the maximum review length and the maximum summary length as shown in Figure \ref{dist_seq}. This is important, because a fixed length is mandatory for building the model. All of the words are now replaced by their dictionary number representation and if a review is shorter as the maximum length, the missing data points are filled with zeros.
+
+\begin{tcolorbox}
+	\textbf{Tokenized and Padded Review}
+	
+	array([[ 678,  142,  360, 1017,   87, 3724,  108,   55, 1893,    9,  243,
+	0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+	0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+	0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+	0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+	0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+	0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+	0,    0,    0]], dtype=int32) \\
+	
+	\textbf{Tokenized and Padded Summary}
+	
+	array([[ 1, 21, 19,  2,  0,  0,  0,  0,  0,  0]], dtype=int32)
+\end{tcolorbox}
+
+This is the necessary format for building up a model.
+
+\subsection{Building the Model}
+
+The model follows an abstractive approach (Section \ref{ss:abstractive}) and is based on the Advanced Approaches for Text Generation (Section \ref{ss:aatg}). 
+
+\subsection{Training the Model}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=3.5in]{photos/eval}\\
+		\caption{Training and validation loss during the training phase}\label{eval}
+	\end{center}
+\end{figure}
+
+\subsection{Generate the Summary}
+
+
+\section{Implementation}\label{ss:imp}
 
 Code for the Machine Translating
 
-\section{Evaluation}
+\section{Evaluation}\label{ss:eval}
 
-Print Ergebnisse
 
-Bild
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/model_sum}\\
+		\caption{Model summarization with parameters}\label{model_sum}
+	\end{center}
+\end{figure}
 
-Text summary, web app
+\begin{table}[]
+	\begin{tabular}{@{}cccl@{}}
+		\toprule
+		\textbf{Cleaned Review}                                                                                                                                                           & \textbf{Cleaned Summary}                                                                   & \multicolumn{1}{l}{\textbf{Generated Summary}} &  \\ \midrule
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}ordered chips found salty \\ dry huge amount spices \\ ball one bags opened\end{tabular}}                                         & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}too salty \\ and dry\end{tabular}}          & \multicolumn{1}{c|}{too salty}                 &  \\ \cmidrule(r){1-3}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}found tea favorite movie theater\\  found perfect tea guests \\ everyone loves makes love\end{tabular}}                           & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}at the movies \\ and home\end{tabular}}     & \multicolumn{1}{c|}{love it}                   &  \\ \cmidrule(r){1-3}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}dogs special diet treats\\  feed favorites cause problems\end{tabular}}                                                           & \multicolumn{1}{c|}{must be good}                                                          & \multicolumn{1}{c|}{my dogs love these}        &  \\ \cmidrule(r){1-3}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}delicious sherry flavor salad \\ dressing great used marinade\\ give try sweet balsamic \\ tart red wine vinegar\end{tabular}}    & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}yummy sweet \\ sherry vinegar\end{tabular}} & \multicolumn{1}{c|}{love these}                &  \\ \cmidrule(r){1-3}
+		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}received medium roast receive \\ correct coffee shown picture \\ disappointed suppose\\  ill try lot trouble return\end{tabular}} & \multicolumn{1}{c|}{wrong coffee received}                                                 & \multicolumn{1}{c|}{coffee received}           &  \\ \bottomrule
+	\end{tabular} \\ \\
+	\caption{This table shows some example outputs for the training data from my trained model} 
+\end{table}
 
