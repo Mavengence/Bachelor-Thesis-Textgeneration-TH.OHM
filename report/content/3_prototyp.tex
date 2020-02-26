@@ -114,9 +114,120 @@ This is the necessary format for building up a model.
 
 \subsection{Building the Model}
 
-The model follows an abstractive approach (Section \ref{ss:abstractive}) and is based on the Advanced Approaches for Text Generation (Section \ref{ss:aatg}). 
+The model follows an abstractive approach (Section \ref{ss:abstractive}) and is based on the Advanced Approaches for Text Generation (Section \ref{ss:aatg}). Since the objective is to build a text summarizer, the input is the fixed length sequence of words and the output is a shorter, but also fixed length sequence of words (Figure \ref{build_model}).
+	
+The mathematical notations for Figure \ref{build_model} are shown in the box below.
+	
+\begin{tcolorbox}
+	\boldmath{\([x_{1}, x_{2}, x_{3}, ..., {x_{Tx}]}\)} where each \textit{x} represents one word of the input sequence, \\ e.g. \(x_{1}\) = remember \\ \\
+	\boldmath{\([y_{1}, y_{2}, x_{3}, ..., {y_{Ty}]}\)} where each \textit{x} represents one word of the input sequence, \\ e.g. \(y_{1}\) = delicious \\ \\
+	\boldmath{\(T_{x}\)} represents the fixed length of the input sequence \\ \\
+	\boldmath{\(T_{y}\)} represents the fixed length of the output sequence
+\end{tcolorbox}
+
+The reason for choosing the LSTM over a basic recurrent neural network architecture is, that the generated summary can be sometimes quite long (up to 20 words) and the recurrent neural network cannot catch up with dependencies of this sequence length. Figure \ref{modelenc} illustrates the overall view of my model. 
+As explained in the last section, if a input or output has less words than the maximum length, the missing words are denoted as zero values. This allows the algorithm to not compute any further prediction, because it is a zero multiplication. The encoder decoder architecture is mainly used when the input and output length vary from each other. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/build-1}\\
+		\caption{Many to many Sequence to Sequence LSTM model}\label{build_model}
+	\end{center}
+\end{figure}
+
+Figure \ref{build_model} shows the general sequence to sequence model, whereas Figure \ref{modelenc} illustrates the perspective of the text summarizer. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=3.5in]{photos/modelenc-1}\\
+		\caption{Perspective of the text summarization}\label{modelenc}
+	\end{center}
+\end{figure}
+
+The mathematical notations for Figure \ref{modelenc} are shown in the box below.
+
+\begin{tcolorbox}
+	\boldmath{\(h\)} represents the input (update) gate, which is responsible for adding new information into the cell \\ \\
+	\boldmath{\(c\)} represents the cell state, which is the horizontal line between multiple LSTM cells
+\end{tcolorbox}
 
 \subsection{Training the Model}
+
+For the training phase, first of all the encoder and decoder need to be set up individually from each other. The model predicts the next word based on the current word (or the start). To achieve this, the prediction is one time step in the future. 
+
+The \textbf{Encoder} in Figure \ref{trainenc} uses LSTM cells to read all of the sentences from the data-set in. Each sentence will be read in at a time and further each word of the sentence will be read for each at a time step. Therefore the LSTM has a one word input per time step and captures the contextual information of the sentence out of it.  The \textit{h} and \textit{c} in Figure \ref{trainenc} are the same as the ones from the previous Figure \ref{modelenc}. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/trainenc-1}\\
+		\caption{Encoder of the LSTM}\label{trainenc}
+	\end{center}
+\end{figure}
+
+The encoder and the decoder are two different LSTM architectures. The initial state of the encoder LSTM is a zero matrix and the finally computed output state of the encoder LSTM is the initial state of the decoder LSTM.
+
+The \textbf{Decoder} is based on a LSTM network as well, which has the target sequence as a word-by-word input and predicts the same sequence offset by one time step. The decoder is trained to predict the upcoming word in the sequence with respect to the previous word. The \textit{start} and \textit{end} boxes in Figure \ref{traindec} represent an appended string to the beginning and ending of the original summary. This is done to create the one time step offset.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/traindec-1}\\
+		\caption{Decoder of the LSTM}\label{traindec}
+	\end{center}
+\end{figure}
+
+The target sequence is unknown during the decoding part of the test sequence. Target sequence is predicted by passing the first word into the decoder which would is always the \textit{start} token. And the \textit{end} token signals the end of the sentence, followed by potentially zero values.
+
+
+\subsection{Generate the Summary}
+
+This part is also known as the \textit{Inference Phase}. After training on a selected amount of reviews and summaries, the model is tested on new source sequences where the target sequence is unknown. For this to work,  a inference architecture to decode a test sequence is necessary. The inference goes through various processes:
+
+\begin{itemize}
+	\item 1) Encode the review and initialize the decoder with internal states of the encoder
+	\item 2) Pass the \textit{start} token as an input to the decoder
+	\item 3) Compute the decoder for one time step with the stored internal states
+	\item 4) The output at each time step is the probability for the next word. The maximum probability word will be selected
+	\item 5) Pass the selected word as an input to the next decoder time step and update the internal states with the current time step
+	\item 6) Repeat steps \textit{3} – \textit{5} until the \textit{end} token is generated with the highest probability
+\end{itemize}
+
+Figure \ref{infer} shows the architecture for the inference phase. The test sentence goes through all the initially trained weights (states h, c) of the model. There is no more training necessary, just the calculations of the test sequence with the internal state vectors to predict the output sequence. After a certain prediction length, the probability for the \textit{end} token to occur is the highest and if there is remaining space for maximum summary length, it will be filled up with zero values again. 
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=5in]{photos/infer-1}\\
+		\caption{Inference architecture to decode a sequence}\label{infer}
+	\end{center}
+\end{figure}
+
+Even a LSTM cell has limitations when it comes to sentence length. Since summaries can be quite long (my maximum length is 80 words), there need to be made further improvements for the algorithm in order to work properly. It is difficult for the encoder to memorize long sequences and output a fixed length vector. For this reason I have introduced the attention mechanism in Section \ref{ss:atten}. The intuition for attention is:
+
+\begin{tcolorbox}
+	\textit{How much attention do we need to pay to every single word in the input sequence for generating a new word at time step \textbf{t}? That is the primal intuition behind the attention mechanism.}
+\end{tcolorbox}
+
+With this mechanism it is possible for the decoder to first look on all the words from the encoder output and decide to which parts of the sentence the decoder wants to focus time-by-time. The attention model is placed on top of the LSTM cell and requires additional computation. For my model I am using the \textbf{global attention model} from \cite{effectiveattn} shown in Figure \ref{glob}, where \textit{h} denotes the same weights as Figure \ref{modelenc} and \textit{a} is the attention parameter, calculated for every word at every time step \textit{t}.
+
+\begin{tcolorbox}
+	\textbf{h} is the hidden state trained on the encoder \\ \\
+	\textbf{t} is the time step which represents always a single word \\ \\
+	\textbf{a} is calculated \boldmath{\(T_{y}\)} times at every time step \textbf{t}, so for the attention model we have \textbf{a} * \boldmath{\(T_{y}\)} * \textbf{t} new parameters
+\end{tcolorbox}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=3.5in]{photos/glob_att}\\
+		\caption{Global Attention Model from \cite{effectiveattn}}\label{glob}
+	\end{center}
+\end{figure}
+
+\section{Implementation}\label{ss:imp}
+
+...
+
+\section{Evaluation}\label{ss:eval}
+
+\textbf{Loss}
 
 \begin{figure}
 	\begin{center}
@@ -125,15 +236,6 @@ The model follows an abstractive approach (Section \ref{ss:abstractive}) and is 
 	\end{center}
 \end{figure}
 
-\subsection{Generate the Summary}
-
-
-\section{Implementation}\label{ss:imp}
-
-Code for the Machine Translating
-
-\section{Evaluation}\label{ss:eval}
-
 
 \begin{figure}
 	\begin{center}
@@ -141,6 +243,8 @@ Code for the Machine Translating
 		\caption{Model summarization with parameters}\label{model_sum}
 	\end{center}
 \end{figure}
+
+\textbf{Predictions}
 
 \begin{table}[]
 	\begin{tabular}{@{}cccl@{}}
