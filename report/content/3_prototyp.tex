@@ -1,17 +1,5 @@
 \chapter{Prototype}\label{ch:proto}
 
-%\begin{lstlisting}[language=Python,caption={This is an example of inline listing},captionpos=b]
-%x = 1
-%if x == 1:
-%    # indented four spaces
-%    print("x is 1.")
-
-%\end{lstlisting}
-
-%You can also include listings from a file directly:
-
-%\lstinputlisting[language=Python,caption={This is an example of included listing},captionpos=b]{listings/example.py}
-
 In this third section of my thesis I finally present my self programmed prototype. The State of the Art chapter was structured in such a way, that it focuses on the necessary information for understanding my prototype. Hence I only gave some additional information about techniques which produce even more accurate results, but this is out of scope for my thesis. This section is divided into four sections, starting with the objective (Section \ref{ss:obj}) of this prototype. I propose my requirements for this prototype and what I expect to achieve from it. The next step is the technical concept (Section \ref{ss:tc}), which models the data flows and processes inside the program. After I explain which steps my algorithm goes through, I present snippets of my code in Section \ref{ss:imp} to further illustrate it. This code will be evaluated in Section \ref{ss:eval}.
 
 \section{Objective}\label{ss:obj}
@@ -223,7 +211,68 @@ With this mechanism it is possible for the decoder to first look on all the word
 
 \section{Implementation}\label{ss:imp}
 
-...
+I will not provide the entire code in this section, but I will introduce the most crucial aspects of the code. For this project, the following python packages are necessary: 
+
+\begin{lstlisting}[language=Python,caption={Python package dependencies},captionpos=b]
+import numpy as np  
+import pandas as pd 
+import re           
+from bs4 import BeautifulSoup 
+from keras.preprocessing.text import Tokenizer 
+from keras.preprocessing.sequence import pad_sequences
+from nltk.corpus import stopwords   
+from tensorflow.keras.layers import Input, LSTM, Embedding, Dense, Concatenate, TimeDistributed, Bidirectional
+from tensorflow.keras.models import Model
+from tensorflow.keras.callbacks import EarlyStopping
+\end{lstlisting}
+
+I used python version 3.7.6 and I programmed it entirely in the \textbf{Anaconda} IDE (Integrated Development Environment).
+Most importantly to say is, that numpy is responsible for the computational part, because it computes on a very low level, which saves up a lot computing time. Pandas is responsible for reading in the data-set and preparing it in such a way, that it is in the correct normalized form as explained to feed it into the network.
+
+\begin{lstlisting}[language=Python,caption={Python package dependencies},captionpos=b]
+# Encoder 
+encoder_inputs = Input(shape=(max_len_text,)) 
+enc_emb = Embedding(x_voc_size, latent_dim,trainable=True)(encoder_inputs) 
+
+#LSTM 1 
+encoder_lstm1 = LSTM(latent_dim,return_sequences=True,return_state=True) 
+encoder_output1, state_h1, state_c1 = encoder_lstm1(enc_emb) 
+
+#LSTM 2 
+encoder_lstm2 = LSTM(latent_dim,return_sequences=True,return_state=True) 
+encoder_output2, state_h2, state_c2 = encoder_lstm2(encoder_output1) 
+
+#LSTM 3 
+encoder_lstm3=LSTM(latent_dim, return_state=True, return_sequences=True) 
+encoder_outputs, state_h, state_c= encoder_lstm3(encoder_output2) 
+
+# Set up the decoder. 
+decoder_inputs = Input(shape=(None,)) 
+dec_emb_layer = Embedding(y_voc_size, latent_dim,trainable=True) 
+dec_emb = dec_emb_layer(decoder_inputs) 
+
+#LSTM using encoder_states as initial state
+decoder_lstm = LSTM(latent_dim, return_sequences=True, return_state=True) 
+decoder_outputs,decoder_fwd_state, decoder_back_state = decoder_lstm(dec_emb,initial_state=[state_h, state_c]) 
+
+#Attention Layer
+Attention layer attn_layer = AttentionLayer(name='attention_layer') 
+attn_out, attn_states = attn_layer([encoder_outputs, decoder_outputs]) 
+
+# Concat attention output and decoder LSTM output 
+decoder_concat_input = Concatenate(axis=-1, name='concat_layer')([decoder_outputs, attn_out])
+
+#Dense layer
+decoder_dense = TimeDistributed(Dense(y_voc_size, activation='softmax')) 
+decoder_outputs = decoder_dense(decoder_concat_input) 
+
+# Define the model
+model = Model([encoder_inputs, decoder_inputs], decoder_outputs) 
+\end{lstlisting}
+
+%You can also include listings from a file directly:
+
+%\lstinputlisting[language=Python,caption={This is an example of included listing},captionpos=b]{listings/example.py}
 
 \section{Evaluation}\label{ss:eval}
 
