@@ -27,7 +27,7 @@ The processing steps follow in chronological order:
 
 This steps will be explained in the following Subsection.
 
-\subsection{Data Pre-processing}
+\subsection{Data Pre-processing}\label{ss:preprop}
 
 The computer does not understand words. It is not possible to feed the words from a review subsequently into a recurrent neural network and expect that the algorithm will learn it somehow. Performing pre-processing is a crucial step before feeding inputs into the neural network model. The data must be normalized into a clean and not messy way. The following is an example from the original dataset:
 
@@ -100,7 +100,7 @@ In order to build the mentioned vocabulary, the text needs to be \textbf{Tokeniz
 
 This is the necessary format for building up a model.
 
-\subsection{Building the Model}
+\subsection{Building the Model}\label{ss:build}
 
 The model follows an abstractive approach (Section \ref{ss:abstractive}) and is based on the Advanced Approaches for Text Generation (Section \ref{ss:aatg}). Since the objective is to build a text summarizer, the input is the fixed length sequence of words and the output is a shorter, but also fixed length sequence of words (Figure \ref{build_model}).
 	
@@ -166,7 +166,7 @@ The \textbf{Decoder} is based on a LSTM network as well, which has the target se
 The target sequence is unknown during the decoding part of the test sequence. Target sequence is predicted by passing the first word into the decoder which would is always the \textit{start} token. And the \textit{end} token signals the end of the sentence, followed by potentially zero values.
 
 
-\subsection{Generate the Summary}
+\subsection{Generate the Summary}\label{ss:generate}
 
 This part is also known as the \textit{Inference Phase}. After training on a selected amount of reviews and summaries, the model is tested on new source sequences where the target sequence is unknown. For this to work,  a inference architecture to decode a test sequence is necessary. The inference goes through various processes:
 
@@ -211,9 +211,9 @@ With this mechanism it is possible for the decoder to first look on all the word
 
 \section{Implementation}\label{ss:imp}
 
-I will not provide the entire code in this section, but I will introduce the most crucial aspects of the code. For this project, the following python packages are necessary: 
+I will not provide the entire code in this section, but I will introduce the most crucial aspects of the code. I used python version 3.7.6 and I programmed it entirely in the \textbf{Anaconda}\footnote{https://www.anaconda.com/} IDE (Integrated Development Environment). This IDE makes it especially easy for programming data science related topics like text summarization in python, because it can preview each cell one-by-one. Anaconda is for free and a open source platform. The python packages I used for this project are listed in the following Listing:
 
-\begin{lstlisting}[language=Python,caption={Python package dependencies},captionpos=b]
+\begin{python}
 import numpy as np  
 import pandas as pd 
 import re           
@@ -221,42 +221,62 @@ from bs4 import BeautifulSoup
 from keras.preprocessing.text import Tokenizer 
 from keras.preprocessing.sequence import pad_sequences
 from nltk.corpus import stopwords   
-from tensorflow.keras.layers import Input, LSTM, Embedding, Dense, Concatenate, TimeDistributed, Bidirectional
+from tensorflow.keras.layers import Input, LSTM, Embedding, Dense, Concatenate, TimeDistributed
 from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import EarlyStopping
-\end{lstlisting}
+\end{python}
 
-I used python version 3.7.6 and I programmed it entirely in the \textbf{Anaconda} IDE (Integrated Development Environment).
-Most importantly to say is, that numpy is responsible for the computational part, because it computes on a very low level, which saves up a lot computing time. Pandas is responsible for reading in the data-set and preparing it in such a way, that it is in the correct normalized form as explained to feed it into the network.
+\textbf{Numpy} takes care of the computations and data structures. This package is implemented in such a efficient and effective way, so that it saves up a lot of computation time when using this package instead of the default python data structures and mathematical operations.
 
-\begin{lstlisting}[language=Python,caption={Python package dependencies},captionpos=b]
+\textbf{Pandas} is responsible for most of the data pre-processing. The amazon reviews are loaded into a so called Pandas \textit{DataFrame}. Within the DataFrame the data goes through all the necessary pre-processing steps as explained in Section \ref{ss:preprop}. Within the pre-processing step \textit{Remove occurring HTML tags}, the package \textbf{BeautifulSoup} is a useful tool for achieving this step. \textbf{NLTK} is short for Natural Language Toolkit. Many functions regarding Natural Language Processing can be used from this package, but I used it only for downloading the \textit{stopword} for the second last pre-processing step \textit{Remove stopwords}.
+
+\textbf{Keras} is the main package for building the model in Section \ref{build_model}. Keras is built up from the package \textbf{Tensorflow}. TensorFlow has a high-level API for building and training deep learning models. It can be used for doing fast prototyping or state of the art research \footnote{https://www.tensorflow.org/guide/keras}. Since the new update from Tensorflow version 1 to version 2, Keras is normally integrated into the project with Tensorflow (tensorflow.keras indicates Keras is downloaded within Tensorflow). Keras includes most of the required building blocks, such as the LSTM cell or the Embedding Layer which is responsible for mapping the words into vectors. In the following is the encoder part of the trainable model: \\ \\ \\ \\ \\ \\ \\ \\
+
+
+\begin{python}[caption={Encoder in Python}]
 # Encoder 
 encoder_inputs = Input(shape=(max_len_text,)) 
-enc_emb = Embedding(x_voc_size, latent_dim,trainable=True)(encoder_inputs) 
+enc_emb = Embedding(x_voc_size, latent_dim,trainable = True)
+(encoder_inputs) 
 
 #LSTM 1 
-encoder_lstm1 = LSTM(latent_dim,return_sequences=True,return_state=True) 
+encoder_lstm1 = LSTM(latent_dim,return_sequences = True, return_state=True) 
 encoder_output1, state_h1, state_c1 = encoder_lstm1(enc_emb) 
 
 #LSTM 2 
-encoder_lstm2 = LSTM(latent_dim,return_sequences=True,return_state=True) 
-encoder_output2, state_h2, state_c2 = encoder_lstm2(encoder_output1) 
+encoder_lstm2 = LSTM(latent_dim,return_sequences = True, return_state=True) 
+encoder_output2, state_h2, state_c2 = encoder_lstm2
+(encoder_output1) 
 
 #LSTM 3 
-encoder_lstm3=LSTM(latent_dim, return_state=True, return_sequences=True) 
-encoder_outputs, state_h, state_c= encoder_lstm3(encoder_output2) 
+encoder_lstm3  =LSTM(latent_dim, return_state=True, 
+return_sequences = True) 
+encoder_outputs, state_h, state_c = encoder_lstm3(encoder_output2) 
+\end{python}
 
-# Set up the decoder. 
-decoder_inputs = Input(shape=(None,)) 
-dec_emb_layer = Embedding(y_voc_size, latent_dim,trainable=True) 
+The encoder is initialized with the mentioned maximum length of the summary. The Embedding layer creates the vectors out of the input reviews with the limitation of the maximum unique vocabulary word length. The \textit{latent\_dim} parameter denotes the amount of units used for the embedding, in my case I used a value of 500. The encoder is further built up from three LSTM building blocks which is called a \textit{Stacked LSTM}, that has multiple layers of LSTM's stacked on top of each other. This can lead to a better representation of the sequence. The two used parameters for the LSTM are explained in the following:
+
+\begin{itemize}
+	\item \textbf{Return Sequences = True}: When the return sequences parameter is \textit{True}, the LSTM produces the hidden state \textit{h} and cell state \textit{c} for every time step
+	\item \textbf{Return State = True}: When the return state = \textit{True}, the LSTM produces the hidden state \textit{h} and cell state \textit{c} only from last time step 
+\end{itemize}
+
+Those parameters are used the same way for the decoder part of the model. The decoder takes, as explained, the output of the encoder as input into its model. The decoder uses a single LSTM block and also the Attention building block. The only difference is that the attention block is not officially support by Tensorflow, hence it needs to be important through a third-party library or important through an extensible python file. For my model I am using the Bahdanau attention implementation introduced in the paper \textit{Neural machine translation by jointly learning to align and translate} \cite{bah}.
+
+The output of the decoder is fed into the \textit{TimeDistributed} layer, which creates the time steps \textit{t}. The attention layer is concatenated with the decoder layer and the defined model at the end of the following code combines the encoder, attention and the decoder together: \\ \\ \\
+
+\begin{python}
+# Decoder. 
+decoder_inputs = Input(shape = (None,)) 
+dec_emb_layer = Embedding(y_voc_size, latent_dim, trainable=True) 
 dec_emb = dec_emb_layer(decoder_inputs) 
 
 #LSTM using encoder_states as initial state
-decoder_lstm = LSTM(latent_dim, return_sequences=True, return_state=True) 
-decoder_outputs,decoder_fwd_state, decoder_back_state = decoder_lstm(dec_emb,initial_state=[state_h, state_c]) 
+decoder_lstm = LSTM(latent_dim, return_sequences = True, return_state=True) 
+decoder_outputs,decoder_fwd_state, decoder_back_state = decoder_lstm(dec_emb, initial_state = [state_h, state_c]) 
 
 #Attention Layer
-Attention layer attn_layer = AttentionLayer(name='attention_layer') 
+attn_layer = AttentionLayer(name='attention_layer') 
 attn_out, attn_states = attn_layer([encoder_outputs, decoder_outputs]) 
 
 # Concat attention output and decoder LSTM output 
@@ -268,13 +288,20 @@ decoder_outputs = decoder_dense(decoder_concat_input)
 
 # Define the model
 model = Model([encoder_inputs, decoder_inputs], decoder_outputs) 
-\end{lstlisting}
+\end{python}
 
-%You can also include listings from a file directly:
+The summarized model looks now like Figure \ref{model_sum} with its 81.380.367 parameters.
 
-%\lstinputlisting[language=Python,caption={This is an example of included listing},captionpos=b]{listings/example.py}
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=6in]{photos/model_sum}\\
+		\caption{Model summarization with parameters}\label{model_sum}
+	\end{center}
+\end{figure}
 
 \section{Evaluation}\label{ss:eval}
+
+The model and output can be evaluated on multiple ways as explained in Section \ref{ss:ev}. A common approach for evaluating a model is by saving the training and testing loss during each training epoch. The loss function used for this model is the \textit{sparse\_categorical\_crossentropy}, because it converts the integer sequences to a one-hot encoded vector. This saves up a lot of memory issues. One-hot encoding transform arrays into only ones and zeros. The stored losses of each epoch can be plotted into a graph shown in Figure \ref{eval}.
 
 \textbf{Loss}
 
@@ -285,13 +312,9 @@ model = Model([encoder_inputs, decoder_inputs], decoder_outputs)
 	\end{center}
 \end{figure}
 
+Figure \ref{eval} shows, that the training can be stopped at epoch 10, because the loss is beginning to increase again, which is bad, because the loss needs to be as small as possible. 
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=6in]{photos/model_sum}\\
-		\caption{Model summarization with parameters}\label{model_sum}
-	\end{center}
-\end{figure}
+Keras provides a prediction function for the model which can be used for a review to generate the summary. The output of the prediction is an integer array which can be mapped back into the original, but cleaned words. The following table presents the computed summaries with the input reviews and the original summaries as a check for quality of the summaries:
 
 \textbf{Predictions}
 
@@ -307,4 +330,15 @@ model = Model([encoder_inputs, decoder_inputs], decoder_outputs)
 	\end{tabular} \\ \\
 	\caption{This table shows some example outputs for the training data from my trained model} 
 \end{table}
+
+Those predictions have been made with a training of 224814 samples and was validated on 24980 samples for the validation (testing) loss. After epoch 12 the training stopped due of early stopping, because the loss increased again instead of further decreasing. This can be caused by many reasons. \\ 
+
+\textbf{Improving the models performance} 
+
+\begin{itemize}
+	\item Increasing the training data. Since I used only half of the available training data, additional 250.000 data entries can be used for the training. Nevertheless, this requires a lot of computing power and every epoch can take up even on a strong GPU up to 2-3 hours with 500.000 values.
+	\item There exist enhanced LSTM models like the Bidirectional LSTM, which is capable of capturing the context from the forward and backward process of the sentence before feeding it into the decoder. hence this takes the double computation time as well.
+	\item Using the Beam-Search strategy from Section \ref{ss:abstractive} can lead to better results
+	\item Pointer-Generator Networks from Section \ref{ss:neuralgen} can improve the models performance dramatically as well, but it was out of the scope for me to implement it, because it requires a lot of knowledge to implement it properly.
+\end{itemize}
 
