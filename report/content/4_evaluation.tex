@@ -1,8 +1,31 @@
 \chapter{Generation of transferable knowledge}\label{ch:knowledge}
 
-Modular expandability of my project.
-Classification in social context
+This last chapter conducts some final thoughts about my bachelor thesis.
+
+Training the model was not an easy task. For the training I needed to rent a graphical computation power from the website \textit{www.floydhub.com}. Without renting a high power graphics card, the training process would have taken around 30 hours on my personal computer, because the training would have been made on the CPU. I paid 12\$ for 10 hours of GPU (graphics card) power. This website is more easy compared to common server renting websites like Amazon Web Services \footnote{https://aws.amazon.com/de/} or Microsoft Azure \footnote{https://azure.microsoft.com/}. With this rented power the training process only took around 3 hours. Since I have pushed this Bachelors Thesis on Github \footnote{www.github.com}, it was easy to use \textit{floydhub}, because they support Github repositories.
+
+The predictions from the last Section \ref{ss:eval} showed that the generated summaries could be much more accurate. There are multiple ways to further enhance the quality of the generated summaries with the following approaches. 
+
+\textbf{Improving the models performance} 
+
+\begin{itemize}
+	\item Increasing the training data. Since I used only half of the available training data, additional 250.000 data entries can be used for the training. Nevertheless, this requires a lot of computing power and every epoch can take up even on a strong GPU up to 2-3 hours with 500.000 values.
+	\item There exist enhanced LSTM models like the Bidirectional LSTM, which is capable of capturing the context from the forward and backward process of the sentence before feeding it into the decoder. hence this takes the double computation time as well.
+	\item Using the Beam-Search strategy from Section \ref{ss:abstractive} can lead to better results
+	\item Pointer-Generator Networks from Section \ref{ss:neuralgen} can improve the models performance dramatically as well, but it was out of the scope for me to implement it, because it requires a lot of knowledge to implement it properly.
+\end{itemize}
 
 
+Making changes in the model architecture requires a lot of knowledge, so the easiest but most expensive way is increasing the training data size. 
 
-%\lstinputlisting[language=Python,caption={This is an example of included listing},captionpos=b]{listings/import.py}
+It made a lot of fun to write this thesis and I learned so much new while investigating through text generation and text summarization.
+
+This project can be cloned from Github under the following link:
+
+\begin{tcolorbox}
+	https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM
+\end{tcolorbox}
+
+Thank you for reading
+
+Tim Löhr

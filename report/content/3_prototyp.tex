@@ -301,7 +301,7 @@ The summarized model looks now like Figure \ref{model_sum} with its 81.380.367 p
 
 \section{Evaluation}\label{ss:eval}
 
-The model and output can be evaluated on multiple ways as explained in Section \ref{ss:ev}. A common approach for evaluating a model is by saving the training and testing loss during each training epoch. The loss function used for this model is the \textit{sparse\_categorical\_crossentropy}, because it converts the integer sequences to a one-hot encoded vector. This saves up a lot of memory issues. One-hot encoding transform arrays into only ones and zeros. The stored losses of each epoch can be plotted into a graph shown in Figure \ref{eval}.
+The model and output can be evaluated on multiple ways as explained in Section \ref{ss:ev}. A common approach for evaluating a model is by saving the training and testing loss during each training epoch. The loss function used for this model is the \textit{sparse\_categorical\_crossentropy}, because it converts the integer sequences to a one-hot encoded vector. This prevents a lot of memory issue related problems. One-hot encoding transform arrays into only ones and zeros. The stored losses of each epoch can be plotted into a graph shown in Figure \ref{eval}.
 
 \textbf{Loss}
 
@@ -328,17 +328,64 @@ Keras provides a prediction function for the model which can be used for a revie
 		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}delicious sherry flavor salad \\ dressing great used marinade\\ give try sweet balsamic \\ tart red wine vinegar\end{tabular}}    & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}yummy sweet \\ sherry vinegar\end{tabular}} & \multicolumn{1}{c|}{love these}                &  \\ \cmidrule(r){1-3}
 		\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}received medium roast receive \\ correct coffee shown picture \\ disappointed suppose\\  ill try lot trouble return\end{tabular}} & \multicolumn{1}{c|}{wrong coffee received}                                                 & \multicolumn{1}{c|}{coffee received}           &  \\ \bottomrule
 	\end{tabular} \\ \\
-	\caption{This table shows some example outputs for the training data from my trained model} 
+	\caption{\label{tab:pred}This table shows some example outputs for the training data from my trained model} 
 \end{table}
 
-Those predictions have been made with a training of 224814 samples and was validated on 24980 samples for the validation (testing) loss. After epoch 12 the training stopped due of early stopping, because the loss increased again instead of further decreasing. This can be caused by many reasons. \\ 
+The following predictions have been made with a training of 224814 samples and was validated on 24980 samples for the validation (testing) loss. After epoch 12 the training stopped due of early stopping, because the loss increased again instead of further decreasing. 
 
-\textbf{Improving the models performance} 
+\textbf{BLEU Score}
 
-\begin{itemize}
-	\item Increasing the training data. Since I used only half of the available training data, additional 250.000 data entries can be used for the training. Nevertheless, this requires a lot of computing power and every epoch can take up even on a strong GPU up to 2-3 hours with 500.000 values.
-	\item There exist enhanced LSTM models like the Bidirectional LSTM, which is capable of capturing the context from the forward and backward process of the sentence before feeding it into the decoder. hence this takes the double computation time as well.
-	\item Using the Beam-Search strategy from Section \ref{ss:abstractive} can lead to better results
-	\item Pointer-Generator Networks from Section \ref{ss:neuralgen} can improve the models performance dramatically as well, but it was out of the scope for me to implement it, because it requires a lot of knowledge to implement it properly.
-\end{itemize}
+As introduced in Section \ref{ss:ev}, there are two main approaches for evaluating the accuracy of the generated summary. The first way is using the BLEU Score, which was initially published for evaluating machine translation generations. The following Table \ref{tab:rouge} evaluates the predicted summaries from Table \ref{tab:pred} with multiple Rouge Scores.
 
+
+\begin{table}[]
+	\begin{tabular}{@{}lcccc@{}}
+		\toprule
+		\multicolumn{1}{c}{\textbf{Scoring Method}}                                                                                         & \multicolumn{1}{l}{\textbf{Rouge-1}} & \multicolumn{1}{l}{\textbf{Rouge-2}} & \multicolumn{1}{l}{\textbf{Rouge-L}} & \multicolumn{1}{l}{\textbf{Rouge-BE}} \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: too salty and dry\\ Predicted: too salty\end{tabular}}}           & \multicolumn{1}{c|}{\textit{0.667}}  & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{\textit{0.667}}  & \multicolumn{1}{c|}{0}                \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: at the movies and home\\ Predicted: love it\end{tabular}}}        & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}                \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: must be good\\ Predicted: my dogs love these\end{tabular}}}       & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}                \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: yummy sweet sherry vinegar\\ Predicted: love these\end{tabular}}} & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}               & \multicolumn{1}{c|}{0}                \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: wrong coffee received\\ Predicted: coffee received\end{tabular}}} & \multicolumn{1}{c|}{\textit{0.8}}    & \multicolumn{1}{c|}{\textit{0.66}}   & \multicolumn{1}{c|}{\textit{0.8}}    & \multicolumn{1}{c|}{\textit{0.66}}    \\ \bottomrule
+	\end{tabular}
+	\caption{\label{tab:rouge}The generated Sentences evaluated with the Rouge Score}
+\end{table}
+
+It can be seen that the Rouge score produces semantically incorrect scores, because it only looks whether the words in the original and predicted summaries are similar. 
+
+For that reason, the prediction 
+
+\begin{tcolorbox}
+	Original: "yummy sweet sherry vinegar" \\
+	Prediction: "love these"
+\end{tcolorbox}
+
+produces a Rouge score of 0, even though there is a semantic similarity. Whereas the summary
+
+\begin{tcolorbox}
+	Original: "wrong coffee received" \\
+	Prediction: "coffee received"
+\end{tcolorbox}
+
+scores really high, even though the summary is incorrect. The The summary model did not capture the dependency of \textbf{wrong}. For this reason I tried evaluating the five summaries with the \textit{BLEU Score} mentioned in Section \ref{ss:ev}.
+
+\textbf{BLEU Score}
+
+In the following Table \ref{tab:bleu}, I calculated up to the \textit{4-gram} BLEU Scores for the predictions in Table \ref{tab:pred}. 
+\begin{table}[]
+	\begin{tabular}{@{}lcccc@{}}
+		\toprule
+		\multicolumn{1}{c}{\textbf{Scoring Method}}                                                                                         & \multicolumn{1}{l}{\textbf{1-gram}}    & \multicolumn{1}{l}{\textbf{2-gram}}    & \multicolumn{1}{l}{\textbf{3-gram}} & \multicolumn{1}{l}{\textbf{4-gram}} \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: too salty and dry\\ Predicted: too salty\end{tabular}}}           & \multicolumn{1}{c|}{\textit{0.367879}} & \multicolumn{1}{c|}{0.367879}          & \multicolumn{1}{c|}{\textit{0}}     & \multicolumn{1}{c|}{0}              \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: at the movies and home\\ Predicted: love it\end{tabular}}}        & \multicolumn{1}{c|}{0}                 & \multicolumn{1}{c|}{0}                 & \multicolumn{1}{c|}{0}              & \multicolumn{1}{c|}{0}              \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: must be good\\ Predicted: my dogs love these\end{tabular}}}       & \multicolumn{1}{c|}{0}                 & \multicolumn{1}{c|}{0}                 & \multicolumn{1}{c|}{0}              & \multicolumn{1}{c|}{0}              \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: yummy sweet sherry vinegar\\ Predicted: love these\end{tabular}}} & \multicolumn{1}{c|}{0}                 & \multicolumn{1}{c|}{0}                 & \multicolumn{1}{c|}{0}              & \multicolumn{1}{c|}{0}              \\ \midrule
+		\multicolumn{1}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Original: wrong coffee received\\ Predicted: coffee received\end{tabular}}} & \multicolumn{1}{c|}{\textit{0.606531}} & \multicolumn{1}{c|}{\textit{0.606531}} & \multicolumn{1}{c|}{\textit{0.8}}   & \multicolumn{1}{c|}{\textit{0.66}}  \\ \bottomrule
+	\end{tabular}
+	\caption{\label{tab:bleu}The generated sentences evaluated with the BLEU Score}
+\end{table}
+
+Since the BLEU Score is evaluating the \textit{n-grams} of the texts, it behaves similarly as the Rouge Score. It can even be said that Rouge and BLEU are complementing each other, due of the BLEU measures how much of the words in the generated summary appear in the original summary, whereas the Rouge measure how much of the words in the original summary appear in the generated summary.
+
+Conducting evaluations on extractive text summarizers turns out to be way easier, because the extractive approach picks its weighted important sentences and appends it to the summary. So it uses only the vocabulary from the trained text. The abstractive summarizer showed to be more complex to evaluate properly due to its flexible structure.
+A recent paper in 2019 conducted research in how to properly evaluate an abstractive text summarizer. The team of Kryscinski showed that the current evaluation protocol reflects human judgments only in a week way, while it also fails to evaluate critical features, for example factual correctness (semantic correctness) of text summarization \cite{kryscinski-etal-2019-neural}.
