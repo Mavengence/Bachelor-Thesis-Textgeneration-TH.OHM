@@ -2,17 +2,17 @@
 
 \epigraph{\textit{Each problem that I solved became a rule, which served afterwards to solve other problems.}}{Rene Descartes}
 
-The goal of this chapter is to survey the development of the text generation from the old days until 2020. 
+The goal of this chapter is to survey the development of the text generation from the very beginning until today, 2020. 
 
-As conducted from the Introduction Chapter 1, Text Generation is the generic term for the output part of an automatic text summarizer. The research on Neural Text Generation and other fields had a significant impact on the development of automatic text summarizers. In this chapter, I begin with the definition of a text generator in general and its historical development. I state the most important steps from a basic text generator to a neural text generator. In the following, I focus on the text summarizer and its historical evolution with the impacts of the neural text generators. There are several human-like summarizing state of the art technologies nowadays for the automatic text summarizers, but they are developed under a large scale data set and computational high demanding power. This chapter is therefor the background knowledge for my prototype, but it also provides a peek into the latest state of the art technology which cannot be applied at home with a low power computer, but is only possible for big companies like Google.
+As conducted from the Introduction Chapter 1, Text Generation is the generic term for the output part of an automatic text summarizer. The research on Neural Text Generation and other fields had a significant impact on the development of automatic text summarizers. In this chapter, I begin with the definition of a text generator in general and its historical development. I state the most important steps from a generic text generator to a neural text generator. In the following, I focus on the text summarizer and its historical evolution with the impacts of the neural text generators. There are several different human-like summarizing state of the art technologies nowadays for the automatic text summarizers, but they are developed under a large scale data set and demand a powerful graphics unit. Therefore, this chapter is the background knowledge for my prototype, but it also provides a peek into the latest state of the art technology which cannot be applied at home with a low power computer but is only possible to achieve for big companies like Google.
 
 \section{Text Generation Concepts}\label{ss:history}
 
-Text Generation, Language Modeling or Natural Language Generation are different words with basically the same meaning, but I will keep the denotation of text generation throughout this thesis. A widely-cited survey from Reiter and Dale 1997 (Page 57-87) \cite{reiter} characterizes text generation as 'the sub-field of Artificial Intelligence and computational linguistics that is concerned with the construction of computer systems than can produce readable texts in English or other human languages from some underlying non-linguistic representation of information' \cite{reiter}. This definition implies rather a data-to-text approach instead of the text-to-text approach from Table \ref{tab:nlp_table}, but in 1997 the rule-based approach dominated the neural end-to-end (Neural Text Generation) methods (Figure \ref{rules_based}). For that reason, in 2003 Evans declares Text Generation as quite difficult to define \cite{evans} (Page 144-151). Most researchers agree on the text as the output synthesis part of the input-output system (e.g. Text Summarization or Image caption generation \cite{mitchell}), whereas the input part cannot be as easily distinguished \cite{mcdonald} (Page 191-197).
+Text Generation, Language Modeling or Natural Language Generation are different words with similar meanings. I will keep the denotation of text generation throughout this thesis. A widely-cited survey from Reiter and Dale 1997 (Page 57-87) \cite{reiter} characterizes text generation as 'the sub-field of Artificial Intelligence (AI) and computational linguistics that is concerned with the construction of computer systems that can produce readable texts in English or other human languages from some underlying non-linguistic representation of information' \cite{reiter}. This definition rather implies a data-to-text approach instead of the text-to-text approach from Table \ref{tab:nlp_table}, but in 1997 the rule-based approach dominated the neural end-to-end, Neural Text Generation (NTG), methods (Figure \ref{rules_based}). For that reason, in 2003, Evans declares text generation as quite difficult to define \cite{evans} (Page 144-151). Most researchers agree on the text as the output synthesis part of the input-output system (e.g., Text Summarization or Image caption generation \cite{mitchell}), whereas the input part cannot be as easily distinguished \cite{mcdonald} (Page 191-197).
 
 \subsection{Text Generation Tasks}
 
-For the Text Generation input-output system, the system can be divided into six sub-problems \cite{reiter}. The following bullet points contain the six most crucial steps:
+For the text generation input-output system, the system can be divided into six sub-problems \cite{reiter}. The following bullet points contain the six most crucial steps:
 
 \begin{itemize}
 	\item \textbf{Content determination}: Deciding which information to include in the text under construction
@@ -23,25 +23,28 @@ For the Text Generation input-output system, the system can be divided into six 
 	\item \textbf{Linguistic realization}: Combining all words and phrases into well-formed sentences
 \end{itemize}
 
-These six tasks can be though of an early decision processes. They suggest both a chronological order in which the tasks need to be solved, as well as an distinction between strategy and tactics. This distinction goes back to Thompson H. in 1977, where he first declared this two parts \cite{thompson}. Still, when it comes to modern neural state of the art Text Generation, the steps intersect in some ways. In the following comes a brief introduction to each of the steps. For the headline example is no aggregation necessary.
+These six tasks illustrate the first approach for early decision processes. 
+The chronological order plays a vital role for this tasks. Furthermore, they can be distinct into a strategy and tactics part.
+Thompson H. declared these two distinctions for the first time in 1977 \cite{thompson}. Still, when it comes to a modern neural state of the art Text Generation, the steps intersect in some ways. In the following comes a brief introduction to each of the steps. No aggregation is necessary for the headline example.
 
 \subsubsection{Content Determination}\label{ss:content}
 
-The first step is to determine which content should be present in the generated output text. Usually there is more information stored in the input than in the output. For this reason a certain \textit{choice} must be undertaken for the content. As mention in the case study (Section \ref{ss:case}, the headline can be summarized very precisely given only the first few sentences of the news. In this special case the determined content could be the first three sentences. For shorten a longer document into a summary, the key points need to be abstraced into a collection of preverbal messages and semantic representations of information, often expressed in the form of a logical or database like style \cite{gatt}. This means basically to group semtantical similar words and phrases together, to remove redundancies. This step followed for the most time a rule-based approach, but in recent years researchers developed a data-driven approach (more in Section \ref{ss:archi}). For example, Barzilay and Lee (2004) developed a method to determine the content through Hidden Markov Models (HMM) \cite{lee} (Pages 113-120). Hidden Markow Models are stochastical models named after the russian mathematician A. A. Markow. They chain up different states of a system, in our case different topics of one or many news articles. This topics automatically will be clustered together as sentences based on the natural language semantical meaning \cite{gatt}. 
-
-
+The first step is to determine which content should be present in the generated output text. Usually, there is more information stored in the input than in the output. For this reason, a certain \textit{choice} must be undertaken for the content. As mention in the case study (Section \ref{ss:case}, the headline can be summarized very precisely, given only the first few sentences of the news. In this particular case, the determined content could be the first three sentences. 
+The process of shortening down a document into a summary, the text's key points must be stored into some collection of preverbal messages.
+A semantic representation of information is often expressed in the form of a logical or database like style \cite{gatt}. That can be achieved through grouping semantically similar words and phrases and to remove redundancies (e.g., plays and play into only play). 
+This step followed for the most time a rule-based approach, but in recent years researchers developed a data-driven approach (more in Section \ref{ss:archi}). For example, Barzilay and Lee (2004) developed a method to determine the content through Hidden Markov Models (HMM) \cite{lee} (Pages 113-120). Hidden Markow Models are stochastical models named after the Russian mathematician A. A. Markow. They chain up different states of a system, in our case, different topics of one or many news articles. These topics will be automatically clustered together as sentences based on the natural language semantical meaning \cite{gatt}. 
 
 \subsubsection{Text Structuring}
 
-After successfully deciding which contents will be used in the generated text, the structure or order of this fragments need to be determind. Given the example article from Table \ref{tab:google}:
+After successfully deciding which contents will be used in the generated text, the structure and order of these fragments need to be determined. Given the example article from Table \ref{tab:google}:
 
 \begin{tcolorbox}
-\begin{center}
-		Australian wine exports hit a record 52.1 million liters worth 260 million dollars (143 million us) in september, the government statistics office reported on monday 
-\end{center}
+	\begin{center}
+		Australian wine exports hit a record 52.1 million liters worth 260 million dollars (143 million us) in September, the government statistics office reported on Monday 
+	\end{center}
 \end{tcolorbox}
 
-A good news headline should give all necessary information for the reader, namely:
+A good news headline should give all the necessary information for the reader, namely:
 
 \begin{itemize}
 	\item Where did it happen? -> \textit{Australia}
@@ -50,11 +53,11 @@ A good news headline should give all necessary information for the reader, namel
 	\item When did it happen? -> \textit{September}
 \end{itemize}
 
-For our example the content was already predefined in the first step, now the important words and sentences will be reorder based on this four questions. Generalization approaches for the ordering task have already been proposed. Lapatas approach \cite{lapata} (Page 471-484) tries to find an optimal ordering of \textit{information-bearing-items}. This method can even be applied to multi document input, which is more difficult to solve than single document inputs (explained in Section \ref{ss:multidoc}).
+For my example, the content was already predefined in the first step, now the important words and sentences will be reordered based on these four questions. Generalization approaches for the ordering task have already been proposed. Lapatas approach \cite{lapata} (Page 471-484) tries to find an optimal ordering of \textit{information-bearing-items}. This method can even be applied to multi-document input, which is more difficult to solve than single document inputs (explained in Section \ref{ss:multidoc}).
 
 \subsubsection{Sentence Aggregation}
 
-By combining separate sentences with similar meaning into one, the generated text becomes potentially more fluid and enhances the readability \cite{dal} (Pages 383-414) \cite{cheng-mellish2000} (Pages 183-193). For example, an aggregation makes sense for a football games and its results published in the Google News. Google could web scrape the live tickers of goals and after collecting all the data a possible result would be:
+By combining separate sentences with similar meaning into one, the generated text becomes potentially more fluid and enhances the readability \cite{dal} (Pages 383-414) \cite{cheng-mellish2000} (Pages 183-193). For example, an aggregation makes sense for football games and its results published in Google News. Google could web scrape the live tickers of goals, and after collecting all the data, a possible result would be:
 
 \begin{tcolorbox}
 	\begin{center}
@@ -64,7 +67,7 @@ By combining separate sentences with similar meaning into one, the generated tex
 	\end{center}
 \end{tcolorbox}
 
-This is obviously not redundant, because it contains new information in every sentence, but for summarizing it, the sentences can be aggregates into:
+The three tickers are not redundant, because they contain new information in every sentence, but for summarizing it, the sentences can be aggregates into:
 
 \begin{tcolorbox}
 	\begin{center}
@@ -72,11 +75,11 @@ This is obviously not redundant, because it contains new information in every se
 	\end{center}
 \end{tcolorbox}
 
-Aggregation is not an easy task, because it is not intuitive for an algorithm to detect semantic similarities and at the same time new information in that. Furthermore it depends highly on the to achieving output which kind of aggregation the text should undergo. A general approach was proposed by White and Howcraft (2015). They designed an algorithm to detect parallel verb phrases (\textit{scored after}) in multiple (three) sentences and elide the subject and the verb in the generated sentence \cite{white-howcroft-2015-inducing} (Pages 28-37). 
+Aggregation is not an easy task because it is not intuitive for an algorithm to detect semantic similarities and, at the same time, new information in that. Furthermore, it depends highly on the to achieving output which kind of aggregation the text should undergo. White and Howcraft (2015) propose a general approach to this problem. They designed an algorithm to detect parallel verb phrases (\textit{scored after}) in multiple (three) sentences and elide the subject and the verb in the generated sentence \cite{white-howcroft-2015-inducing} (Pages 28-37). 
 
-\subsubsection{Lexicalisation}\label{ss:lex}
+\subsubsection{Lexicalization}\label{ss:lex}
 
-After the sentences have been aggregated and finalized, the next step is lexicalisation, which converts the sentences into natural language. A single event can be expressed by natural language in multiple ways. For example the scoring event from the last section could be expressed as \textit{scored three goals} or \textit{goaled for three times}. The complexity for the lexicalisation step correlates with the amount of alternative sentences available. Furthermore it is important if there summary is limited with an amount of variation \cite{Theune} (Pages 47-86). Whether or not the text shall be processed with lexical variation in its generated sentences or not depends on the application field. In needs to be decided in advance. For example the soccer game is more likely to be converted into a different styles than a weather forecast. Another important difficulty is to design the way on how the lexicalisation cares about gradable properties. For example if the liveticker was:
+After the sentences have been aggregated and finalized, the next step is lexicalization, which converts the sentences into natural language. A single event can be expressed by natural language in multiple ways. For example, the scoring event from the last section could be expressed as \textit{scored three goals} or \textit{goaled for three times}. The complexity of the lexicalization step correlates with the number of alternative sentences available. Furthermore, it is important if their summary is limited with an amount of variation \cite{Theune} (Pages 47-86). Whether or not the text shall be processed with lexical variation in its generated sentences or not depends on the application field. This process decision needs to be decided in advance. For example, the soccer game is more likely to be converted into different styles than a weather forecast. Another important difficulty is to design the way in how the lexicalization cares about gradable properties. If the live ticker was:
 
 \begin{tcolorbox}
 	\begin{center}
@@ -84,17 +87,17 @@ After the sentences have been aggregated and finalized, the next step is lexical
 	\end{center}
 \end{tcolorbox}
 
-Then the systems needs to know whether the football player scored fast in a way that it is an early stage of the game, or he ran in such a fast way and scored with the pace. Humans tend to perceive different, as Power and Williams (2014) pointed out in an evaluation. A timestamp expression of \textit{00:00} can be perceived as \textit{midnight}, \textit{late evening} or simply even \textit{evening} for some people \cite{Power} (Pages 113-134).
+Then the system needs to know whether the football player scored fast in a way that it is an early stage of the game, or he ran in such a fast way and scored with the pace. Humans tend to perceive meanings of words differently, as Power and Williams (2014) pointed out in an evaluation. The time \textit{00:00} can be perceived as \textit{midnight}, \textit{late evening} or simply even \textit{evening} for some people \cite{Power} (Pages 113-134).
 
 
 \subsubsection{Referring Expression}\label{ss:ref}
 
-Referring Expression Generation is highly characterized by Dale and Reiter in 1997. They came up with the idea to identify words and phrases as domain entities. Nowadays this is also known as \textit{Named Entity Recognition}. This step shows some similarity to lexicalisation, but Dale and Reiter pointed out that expression referring is \textit{a discrimination task, where the system needs to communicate sufficient information to distinguish one domain entity from other domain entities} \cite{reiter2}. From the previous example, \textit{Mario Götze} can be denoted with his name, another way would be calling him \textit{football professional} or \textit{the athlete}. Many factors play a role in how to determine which expressions and factors play a role in a particular context. Referring expression generation can basically be broken down into two steps.
-The first step is to decide the shape of referring expression. What type of reference should be used (e.g., a proper name or described with his/her job) \cite{named}. The second is to determine the content of the referring expression (e.g., Mario Götze or the athlete) \cite{named}.
-Rule-based approaches as well as the state of the art Machine Learning approaches have been proposed to solve this task \cite{reiter2}.  
+Referring Expression Generation is highly characterized by Dale and Reiter in 1997. They came up with the idea to identify words and phrases as domain entities. Nowadays, this is also known as \textit{Named Entity Recognition}. This step shows some similarity to lexicalization, but Dale and Reiter pointed out that expression referring is \textit{a discrimination task, where the system needs to communicate sufficient information to distinguish one domain entity from other domain entities} \cite{reiter2}. From the previous example, \textit{Mario Götze} can be denoted with his name. Another way would be calling him \textit{football professional} or \textit{the athlete}. Many factors play a role in how to determine which expressions and factors play a role in a particular context. Referring expression generation can be broken down into two steps.
+The first step is to decide the shape of a referring expression. What type of reference should be used (e.g., a proper name or described with his/her job) \cite{named}. The second is to determine the content of the referring expression (e.g., Mario Götze or the athlete) \cite{named}.
+Rule-based approaches, as well as the state of the art Machine Learning approaches, have been proposed to solve this task \cite{reiter2}.  
 
 The usual limitation of previous referring expression generation systems is that they are not able to generate referring expressions for new, unseen entities \cite{anja} (Pages 294-327). With the use of modern Machine Learning approaches, this limitation has overcome.
-Many tools, for example the \textit{Natural Language Processing Toolkit NLTK} allow the easy transformation from the lexicalized sentence into its named entities. The sentence \textit{Mario Götze scored fast after 3 minutes and 23 seconds} will be transformed into:
+Many tools, for example, the \textit{Natural Language Processing Toolkit NLTK}, allow the easy transformation from the lexicalized sentence into its named entities. The sentence \textit{Mario Götze scored fast after 3 minutes and 23 seconds} will be transformed into:
 
 \begin{tcolorbox}\label{box:1}
 	\begin{flushleft}
@@ -109,7 +112,7 @@ Many tools, for example the \textit{Natural Language Processing Toolkit NLTK} al
 		(9) ('23', 'CD'),\\
 		(10) (Seconds', 'NNS')]
 	\end{flushleft}
-
+	
 	\begin{itemize}
 		\item \textbf{NNP} = noun, proper, singular (1,2)
 		\item \textbf{VBD} = verb, past tense (3)
@@ -120,9 +123,12 @@ Many tools, for example the \textit{Natural Language Processing Toolkit NLTK} al
 		\item \textbf{CC} = conjunction, coordinating (8)
 	\end{itemize}
 \end{tcolorbox}
+
+Assigning words to named entities can even be used on its on to detect organizations, people or other relevant objects in a sentence.
+
 \subsubsection{Linguistic Realization}
 
-Finally after detecting all relevant words and structures of the input text, it only needs to be combined into a well-formed sentence. Usually referred to as linguistic realisation, this task involves ordering constituents of a sentence, as well as generating the correct morphological shapes (e.g verb conjugations) \cite{gatt} (Pages 18-20). The special task in this step is whether the generated output needs to make use of words not present in the given text. In the case of text summarization, this is often referred to as an \textit{abstractive} or \textit{extractive} approach (shown in Section \ref{ss:exabs}). This task can be thought of an non-isomorphic (not reservable, because the same word can have different named entities dependent on the sentence) structure \cite{ballesteros-etal-2015-data} (Pages 387-397). The three most common approaches for the realization are:
+Finally, after detecting all relevant words and structures of the input text, it only needs to be combined into a well-formed sentence. Usually referred to as linguistic realization, this task involves ordering constituents of a sentence, as well as generating the correct morphological shapes (e.g., verb conjugations) \cite{gatt} (Pages 18-20). The special task in this step is whether the generated output needs to make use of words not present in the given text. In the case of text summarization, this is often referred to as an \textit{abstractive} or \textit{extractive} approach (shown in Section \ref{ss:exabs}). This task can be thought of a non-isomorphic (not reservable, because the same word can have different named entities dependent on the sentence) structure \cite{ballesteros-etal-2015-data} (Pages 387-397). The three most common approaches for the realization are: \\
 
 \begin{itemize}
 	\item Human-crafted templates
@@ -130,11 +136,12 @@ Finally after detecting all relevant words and structures of the input text, it 
 	\item Statistical approaches
 \end{itemize}
 
-The most modern and widely used way is the statistical approach, but within that, there are several different methods to make us of the statistics. Just to give an example, Bohnet et al. (2010) \cite{bohnet-etal-2010-broad} (Pages 98-106) describe a realizer with underspecified dependency structures as input, Support Vector Machine (SVM) based environment. The classifiers are organised in a cascade to decode semantic input into the corresponding syntactic features. A Support Vector Machine is an algorithm to classify input whether it belongs to a specific topic or e.g. named entity from the last section or not. This can also be referred to as being a \textbf{Deep Learning} approach and it was applied on a common metric for measuring the accuracy of a generated e.g. text summarization called BLEU. This metric will be explained in Section \ref{ss:ev}. Furthermore, the more decision the statistical generating system makes and the more complex it becomes, the more abstract will the output be \cite{gall} (Page 21). This paves the way for an stochastical end-to-end system, like Konstas and Lapata showed in 2013 \cite{Konstas:Lapata:2013}. This presents a step words the automated text summarizations.
+The most modern and widely used way is the statistical approach, but within that, there are several different methods to make use of the statistics. To give an example, Bohnet et al. (2010) \cite{bohnet-etal-2010-broad} (Pages 98-106) describe a realizer with underspecified dependency structures as input, Support Vector Machine (SVM) based environment. The classifiers are organized in a cascade to decode semantic input into the corresponding syntactic features. A Support Vector Machine is an algorithm to classify input, whether it belongs to a specific topic or e.g., named entity from the last section or not. SVM is a machine learning approach, and it tested on a standard metric for measuring the accuracy of a generated e.g., text summarization called BLEU. This metric will be explained in Section \ref{ss:ev}.
+Furthermore, the more decision the statistical generating system makes, and the more complicated it becomes, the more abstract the output will be \cite{gall} (Page 21). This paves the way for a stochastical end-to-end system like Konstas and Lapata showed in 2013 \cite{Konstas:Lapata:2013}. They present a first step towards the automated text summarizations.
 
 \subsection{Architectures and Approaches}\label{ss:archi}
 
-After the overview of the six main tasks for Text Generation systems, this section focuses on the way those tasks can be organized together. There are three main approaches for the Text Generation architecture shown in the dark boxes in Figure \ref{architecture}. The light boxes illustrate the outputs from the main stages.
+After the overview of the six main tasks for Text Generation systems, this section focuses on the way those tasks are organized together. There are three main approaches for the Text Generation architecture shown in the dark boxes in Figure \ref{architecture}. The light boxes illustrate the outputs from the main stages.
 
 \begin{figure}
 	\begin{center}
@@ -143,7 +150,7 @@ After the overview of the six main tasks for Text Generation systems, this secti
 	\end{center}
 \end{figure}
 
-Since the design of the modules in Figure \ref{architecture}, a lot has changed. The modular view is challenged by the planning-based and data-driven approach, because the modular view is not flexible enough for modern requirements, still it provides a good sequence structure and the original idea remains until now. The following three approaches will be explained in more detail in this section:
+Since the design of the modules in Figure \ref{architecture}, a lot has changed. The modular view is challenged by the planning-based and data-driven approach, because the modular view is not flexible enough for modern requirements. Still, it provides a good sequence structure, and the original idea remains until now. The following three approaches will are explained in more detail in this section:
 
 \begin{itemize}
 	\item Rule-based, modular approaches
@@ -153,58 +160,57 @@ Since the design of the modules in Figure \ref{architecture}, a lot has changed.
 
 \subsubsection{Rule-based approach}\label{ss:rule}
 
-The rule-based, or modular approach shown in Figure \ref{architecture}, is a classical approach from the early Artificial Intelligence research. It is designed to show a clear division between the sub-tasks, but with sometimes big variations among them. The three-stage architecture was originally called \textit{consensius pipeline}, because the it is in the design of a pipeline and it was the de-facto standard in the year 2000 \cite{reiter2}. This pipeline share many similarities with the state of the art architecture used for text summarization in the year 2001 introduced by Mani et. al. \cite{mani}. It can be broken down into the following steps \cite{gatt} (Page 23):
+The rule-based or modular approach shown in Figure \ref{architecture}, is a classical approach from the early Artificial Intelligence research. It is designed to show a clear division between the sub-tasks, but with sometimes big variations among them. The three-stage architecture was originally called \textit{consensius pipeline} because it is in the design of a pipeline, and it was the de-facto standard in the year 2000 \cite{reiter2}. This pipeline share many similarities with the state of the art architecture used for text summarization in the year 2001, introduced by Mani et al. \cite{mani}. It can be broken down into the following steps \cite{gatt} (Page 23):
 
 \begin{itemize}
-	\item \textbf{Analysis} of the source text (single or multi document). This first stage includes \textit{Text Planning}, which shares similar aspects with the Text Planner from Figure \ref{architecture}. One of the tasks for this step is \textit{Content Determination}.
-	\item \textbf{Transformation} of the selected input. This phase includes processing steps like \textit{Text Structuring} and \textit{Text Aggregation} on the selected text. It is especially important when it comes to abstractive text summarization (Section \ref{ss:exabs}). This phase shares a number of similarities to the \textit{Sentence Planner} from Figure \ref{architecture}.
-	\item \textbf{Synthesis} produces the summary of the input based on the transformed selected input. The higher the abstraction level of the output should be, the more important is this phase. It can be seen as the \textit{Realiser} with the methods of the \textit{Linguistic Realiser} from the previous section.
+	\item \textbf{Analysis} of the source text (single or multi-document). This first stage includes \textit{Text Planning}, which shares similar aspects with the Text Planner from Figure \ref{architecture}. One of the tasks for this step is \textit{Content Determination}.
+	\item \textbf{Transformation} of the selected input. This phase includes processing steps like \textit{Text Structuring} and \textit{Text Aggregation} on the selected text. It is especially important when it comes to abstractive text summarization (Section \ref{ss:exabs}). This phase shares several similarities to the \textit{Sentence Planner} from Figure \ref{architecture}.
+	\item \textbf{Synthesis} produces the summary of the input based on the transformed selected input. The higher the abstraction level of the output should be, the more important this phase becomes. It can be seen as the \textit{Realizer} with the methods of the \textit{Linguistic Realiser} from the previous section.
 \end{itemize}
 
-The strict breakdown into clear stages (modules) comes with the cost of decreased flexibility. There is not always a rule for each task and the state of the art results are achieved by abstractive based methods for Text Generation. Those alternative approaches with a better abstraction level come on the other hand with the cost of blurred boundaries in the single stages. The basic idea is to create hand-crafted templates for all possible circumstances. To keep up with the football example, a template could look like this:
+The strict breakdown into clear stages (modules) comes with the cost of decreased flexibility. There is not always a rule for each task, but the abstractive based methods for Text Generation achieve the state of the art results. Those alternative approaches with a better abstraction level come on the other hand with the cost of blurred boundaries in the single stages. The basic idea is to create hand-crafted templates for all possible circumstances. To keep up with the football example, a template could look like this:
 
 \begin{tcolorbox}
 	goals(
-		\begin{addmargin}[1cm]{1cm}
-			player-name = 'Mario Götze',\\
-			minute = 19,\\
-			seconds = 23,\\
-			player-number = 10
-		\end{addmargin}
-		
+	\begin{addmargin}[1cm]{1cm}
+		player-name = 'Mario Götze',\\
+		minute = 19,\\
+		seconds = 23,\\
+		player-number = 10
+	\end{addmargin}
+	
 	)\\
 	
 	foul(
-		\begin{addmargin}[1cm]{1cm}
-			by-player = 'Mario Götze',\\
-			to-player = 'Thomas Müller',\\
-			minute = '20',\\
-			second = '12'
-		\end{addmargin}
+	\begin{addmargin}[1cm]{1cm}
+		by-player = 'Mario Götze',\\
+		to-player = 'Thomas Müller',\\
+		minute = '20',\\
+		second = '12'
+	\end{addmargin}
 	)
 \end{tcolorbox}
 
-Even for a single football game it is obviously not possible to create a template with all possibilities. There may be some cases in which the possible combination of semantic units is not as big as in a single football game. In this cases a rule-based template could make sense, but for the most modern use-cases this approach is obsolete.
+Even for a single football game, it is not possible to create a template with all possibilities. There may be some cases in which the possible combination of semantic units is not as big as in a single football game. In these cases, a rule-based template could make sense, but for the most modern use-cases, this approach is obsolete.
 
-Even in the rule-based architectures have been many developments proposed, but for the sake of simplicity I want to discuss the modern approaches in more details than this old ones.
+Even in rule-based architectures, there have been many developments proposed, but for the sake of simplicity, I want to discuss the modern approaches in more detail than the old ones.
 
 \subsubsection{Planning-based approach}
 
-In the Artificial Intelligence field, the planning problem can be described as the process of detecting a sequence of one or more actions to satisfy an to achieving goal \cite{gatt} (Page 25). The classical planning-based approached was introduced by Fikes and Nilsson back in 1971 \cite{Fikes:71} (Pages 189-208). The idea was to to store actions into tuples containing of the preconditions and effects of the action respectively. In this way, planning-based means to regard language as an action \cite{clark}. 
+In the Artificial Intelligence field, the planning problem can be described as the process of detecting a sequence of one or more actions to satisfy a to achieving goal \cite{gatt} (Page 25). The classical planning-based approached was introduced by Fikes and Nilsson back in 1971 \cite{Fikes:71} (Pages 189-208). The idea was to store actions into tuples containing the preconditions and effects of the action, respectively. In this way, planning-based means to regard language as an action \cite{clark}. 
 
-Basically no restriction prevents the actions from choosing a type that can be inserted into a plan, plan-based approaches cut across the edges of many Natural Text Generation tasks that are normally strictly stacked in the classical pipeline architecture (Figure \ref{architecture}) \cite{gatt}. This means that the plan-based approach does not rely on the pipeline architecture, but steps are whirled together and follow different sequences than usually. This allows the input to be more flexibly processed. The most modern way for an planning-approach is the \textit{stochastical planning using Reinforcement Learning}. Reinforcement Learning means, that the algorithm has an implemented reward and punishment variable, which allows the algorithm to notice by itself when a certain action will be rewarded or punished. The reward and punishment need to manually configured. The Text Generation process could be modeled by an Long Short Term Memory (explained in Section \ref{ss:lstm}. The time transitions \textit{t} and the following \textit{t+1}, ... , are associated with a reinforcement signal, via the reward or punishement function to adjust the behaviour of the wanted output. 
-	
-Rieser et al. (2011) pointed out that this approach is effective in optimising information presentation when generating restaurant recommendations \cite{rieser}. Janarthanam and Lemon (2014) applied this method to improve the choice of information for selecting in a referring expression, given the knowledge of the user.  As the user acquires new knowledge in the course of a dialogue, the system learned to adapt its behaviour by changing its internal user-model \cite{janarthanam-lemon-2014-adaptive} (Pages 883-920).
+Basically, no restriction prevents the actions from choosing a type that can be inserted into a plan, plan-based approaches cut across the edges of many natural text generation tasks that are normally strictly stacked in the classical pipeline architecture (Figure \ref{architecture}) \cite{gatt}. This means that the plan-based approach does not rely on the pipeline architecture, but steps are whirled together and follow different sequences than usual. This allows the input to be more flexibly processed. The most modern way for a planning-approach is the \textit{stochastical planning using Reinforcement Learning}. Reinforcement Learning means that the algorithm has an implemented reward and punishment variable, which allows the algorithm to notice by itself when a certain action will be rewarded or punished. The reward and punishment need to be manually configured. The text generation process could be modeled by a Long Short Term Memory (LSTM) (explained in Section \ref{ss:lstm}. The time transitions \textit{t} and the following \textit{t+1}, ... , are associated with a reinforcement signal, via the reward or punishment function to adjust the behavior of the desired output. 
+
+Rieser et al. (2011) pointed out that this approach is useful in optimizing information presentation when generating restaurant recommendations \cite{rieser}. Janarthanam and Lemon (2014) applied this method to improve the choice of information for selecting a referring expression, given the knowledge of the user.  As the user acquires new knowledge in the course of a dialogue, the system learned to adapt its behavior by changing its internal user-model \cite{janarthanam-lemon-2014-adaptive} (Pages 883-920).
 
 \subsubsection{Data-driven approach}\label{ss:data}
 
-Data-driven models experience recently more and more attention in the Text Generation community. They provide the flexibility and potential to overcome the templates based approaches. Even in the past six years, there have been plenty of studies which show the successes of data-driven models. For example on Dinu and Baroni (2014) recommend that the Text Generation can be performed by using different distributional semantic models \cite{dinu-baroni-2014-make} (Pages 624–633). Another example is from Swanson in 2014 as well, where he performed Text Generation with language modeling on a specified vocabulary constraint \cite{swanson-etal-2014-natural} (Page 124). All of this methods and data-driven approaches in general require a lot of training data. The first step in general for such system is to build up an so-called \textit{corpus}. A corpus can be viewed as a kind of template as well, but the way it is used is completely different. The corpus is created through the training of a huge training data set. It consists of a basic set of utterances and it can be further manually extended and redefined \cite{elena} (Page 4). The data-driven model can even be used for a general purpose Machine Translation system, which can respectively even be adapted to a specific domain itself (shown by Wang et al. \cite{wang-hirst-2009-extracting} Pages 471–477). The corpus contains now a set of vocabulary which can be extended through adding new training instances (e.g. user inputs or synonyms) into the \textit{lexicon}. 
-Extending and diversifying the corpus enhances the quality of the interaction between
-the system and the user and further enriches the conversational level, mostly the systems response. This can be regarded as a higher abstraction level, used for the modern text summarization systems. 
+Data-driven models experience more and more attention recently in the text generation community. They provide the flexibility and potential to overcome the template-based approaches. Even in the past six years, there have been plenty of studies that show the successes of data-driven models. For example, Dinu and Baroni (2014) stated out that text generation can be performed on different distributional semantic models \cite{dinu-baroni-2014-make} (Pages 624–633). Another example is from Swanson in 2014 as well, where he performed text generation with language modeling on a specified vocabulary constraint \cite{swanson-etal-2014-natural} (Page 124). All of these methods and data-driven approaches, in general, require much training data. The first step for such a system is to build up a so-called \textit{corpus}. A corpus can be viewed as a kind of template, but the way it is used is entirely different than the template from the rule-based approach. The corpus is created through the training of a vast training data set. It consists of a basic set of utterances, and it can be further manually extended and redefined \cite{elena} (Page 4). The data-driven model can even be used for a general-purpose machine translation system, which can respectively even be adapted to a specific domain itself (shown by Wang et al. \cite{wang-hirst-2009-extracting} Pages 471–477). The corpus now contains a set of vocabulary that can be extended through adding new training instances (e.g., user inputs or synonyms) into the \textit{lexicon}. 
+Extending and diversifying the corpus enhances the quality of the interaction between the system and the user and further enriches the conversational level, but mostly the system's response. This can be regarded as a higher abstraction level, used for the modern text summarization systems. 
 
-It can be seen in Figure \ref{corpus}, that the there is a total amount of 34283 words in the English part of the TownInfo corpus and that there are only 462 distinct tokens. This includes even varied units as proper names and numerals. This example shows an approach to translate from English into French and vice versa. All of the \textit{Advanced Approaches for Text Summarization} (Section \ref{ss:trends}) are fully data-driven. For this reason I provide no more examples.
+It can be seen in Figure \ref{corpus}, that there is a total amount of 34283 words in the English part of the TownInfo corpus and that there are only 462 distinct tokens. This includes even various units as proper names and numerals. The example shows an approach to translate from English into French and vice versa. All of the \textit{Advanced Approaches for Text Summarization} (Section \ref{ss:trends}) are fully data-driven. 
 
-The prototype from Chapter 3 is based on a data-driven approach as well, because my text summarizer makes use of Long Short Term Memory cells. More specifically, it is an enhanced modification, namely an Attention model. This data-driven approach will be explained in the next Section \textit{Advanced Approaches for Text Generation}.
+The prototype from Chapter 3 is based on a data-driven approach as well because my text summarizer makes use of Long Short Term Memory cells. More specifically, it is an enhanced modification, namely an Attention model. This data-driven approach will be explained in the next Section \textit{Advanced Approaches for Text Generation}.
 
 \begin{figure}
 	\begin{center}
@@ -215,7 +221,7 @@ The prototype from Chapter 3 is based on a data-driven approach as well, because
 
 \section{Advanced Approaches for Text Generation}\label{ss:aatg}
 \subsection{Recurrent Neural Networks}\label{ss:rnn}
-Even though I introduced the neuron in a neural network as a kind of brain cell imitation, the neuron of a basic neural network will forget everything when it is shut down, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist \cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
+Even though I introduced the neuron in a neural network as a kind of brain cell imitation, a neuron of a basic neural network cannot process time depended on input like language, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist over time and input new words a sentence into future time steps into the network\cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
 
 \begin{figure}
 	\begin{center}
@@ -227,14 +233,14 @@ Even though I introduced the neuron in a neural network as a kind of brain cell 
 Figure \ref{rnn} shows an unrolled Recurrent Neural Network. The input \(x_t\) on time step \textit{t}, is passed to the neural network \textit{A}. The network looks at the input on this time step and outputs the hidden state \(h_t\) at the same time step \textit{t}. This loop allows the network to pass information from one time step to another. The picture \ref{rnn} shows, that the learned parameter from input \textins{x} on time step \textins{t} will be passed as additional information to the next time step \textins{t + 1} and so on. For example if a RNN wants to predict the next word in the sentence "Since I am living in Hong Kong .. by now I speak fluent \textit{Cantonese}". The network needs to remember that the target country is Hong Kong to predict the language Cantonese. At each time step \textit{t}, the hidden state \textit{\(h_t\)} of the Recurrent Neural Network is updated by:
 
 \begin{center}
-\begin{math}
-\boldsymbol{h_{(t)}} = f(\boldsymbol{h_{(t-1)}}, x_{t})
-\end{math}
+	\begin{math}
+	\boldsymbol{h_{(t)}} = f(\boldsymbol{h_{(t-1)}}, x_{t})
+	\end{math}
 \end{center}
 
-where \(f\) is a non-linear activation function and \textit{x} is the input in form of a word. The function \(f\) can be in the simplest case a sigmoid function which has either 0 or 1 as output, or the more complex and effective Long Short Term Memory cell, explained in the next Section \ref{ss:lstm} \cite{hochreiter1997long}. The Recurrent Neural Network is trained to predict for example the next word in a sentence or sequence. This prediction is possible due of the learned probability distribution over a sequence. The output at each time step \textit{t} is a conditional distribution \(p(x_{t}|x_{t-1},...,x_{1})\).
+where \(f\) is a non-linear activation function and \textit{x} is the input in form of a word. The function \(f\) can be in the simplest case a sigmoid function which has either 0 or 1 as output, or the more complex and effective Long Short Term Memory cell, explained in the next Section \ref{ss:lstm} \cite{hochreiter1997long}. The Recurrent Neural Network is trained to predict for example the next word in a sentence or sequence. This prediction is possible due to the learned probability distribution over a sequence. The output at each time step \textit{t} is a conditional distribution \(p(x_{t}|x_{t-1},...,x_{1})\).
 
-Theoretically with this approach it is possible to retain information from many time steps ago, but unfortunately, as the time span back grows, RNN's become unable to learn the information from too long ago cells. This phenomenon was explained by Sepp Hochreiter in 1991 \cite{Hochreiter:91} under the name \textit{vanishing gradient problem}. The solution to this problem is the Long Short Term Memory, short LSTM.
+Theoretically, with this approach, it is possible to retain information from many time steps ago, but unfortunately, as the time-span back grows, RNN's become unable to learn the information from too long ago cells. This phenomenon was explained by Sepp Hochreiter in 1991 \cite{Hochreiter:91} under the name \textit{vanishing gradient problem}. The solution to this problem is the Long Short Term Memory, short LSTM.
 
 \subsection{Long Short Term Memory}\label{ss:lstm}
 Long Short Term Memory cells were first proposed by Sepp Hochreiter and Jürgen Schmidhuber in 1997 \cite{hochreiter1997long}. The LSTM is a special kind of Recurrent Neural Network, because it is able to remember long-term dependencies and informatiom. The goal of the cell is to solve the vanishing gradient problem of the Recurrent Neural Network. Inputs into this cell can be stored for a long period of time, without forgetting them, as in Recurrent Neural Networks. The LSTM is designed to avoid the loss of information (vanishing gradient problem), by intentionally ledging on to certain information over plenty of time steps. 
