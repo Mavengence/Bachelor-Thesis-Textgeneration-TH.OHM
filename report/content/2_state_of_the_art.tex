@@ -221,7 +221,7 @@ The prototype from Chapter 3 is based on a data-driven approach as well because 
 
 \section{Advanced Approaches for Text Generation}\label{ss:aatg}
 \subsection{Recurrent Neural Networks}\label{ss:rnn}
-Even though I introduced the neuron in a neural network as a kind of brain cell imitation, a neuron of a basic neural network cannot process time depended on input like language, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist over time and input new words a sentence into future time steps into the network\cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
+Even though I introduced the neuron in a neural network as a kind of brain cell imitation, a neuron of a basic neural network cannot process time-depended input like language, unlike the brain. Making information persistent is a crucial step towards better performing models. Recurrent neural networks, or RNN, address this issue. They are networks with integrated loops, which allow the information to persist over time and input new words a sentence into future time steps into the network\cite{olah}. The network architecture of the RNN is important, because it denotes the first step into neural text generation and neural text summarization. 
 
 \begin{figure}
 	\begin{center}
@@ -232,18 +232,34 @@ Even though I introduced the neuron in a neural network as a kind of brain cell 
 
 Figure \ref{rnn} shows an unrolled Recurrent Neural Network. The input \(x_t\) on time step \textit{t}, is passed to the neural network \textit{A}. The network looks at the input on this time step and outputs the hidden state \(h_t\) at the same time step \textit{t}. This loop allows the network to pass information from one time step to another. The picture \ref{rnn} shows, that the learned parameter from input \textins{x} on time step \textins{t} will be passed as additional information to the next time step \textins{t + 1} and so on. For example if a RNN wants to predict the next word in the sentence "Since I am living in Hong Kong .. by now I speak fluent \textit{Cantonese}". The network needs to remember that the target country is Hong Kong to predict the language Cantonese. At each time step \textit{t}, the hidden state \textit{\(h_t\)} of the Recurrent Neural Network is updated by:
 
-\begin{center}
-	\begin{math}
-	\boldsymbol{h_{(t)}} = f(\boldsymbol{h_{(t-1)}}, x_{t})
-	\end{math}
-\end{center}
+\begin{tcolorbox}
+	\begin{center}
+		\begin{math}
+		\boldsymbol{h_{(t)}} = f(\boldsymbol{h_{(t-1)}}, x_{t})
+		\end{math}
+	\end{center}
+\end{tcolorbox}
 
-where \(f\) is a non-linear activation function and \textit{x} is the input in form of a word. The function \(f\) can be in the simplest case a sigmoid function which has either 0 or 1 as output, or the more complex and effective Long Short Term Memory cell, explained in the next Section \ref{ss:lstm} \cite{hochreiter1997long}. The Recurrent Neural Network is trained to predict for example the next word in a sentence or sequence. This prediction is possible due to the learned probability distribution over a sequence. The output at each time step \textit{t} is a conditional distribution \(p(x_{t}|x_{t-1},...,x_{1})\).
+\begin{tcolorbox}
+	\textbf{Where} \\
+	Time step = \textit{t} \\
+	Input =     \textit{x} \\
+	Hidden state = \textit{h} 
+\end{tcolorbox}
 
+
+where \(f\) is a non-linear activation function and \textit{x} is the input in form of a word. The function \(f\) can be in the simplest case a sigmoid function which has either 0 or 1 as output, or the more complex and effective Long Short Term Memory cell, explained in the next Section \ref{ss:lstm} \cite{hochreiter1997long}. The Recurrent Neural Network is trained to predict for example the next word in a sentence or sequence. This prediction is possible due to the learned probability distribution over a sequence. The output at each time step \textit{t} is a conditional distribution
+
+\begin{tcolorbox}
+	\begin{center}
+	 \(p(x_{t}|x_{t-1},...,x_{1})\)
+	\end{center}
+\end{tcolorbox}
+Where \(x_{t}\) (\textit{x} on time step \textit{t}) is dependend on all previous \textit{x} from time step 1 until \textit{t-1}.
 Theoretically, with this approach, it is possible to retain information from many time steps ago, but unfortunately, as the time-span back grows, RNN's become unable to learn the information from too long ago cells. This phenomenon was explained by Sepp Hochreiter in 1991 \cite{Hochreiter:91} under the name \textit{vanishing gradient problem}. The solution to this problem is the Long Short Term Memory, short LSTM.
 
 \subsection{Long Short Term Memory}\label{ss:lstm}
-Long Short Term Memory cells were first proposed by Sepp Hochreiter and Jürgen Schmidhuber in 1997 \cite{hochreiter1997long}. The LSTM is a special kind of Recurrent Neural Network, because it is able to remember long-term dependencies and informatiom. The goal of the cell is to solve the vanishing gradient problem of the Recurrent Neural Network. Inputs into this cell can be stored for a long period of time, without forgetting them, as in Recurrent Neural Networks. The LSTM is designed to avoid the loss of information (vanishing gradient problem), by intentionally ledging on to certain information over plenty of time steps. 
+Long Short Term Memory cells were first proposed by Sepp Hochreiter and Jürgen Schmidhuber in 1997 \cite{hochreiter1997long}. The LSTM is a special kind of Recurrent Neural Network, because it can remember long-term dependencies and information. The goal of the cell is to solve the vanishing gradient problem of the Recurrent Neural Network. Inputs into this cell can be stored for an extended period, without forgetting them, as in Recurrent Neural Networks. The LSTM is designed to avoid the loss of information (vanishing gradient problem), by intentionally passing on specific information over plenty of time steps. 
 
 \begin{figure}
 	\begin{center}
@@ -252,9 +268,9 @@ Long Short Term Memory cells were first proposed by Sepp Hochreiter and Jürgen 
 	\end{center}
 \end{figure}
 
-LSTM's can be enrolled the same way like RNN's, but there is a core difference between the Recurrent Neural Network in Figure \ref{lstm} and the Long Short Term Memory in Figure \ref{lstm2}. The LSTM has four gates instead of one like the RNN. The four gates are:
+LSTM's can be enrolled the same way as RNN's, but there is a core difference between the Recurrent Neural Network in Figure \ref{lstm} and the Long Short Term Memory in Figure \ref{lstm2}. The LSTM has four gates instead of one like the RNN. The four gates are:
 
-\begin{itemize}		
+\begin{itemize}        
 	\item Forget Gate
 	\item Input Gate
 	\item Cell State
@@ -272,9 +288,9 @@ The \textbf{Forget Gate} decides what information should be thrown away or kept.
 
 The \textbf{Input Gate} updates the cell state. That decides which values will be updated by computing the values to be between 0 and 1 like the Forget Gate. Important information is closer to 1 and 0 means less important.
 
-The \textbf{Cell State} is the core of the LSTM. It is the horizontal line shown in Figure \ref{lstm3}. The cell state acts like the information highway in the cell. With only some minor linear computation, it runs through the entire cell. This way information can pass very easily through the cell. 
+The \textbf{Cell State} is the core of the LSTM. It is the horizontal line shown in Figure \ref{lstm3}. The cell state acts like the information highway in the network. With only some minor linear computation, it runs through the entire cell. This way, information can pass very easily through the entire network. 
 
-The \textbf{Output Gate} decides what the hidden state of the next LSTM cell should be. The hidden state contains information on previous inputs and it is also used for predictions. The hidden state denotes the state which is passed from the output gate on time step \textit{t} to the input gate for the LSTM cell on time step \textit{t+1}.
+The \textbf{Output Gate} decides what the hidden state of the next LSTM cell should be. The hidden state contains information on previous inputs, and it is also used for predictions. The hidden state denotes the state which is passed from the output gate on time step \textit{t} to the input gate for the LSTM cell on time step \textit{t+1}.
 
 
 \begin{figure}
@@ -284,7 +300,7 @@ The \textbf{Output Gate} decides what the hidden state of the next LSTM cell sho
 	\end{center}
 \end{figure}
 
-The main idea of the LSTM is, that it can decide which information to remove, to forget, which to store and when to use it. It can also decide when to move the previous state information to the next, like the RNN shown in Figure \ref{rnn}. Even though many variations of the LSTM occupy the state of the art performance, the LSTM is used in many real business cases in production, like the Google translater or weather forecasting.
+The main idea of the LSTM is that it can decide which information to remove, to forget, which to store and when to use it. It can also decide when to move the previous state information to the next, like the RNN shown in Figure \ref{rnn}. Even though many variations of the LSTM occupy the state of the art performance, the LSTM is used in many real business cases in production, like the Google translater or weather forecasting.
 The Long Short Term Memory paved the way for the sequence to sequence models.
 
 \subsection{Sequence to Sequence}\label{ss:seq2seq}
@@ -294,23 +310,41 @@ Before that, language translation was originally processed by rule-based systems
 
 After rule-based systems, statistical models have taken over the. Given a source text in e.g. German (\textit{f}), what is the most suitable translation into e.g. English (\textit{e})? The statistical model p(\textit{g}|\textit{e}) is trained on multiple texts (corpus) and finally outputs p(\textit{e}), which is calculated only on the target corpus in English. 
 
-\begin{center}
-\begin{math}
-\hat{e} = argmax_{e}(e|g) = argmax_{e} p(g|e) p(e)
-\label{eq:rule}
-\end{math}
-\end{center}
+\begin{tcolorbox}
+	\begin{center}
+		\begin{math}
+		\hat{e} = argmax_{e}(e|g) = argmax_{e} p(g|e) p(e)
+		\label{eq:rule}
+		\end{math}
+	\end{center}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+	\textbf{Where} \\
+	\textit{g} = a german source text \\
+	\textit{e} = the english desired output text \\
+	\textit{p(e|g)} = the conditional distribution \\
+	\textit{argmax} = selecting the result with the highest probability
+\end{tcolorbox}
 
 The formula means, among all Baysian probabilities p(\textit{g}|\textit{e})p(\textit{e}), select the pair of words (translation), select the most likely to be the best translation (argmax). Even though this approach produces good results, it looses the wider semantical view, and so it is especially not effective for a good summarization technique.
 
-For the first time, neural networks in form of feed-forward fully-connected neural networks produced such good results, that they replaced all non-network techniques. Affine matrix transformations are stacked together and are followed by non-linearities to the input and each following hidden layer \cite{Bengio} Page 1141-1142. However, these models require a fixed content length for their calculations, which makes them again not flexible enough to produce human-like translations. 
+For the first time, neural networks in the form of feed-forward fully-connected neural networks produced such excellent results, that they replaced all non-network techniques. Affine matrix transformations are stacked together and are followed by non-linearities to the input and each following hidden layer \cite{Bengio} Page 1141-1142. However, these models require a fixed content length for their calculations, which makes them again not flexible enough to produce human-like translations.  
 
-Even if a LSTM (Section \ref{ss:lstm}) was used to map sequences of words from one language to another, it will most likely produce errors or bad results. A single LSTM cell needs the same input length and output length, which is unrealistic for translating multilingual. For example the English "He is running" translated into German is "Er rennt". The LSTM itself can not translate that, because of the different word length. 
-The Long Short Term Memory cell from Section \ref{ss:req} was invented independently from the sequence to sequence models, but
-finally three employees of Google published a paper about their approach to make use of the LSTM to create a sequence to sequence model, also called encoder-decoder model.
-The basic idea is that the encoder converts an input text to a latent vector of length \text{N} and the decoder generates an output vector of length \textit{V} by using the latent encoded vector. It is called a latent vector, because it is not accessible during the training time (manipulating it), for example in a normal Feed Forward Neural Network, the output of a hidden layer in the network can not be manipulated. The initial use of encoder-decoder models was for machine translation.
+Even if a LSTM (Section \ref{ss:lstm}) was used to map sequences of words from one language to another, it will most likely produce errors or bad results. A single LSTM cell needs the same input length and output length, which is unrealistic for translating multilingual. For example
 
-Technologies for a specific field in the machine learning environment and especially text generation can often be used cross functional. The encoder-decoder model found its way into text summarization and automated email reply by Google \cite{google} as well. Figure \ref{enc-dec} illustrates the model for Google's automated email reply.
+\begin{tcolorbox}
+	\textit{g} = Er rennt \\
+	\textit{e} = He is running 
+\end{tcolorbox}
+
+if the source \text{g} is translated into English \textit{e}, the length of the source and output is different.
+The LSTM itself can not translate that, because of the different word length. 
+The Long Short Term Memory cell from Section \ref{ss:lstm} was invented independently from the sequence to sequence models, but
+finally, three employees of Google published a paper about their approach to making use of the LSTM to create a sequence to sequence model, also called the encoder-decoder model.
+The basic idea is that the encoder converts an input text to a latent vector of length \text{N}, and the decoder generates an output vector of length \textit{V} by using the latent encoded vector. It is called a latent vector because it is not accessible during the training time (manipulating it). For example, in a standard Feed Forward Neural Network, the output of a hidden layer in the network can not be manipulated. The first use of encoder-decoder models was for machine translation.
+
+Technologies for a specific field in the machine learning environment and especially text generation can often be used cross-functional. The encoder-decoder model found its way into text summarization and automated email reply by Google \cite{google} as well. Figure \ref{enc-dec} illustrates the model for Google's automated email reply.
 
 \begin{figure}
 	\begin{center}
@@ -319,12 +353,12 @@ Technologies for a specific field in the machine learning environment and especi
 	\end{center}
 \end{figure}
 
-Figure \ref{enc-dec} makes use of an Long Short Term Memory cell, which captures situations, writing styles and tones. The network generalizes more flexible and accurate than a rule-based model ever could \cite{google}. 
+Figure \ref{enc-dec} makes use of a Long Short Term Memory cell, which captures situations, writing styles and tones. The network generalizes more flexible and accurate than a rule-based model ever could \cite{google}. 
 
 
 \subsection{Encoder and Decoder}\label{ss:encdec}
 
-In the following, the encoder and then the decoder will be explained to have a better insight in how this technology works. The prototype from Chapter \ref{ch:proto} is based on this kind of model. As already mentioned a sequence to sequence model is often referred to as a encoder-decoder model. The sequence to sequence model itself is built using a Recurrent Neural Network or a Long Short Term Memory as explained in the last Section \ref{ss:seq2seq}.
+In the following, the encoder and then the decoder will be explained to have a better insight into how these models work. My prototype from Chapter \ref{ch:proto} is based on this kind of model. As already mentioned, a sequence to sequence model is often referred to as an encoder-decoder model. The sequence to sequence model itself is built using a Recurrent Neural Network or a Long Short Term Memory, as explained in the last Section \ref{ss:seq2seq}.
 
 \begin{figure}
 	\begin{center}
@@ -333,7 +367,7 @@ In the following, the encoder and then the decoder will be explained to have a b
 	\end{center}
 \end{figure}
 
-Figure \ref{encdecseq} shows, that the encoder decoder model is built up from actually three parts:
+Figure \ref{encdecseq} shows that the encoder-decoder structure consists of three parts:
 
 \begin{itemize}
 	\item Encoder
@@ -342,8 +376,8 @@ Figure \ref{encdecseq} shows, that the encoder decoder model is built up from ac
 \end{itemize}
 
 
-The \textbf{Encoder} iteratively integrates the words in a sentence into the hidden state \textit{h} into the Long Short Term Memory cell.
-Figure \ref{lstm3} shows a single LSTM cell with the input cell state \textit{C} at the time step \textit{t-1}  and the input of the hidden state \textit{h} at the same time step \textit{t-1}. This is necessary for the cell to compute both the input words, but also the knowledge from prior words. Words are represented as latent vectors in the sequence to sequence models and are stored in a vocabulary table. Each fixed length vector stands for a word in the vocabulary, for example the vector length is fixed to a dimension of 300. In a simple case, the number of words in the vocabulary is fixed to e.g. 50.000 words, hence the dimension of the vocabulary table in Figure \ref{voctable} is [50000 x 300]. 
+The \textbf{Encoder} iteratively integrates the words from a sentence into the hidden state \textit{h} and further into the Long Short Term Memory cell.
+Figure \ref{lstm3} shows a single LSTM cell with the input cell state \textit{C} at the time step \textit{t-1} and the input of the hidden state \textit{h} at the same time step \textit{t-1}. The cell must compute both the input words, but also the knowledge from the prior words. Words are represented as latent vectors in the sequence to sequence models and are stored in a vocabulary table. Each fixed-length vector stands for a word in the vocabulary; for example, the vector length is fixed to a dimension of 300. In a simple case, the number of words in the vocabulary is fixed to e.g., 50.000 words, hence the dimension of the vocabulary table in Figure \ref{voctable} is [50000 x 300]. 
 
 \begin{figure}
 	\begin{center}
@@ -352,16 +386,16 @@ Figure \ref{lstm3} shows a single LSTM cell with the input cell state \textit{C}
 	\end{center}
 \end{figure}
 
-A connection of multiple recurrent units (three in Figure \ref{encdecseq}) where each accept a single element as an input, gains information and propagates it forward to the next cell and accordingly the next time step. In the example of Figure \ref{encdecseq}, the hidden state of \textit{h3} is calculated based on the prior two cells.
+A connection of multiple recurrent units (three in Figure \ref{encdecseq}) where each accepts a single element as an input, gains information and propagates it forward to the next cell and accordingly the next time step. In the example of Figure \ref{encdecseq}, the hidden state of \textit{h3} is calculated based on the prior two cells.
 
 
-The \textbf{Encoder Vector} is the last hidden state of all the encoder cells, in this example the encoder vector is located at the output of cell three. The vector tries to combine all of the information from the prior encoded words with the purpose to help the decoder make accurate predictions. Basically, the encoder vector is the initial input for the decoder part of the model.
+The \textbf{encoder vector} is the last hidden state of all the encoder cells; in this example, the encoder vector is located at the output of cell three. The vector tries to combine all of the information from the prior encoded-words with the purpose to help the decoder make accurate predictions. The encoder vector is the initial input for the decoder part of the model.
 
-The \textbf{Decoder} unrolls the encoder vector from meaning space into a target sentence. The meaning space (shown in Figure \ref{meaningspace}) is a mapping of concepts and ideas that we may want to express to points in a continuous, high-dimensional grid \cite{mugan}. 
-The minimum requirement for the meaning space is to consist at least of the last state of the encoder Recurrent Neural Network (encoder vector). The decoder computes a probability distribution for each word in the encoder vector to generate the next state. In the example case, the output is generated by multiplying the hidden state in the encoder vector \textit{h} by the output matrix of size [300 x 50000]. The product of this matrix multiplication is a vector of size [50,000], that can be normalized with a \textit{softmax} into a probability distribution over words in the vocabulary. The network can then choose the word with the highest probability, because the softmax squeeses all outputs into a summed up probability of 1. For example:
+The \textbf{ decoder} unrolls the encoder vector from meaning space into a target sentence. The meaning space (shown in Figure \ref{meaningspace}) is a mapping of concepts and ideas that we may want to express to points in a continuous, high-dimensional grid \cite{mugan}. 
+The minimum requirement for the meaning space is to consist at least of the last state of the encoder Recurrent Neural Network (encoder vector). The decoder computes a probability distribution for each word in the encoder vector to generate the next state. In the example case, the output is generated by multiplying the hidden state in the encoder vector \textit{h} by the output matrix of size [300 x 50000]. The product of this matrix multiplication is a vector of size [50,000], that can be normalized with a \textit{softmax} into a probability distribution over words in the vocabulary. The network can then choose the word with the highest probability because the softmax squeezes all outputs into a summed up probability of 1. For example:
 
 \begin{tcolorbox}
-	"Since I am living in Hong Kong, by now I speak fluent ... "
+	"Since I am living in Hong Kong, by now, I speak fluently... "
 	
 	\begin{itemize}
 		\item Cat: 0.01
@@ -370,13 +404,13 @@ The minimum requirement for the meaning space is to consist at least of the last
 		\item Mandarin: 0.3
 		\item French: 0.015
 	\end{itemize}
-
-	The chosen word is \textbf{Cantonese}, because it is the highest probability among all probabilities which are summed up to 100\%
+	
+	The chosen word is \textbf{Cantonese} because it has the highest probability among all probabilities which are summed up to 100\%
 \end{tcolorbox}
  
 
 \subsection{Attention}\label{ss:atten}
-In general, the explanation of the sequence to sequence models just covered the very basic idea of the model. To achieve the state-of-the-art result, not only a single vector can be used for encoding the entire input sequence, but multiple vectors each capable of capturing other information. 
+In general, the explanation of the sequence to sequence models just covered the fundamental idea of the model. To achieve the state-of-the-art result, not only a single vector can be used for encoding the entire input sequence, but also multiple vectors where each is capable of capturing other information from the input. 
 
 \begin{figure}
 	\begin{center}
@@ -387,18 +421,18 @@ In general, the explanation of the sequence to sequence models just covered the 
 
 In the encoder and decoder model, the length of the state vector \textit{h} does not change for the input and output. As shown in the example of Section \ref{ss:seq2seq}, sentences translated into another language can have a different word length. For the model to automatically adjust the length of the output, is to use the technology called \textit{attention} \cite{attention} \cite{attention2}.
 
-Figure \ref{attention1} shows the basic concept of attention for a summarization task of a news article.  The attention model tries to identify relevant words and meanings in the source text to generate novel words. This means to generate words which are not included in the input document, for example using the word \textit{to beat} in the abstractive summary instead of won \cite{see-etal-2017-get}.
+Figure \ref{attention1} shows the basic concept of attention for the summarization task of a news article.  The attention model tries to identify relevant words and meanings in the source text to generate new words. This means generating words that are not included in the input document, for example, using the word \textit{to beat} in the abstractive summary instead of won \cite{see-etal-2017-get}.
 
-Attention enables the network to look at all prior encoded states of the words, takes the weighted average probability of the vectors and also uses this as additional information. Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
+Attention enables the network to look at all prior encoded states of the words, takes the weighted average probability of the vectors, and also uses this as additional information. Sequence to sequence models can be entirely built up from the attention model \cite{attention2}. 
 
 \section{Text Summarization Concepts}
 
-In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all the information. The goal of text summarization is to compress long documents into shorter summaries while maintaining the most important information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
+In the modern era of big data, retrieving useful information from a large number of textual documents is a challenging task due to the unprecedented growth in the availability of online blogs, forums, news, and scientific reports that are tremendous. Automatic text summarization provides an effective and convenient solution for reducing the amount of time it takes to read all the information. The goal of text summarization is to compress long documents into shorter summaries while maintaining the essential information and semantic of the documents \cite{ts-intro} \cite{ts-intro2}. Having the short summaries, the text content can be retrieved, processed and digested effectively and efficiently. 
 Generally speaking, there are two basic approaches for performing a text summarization: Extractive and Abstractive \cite{ts-intro3}. 
 
-As mention from the Section \ref{ss:history}, there is a text-to-text and data-to-text approach. The text-to-text method is mostly used in the context where a single document is the only input for generating the text. It can be seen as an extractive approach.  On the other side the abstractive approach is actually a data-to-text methods, because it takes into account multiple inputs, such as the text, opinion or another vocabulary.
+As mention from the Section \ref{ss:history}, there is a text-to-text and data-to-text approach. The text-to-text method is mostly used in the context where a single document is the only input for generating the text. It can be seen as an extractive approach.  On the other side, the abstractive approach is a data-to-text method, because it takes multiple inputs into account, such as the text, opinion or another vocabulary.
 
-Jones et al. in 1999 defined and classified text summarization by the following three summarization factors \cite{Jones98automaticsummarising:} (Pages 1-12):
+Jones et al. in 1999, defined and classified text summarization by the following three summarization factors \cite{Jones98automaticsummarising:} (Pages 1-12):
 
 \begin{itemize}
 	\item \textbf{Input}: single and multi document
@@ -406,7 +440,7 @@ Jones et al. in 1999 defined and classified text summarization by the following 
 	\item \textbf{Output}: extractive and abstractive
 \end{itemize}
 
-This three factors will be explained in the following.
+These three factors are explained in the following.
 
 \begin{figure}
 	\begin{center}
@@ -415,14 +449,14 @@ This three factors will be explained in the following.
 	\end{center}
 \end{figure}
 
-Even though I cannot explain the single state of the art steps at each time in Figure \ref{hist}, I think it provides an good overview on the development of automatic text summarization. Everything started with Peter Luhn from Germany in 1958.
+Figure \ref{history} provides a good overview of the development of automatic text summarization. Everything started with Peter Luhn from Germany in 1958.
 
 \subsection{Input}\label{ss:input}
 
-The input has two crucial variables, that can change the way how to process the summary completely. The input variable denotes whether the input comes from a \textbf{single-document} or from a \textbf{multi-document}. 
+The input has two crucial variables that can change the way how to process the summary completely. The input variable denotes whether the input comes from a \textbf{single-document} or from a \textbf{multi-document}. 
 
 \subsubsection{Single-Document}\label{ss:sd}
-The most simple task for an automized summarization system is a generic single document summary. This was first introduced by Peter Luhn's work in 1958, an extractive method to summarize a text \cite{textmining1958}.  Even though this first approach was first proposed over 60 years ago, it is still not completely solved. The pipeline for a single document summary is as follows \cite{juan} (Page 69):
+The most simple task for an automized summarization system is a generic single document summary. Peter Luhn's work first introduced that system in 1958, an extractive method to summarize a text \cite{textmining1958}.  Even though this first approach was proposed over 60 years ago, it is still up to date. The pipeline for a single document summary is as follows \cite{juan} (Page 69):
 
 \begin{itemize}
 	\item \textit{Preprocessing}: Split sentences into words, cut stopwords (and, that, there, ..) out and filter out punctuation 
@@ -445,14 +479,18 @@ Figure \ref{single} shows a standardized pipeline, also called \textit{Natural L
 	\item Statistical metrics
 \end{itemize}
 
-The \textbf{Latent Semantic Analysis} \cite{Deerwester90indexingby} is a model which allows semantics to be represented from the following ideas: two words are semantically close if they appear in similar contexts and two contexts are similar if they contain semantically close words. The words in a (large) corpus are represented in the occurrence matrix S. The matrix S stores, for every single word in the corpus, the contexts in which the words appeared and additionally also their appearance frequency \cite{juan} (Page 73). This technique measure therefore relationships between different words. After finishing this process, the Latent Semantic Analysis assumes accordingly that words close in meaning occur in similar pieces of text.
+The \textbf{Latent Semantic Analysis} \cite{Deerwester90indexingby} is a model that allows semantics to be represented from the following ideas: two words are semantically close if they appear in similar contexts and two contexts are similar if they contain semantically close words. The words in a (large) corpus are represented in the occurrence matrix S. The matrix S stores, for every single word in the corpus, the contexts in which the words appeared and additionally also their appearance frequency \cite{juan} (Page 73). Therefore, this technique measure relationships between different words. After finishing this process, the Latent Semantic Analysis assumes accordingly that words close in meaning occur in similar pieces of text.
 
-\textbf{Graph-based approaches} conduct to represent content of textual information from single documents. There are countless variations of graph-based approaches and I have already used one so far. In Section \ref{ss:ref} for the Box \ref{box:1}, the part-of-the-speech tagging is a method in the graph-based approaches. In general, the vertices or nodes are assimilated to semantic collections of words and sentences and the edges of the nodes represent the relations between each words and collections. 
-Another widely used approach is \textit{bag-of-word}. I used that as an example in Section \ref{ss:data} for Figure \ref{corpus}. Different unique words are packed together into a corpus and each occurrence of the word is counted and summed together. The ANK algorithm from Lawrence Page in 1998 \cite{brin1998anatomy} (Pages 107-118) paved the way for the success in web page retrieval (scraping): web pages are ranked by their popularity in the network (how often each page is clicked by users), rather than by the amount or quality of their content. This type of algorithm computes the importance of the vertex of the graph, based on the general information gathered from a recursive analysis of the complete graph, rather than a local analysis of a vertex \cite{juan} (Page 77).
+\begin{tcolorbox}
+	\textit{S} = Matrix
+\end{tcolorbox}
+
+\textbf{Graph-based approaches} conduct to represent the content of textual information from single documents. There are countless variations of graph-based approaches, and I have already used one so far. In Section \ref{ss:ref} for the Box \ref{box:1}, the part-of-the-speech tagging is a method in the graph-based approaches. In general, the vertices or nodes are assimilated to semantic collections of words and sentences, and the edges of the nodes represent the relations between each word and collections. 
+Another widely used approach is \textit{bag-of-word}. I used that as an example in Section \ref{ss:data} for Figure \ref{corpus}. Different unique words are packed together into a corpus, and each occurrence of the word is counted and summed together. The ANK algorithm from Lawrence Page in 1998 \cite{brin1998anatomy} (Pages 107-118) paved the way for the success in web page retrieval (scraping): web pages are ranked by their popularity in the network (how often each page is clicked by users), rather than by the amount or quality of their content. This type of algorithm computes the importance of the vertex of the graph, based on the general information gathered from a recursive analysis of the complete graph, rather than a local analysis of a vertex \cite{juan} (Page 77).
 
 \subsubsection{Multi-Document}\label{ss:multi}
 
-Multi-document summarization faces different problems than the single-document summarization. The sentence extraction methods (Latent Semantic Analysis and graph-based approaches) can also be applied to multi-document summarization. The problem of redundancy in the documents is can be always present in multi-document summarization. The typically does not happen in the single-document case. Redundancy has a huge impact on the coherence and the cohesion of this new type of extract \cite{juan} (Page 109). Multi-document summarization is basically the extension of single document summarization, but like already said, redundancy is not the only issue. The basic pipeline is shown in Figure \ref{multi}. 
+Multi-document summarization faces different problems than the single-document summarization. The sentence extraction methods (Latent Semantic Analysis and graph-based approaches) can also be applied to multi-document summarization. The problem of redundancy in the documents can always be present in multi-document summarization. Typically this does not happen in the single-document case. Redundancy has a significant impact on the coherence and the cohesion of this new type of extract \cite{juan} (Page 109). Multi-document summarization is the extension of single document summarization, but like already said, redundancy is not the only issue. The primary pipeline is shown in Figure \ref{multi}. 
 
 \begin{figure}
 	\begin{center}
@@ -461,20 +499,59 @@ Multi-document summarization faces different problems than the single-document s
 	\end{center}
 \end{figure}
 
-Multi-document input are likely to have the same or a similar topic, but it is not necessary. The first automation system was developed by McKeown and Radev in 1995 until 1998 \cite{radev-mckeown-1998-generating} (Pages 469-500). My case study example Google News is a typical example for multi-document summarization, because Google multiple sources of information (scrape news from different other websites), collect the information and process them through the pipeline (Figure \ref{multi}). The key task is therefore not only detecting and eliminating redundancy, but also notice novelty and ensure that the generated summary is coherent and without missing points \cite{Das07asurvey} (Page 11).
+Multi-document input is likely to have the same or a similar topic, but it is not necessary. The first automation system was developed by McKeown and Radev in 1995 until 1998 \cite{radev-mckeown-1998-generating} (Pages 469-500). My case study example Google News is a typical example for multi-document summarization, because Google uses multiple sources of information (scrape news from different other websites), collect the information and process them through the pipeline (Figure \ref{multi}). The key task is not only detecting and eliminating redundancy but also notice novelty and ensure that the generated summary is coherent and without missing points, \cite{Das07asurvey} (Page 11).
  
-The input for the summarization system are multiple documents such as \(D_{1}, D_{2},..., D_{n}\), where \textit{D} is single document and \textit{n} is the total number of single-document, combined into a multi-document input.
+The input for the summarization system are multiple documents such as 
+
+\begin{tcolorbox}
+	\begin{center}
+		\(D_{1}, D_{2},..., D_{n}\),
+	\end{center}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+	\textbf{Where} \\
+	\textit{D} = single document \\ 
+	\textit{n} = the total number of single-documents
+\end{tcolorbox}
+
+combined into a multi-document input.
 The preprocessing step in the multi-document summarization is quite similar, but the same as in the single-document summarization. The four steps for the multi-document are:
  
+ 
 \begin{itemize}
-	\item \textbf{Sentence segmentation}: Each document \textit{D} is segmented for itself as \(D = {S_{1}, S_{2},..., S_{m}}\), where every \textit{S} denotes a single sentence in document \textit{D}. The number of sentences is denoted as \textit{m}.
-	\item \textbf{Tokenization}: Words of each sentence \textit{S} are tokenized into \(T = {t_{1}, t_{2},..., t_{k}}\) \textit{k} terms \textit{t}, where every \textit{t} represents a distinct term occurring in \textit{D}. 
+	\item \textbf{Sentence segmentation}: Each document \textit{D} is segmented for itself as 
+	\begin{tcolorbox}
+		\begin{center}
+		\(D = {S_{1}, S_{2},..., S_{m}}\)
+		\end{center}
+	\end{tcolorbox}
+	\begin{tcolorbox}
+		\textbf{Where}\\
+		\textit{D} = a single document \\
+		\textit{S} = single sentence in a document \textit{D}\\
+		\textit{m} = number of sentences \textit{S} in document \textit{D}
+	\end{tcolorbox}
+	where every \textit{S} denotes a single sentence in document \textit{D}. The number of sentences is denoted as \textit{m}.
+	\item \textbf{Tokenization}: Words of each sentence \textit{S} are tokenized into 
+	\begin{tcolorbox}
+		\begin{center}
+			\(T = {t_{1}, t_{2},..., t_{k}}\) 
+		\end{center}
+	\end{tcolorbox}
+	\begin{tcolorbox}
+		\textbf{Where} \\
+		\textit{t} = a single token in the sentence \textit{S} \\
+		\textit{T} = all of the single tokens \textit{t}
+	\end{tcolorbox}
+	
+	\textit{k} terms \textit{t}, where every \textit{t} represents a distinct term occurring in \textit{D}. 
 	\item \textbf{Stop word removal}: The most commonly used words in every language are stored in a so-called stop-word-table. Words from that table occurring in a document \textit{D} are removed. Example words are 'a', 'an' or 'the'. As already mentioned in the single-document summarization
 	\item \textbf{Stemming}: converts words back into the base form. For example (houses -> house, running -> run). This is done to avoid redundancy.
 \end{itemize}
  
  
-After preprocessing the documents into word form, weights are computed to get a sentence informative score. This score is calculated for every sentence accordingly and is used as the input for a chosen optimization algorithm. This happens in the \textit{Extraction} box of Figure \ref{multi}. Like for the single-document, there are multiple methods to calculate extraction weights:
+After preprocessing the documents into word form, weights are computed to get an informative sentence score. This score is calculated for every sentence accordingly and is used as the input for a chosen optimization algorithm. This happens in the \textit{Extraction} box of Figure \ref{multi}. Like for the single-document, there are multiple methods to calculate extraction weights:
 
 \begin{itemize}
 	\item Abstraction and Information Fusion
@@ -482,37 +559,37 @@ After preprocessing the documents into word form, weights are computed to get a 
 	\item Graph Spreading Activation
 \end{itemize}
 
-\textbf{Abstraction and Information Fusion} contains basically of two steps. At first, like in the most methods, a similarity measurement on word or sentence level is computed. When using an abstractive approach (Section \ref{ss:exabs}), the TFIDF score is commonly used. TFIDF is an information retrieval technique that weighs a term’s frequency (TF) and its inverse document frequency (IDF). Every term has its respective TF and IDF score. The product of the TF and IDF scores of a term is called the TFIDF weight of that term \cite{Ramos_usingtf-idf}. For each term, a vector is calculated that represents matches on the different features. Decision rules that were trained and learned from the data are used to classify each pair of text as either similar or dissimilar. This further feeds a subsequent algorithm that imputes the most related terms in the same topic-theme \cite{Das07asurvey} (Page 13). Once this scores and vectors are computed, the second step \textit{information fusion} starts. This step decides which information should be used for generating the final summary. Rather than just selecting a sentence that holds as a group representative, an algorithm which compares predicated argument structures of the terms. Within each topic, the algorithm needs to determine which terms are used and repeated often enough to be included into the summary.
+\textbf{Abstraction and Information Fusion} contains two steps. At first, as in most methods, a similarity measurement on word or sentence level is computed. When using an abstractive approach (Section \ref{ss:exabs}), the TFIDF score is commonly used. TFIDF is an information retrieval technique that weighs a term’s frequency (TF) and its inverse document frequency (IDF). Every term has its respective TF and IDF score. The product of the TF and IDF scores of a term is called the TFIDF weight of that term \cite{Ramos_usingtf-idf}. For each term, a vector is calculated that represents matches on the different features. Decision rules that were trained and learned from the data are used to classify each pair of text as either similar or dissimilar. This vector further feeds a subsequent algorithm that imputes the most related terms in the same topic-theme \cite{Das07asurvey} (Page 13). Once these scores and vectors are computed, the second step \textit{information fusion} starts. This step decides which information should be used for generating the final summary. Rather than just selecting a sentence that holds as a group representative, an algorithm that compares predicated argument structures of the terms. Within each topic, the algorithm needs to determine which terms are used and repeated often enough to be included in the summary.
 
-\textbf{Topic-driven summarization} techniques aim to detect words that describe the topic of the multiple input documents. An advance of the initial idea of Luhn (proposed in Section \ref{ss:sd}) was to use the log-likelihood ratio test to identify special words known as the \textit{topic signatures} \cite{textmining1958}. The log-likelihood is often used in statistical approaches for the text summarization. 
-There are two ways to calculate the importance of a sentence. First, as a function which contains the number of its topic signatures, or as the proportion of all the topic signatures in each sentence respectively. While the first method gives usually higher scores to longer sentences, the second approach measures the occurrences of the topic words \cite{dunning-1993-accurate}.
+\textbf{Topic-driven summarization} techniques aim to detect words that describe the topic of the multiple input documents. An advance of the initial idea of Luhn (proposed in Section \ref{ss:sd}) was to use the log-likelihood ratio test to identify particular words known as the \textit{topic signatures} \cite{textmining1958}. The log-likelihood is often used in statistical approaches for text summarization. 
+There are two ways to calculate the importance of a sentence. The first way is as a function that contains the number of its topic signatures. Secondly, it can be calculated as the proportion of all the topic signatures in each sentence, respectively. While the first method usually gives higher scores to longer sentences, the second approach measures the occurrences of the topic words \cite{dunning-1993-accurate}.
 
-\textbf{Graph Spreading Activation} is a similar approach than the graph-based approach from the single-document summarization. The PAGERANK algorithm can be used for this approach, or other alternations like LexRank and TextRank. 
+\textbf{Graph Spreading Activation} is a similar approach to the graph-based approach from the single-document summarization. The PAGERANK algorithm can be used for this approach or other alternations like LexRank and TextRank. 
 
 
 \subsection{Purpose}
 
 \textbf{Types of Summaries}
 
-The \textit{informative summary} contains the informative part of the original text. The main ideas from the text should be transmitted, for example the abstract of research articles, where authors try to present the essential core of the reasearch, is an informative summary. Whereas an indicative summary tries to transmit the relevant contents of the original document in such a way, so that the readers can chose documents that match with their interests to read further.
+The \textit{informative summary} contains the informative part of the original text. The main ideas from the text should be transmitted; for example, the abstract of research articles, where authors try to present the essential core of the research, is an informative summary. On the other hand, an indicative summary tries to transmit the relevant contents of the original document in such a way so that the readers can choose documents that match their interests to read further.
 
-An \textit{indicative summary} is not meant to be a substitute for the original document. The opposite is the informative summary, which can replace the original documents as far as the important contents is concerned and by how much it was shortened down.
+An \textit{indicative summary} is not meant to be a substitute for the original document. The opposite is the informative summary, which can replace the original documents as far as the crucial contents are concerned and by how much it was shortened down.
 
-The \textit{keyword summary} tries to summarize the text into only keywords. Words will be weighted by their importance and the most crucial ones are selected without caring for the grammar.
+The \textit{keyword summary} tries to summarize the text into only keywords. Words will be weighted by their importance, and the most crucial ones are selected without caring for the grammar.
 
 The \textit{headline summary} is the type of summary from the case study in Section \ref{ss:case}. The entire text gets compressed into a single sentence. It is a single line summary.
 
 \textbf{Generic vs. user-oriented}
 
-Generic systems generate summaries that consider all of the given information from the documents. On the other hand try user-oriented systems to produce personalized summaries that concentrate on specific information from the original documents. Like News could only summarize the conservative or right-wing news, if someone only searches for right-wing content.
+Generic systems generate summaries that consider all of the given information from the documents. On the other hand, user-oriented systems produce personalized summaries that concentrate on specific information from the original documents only. For example, the user-oriented news could only summarize the conservative or right-wing news if someone only searches for right-wing content.
 
 \textbf{General purpose vs. domain-specific}
 
-General-purpose summarizers can be used across any domains with barely no modification needed. In contrary, domain-specific systems are programmed to process documents for a specific domain, like the research, news or book summarizing domain.
+General-purpose summarizers can be used across any domains with barely any modification needed. On the contrary, domain-specific systems are programmed to process documents for a specific domain, like the research, news, or book summarizing domain.
 
 \subsection{Output}\label{ss:exabs}
 
-During this thesis I have already mentioned the two core differences between text summarization. The extractive and abstractive approach. I use the definition of See et al. from 2017, where he regards the extractive summarizer as an explicit selection method for text snippets inside the single- or multi-document. While the abstractive summarizer generates novel text snippets to describe summaries from a higher point of view by using vocabulary not included in the source input \cite{see-etal-2017-get} (Pages 1073-1083). 
+During this thesis, I have already mentioned the two core differences between text summarization: the extractive and abstractive approach. I use the definition of See et al. from 2017, where he regards the extractive summarizer as an explicit selection method for text snippets inside the single- or multi-document. While the abstractive summarizer generates new text snippets to describe summaries from a higher point of view by using vocabulary not included in the source input \cite{see-etal-2017-get} (Pages 1073-1083). 
 
 \begin{figure}
 	\begin{center}
@@ -521,15 +598,15 @@ During this thesis I have already mentioned the two core differences between tex
 	\end{center}
 \end{figure}
 
-Figure \ref{abex} shows the general model pipeline for either the extractive or abstractive approach. There is also a relatively new combinational approach, which will be explained in Section \ref{ss:trends} (\textit{Advanced Approaches for Text Summarization}). The topic input into the automatic text summarizer has already been explained in the multi-document Section \ref{ss:multi}. The parameter input contains for example the compression rate \(\tau\). This could a a value like 15\%, which means that the length of the original input document will be reduced by 85\%.
+Figure \ref{abex} shows the general model pipeline for either the extractive or abstractive approach. There is also a relatively new combinational approach, which will be explained in Section \ref{ss:trends} (\textit{Advanced Approaches for Text Summarization}). The topic input into the automatic text summarizer has already been explained in the multi-document Section \ref{ss:multi}. The parameter input contains, for example, the compression rate \(\tau\). This could be a value like 15\%, which means that the length of the original input document will be reduced by 85\%.
 
 \subsubsection{Extractive}\label{ss:extractive}
 	
-The aim of the extractive approach is to give an overview about the source document. This is done by selection fragments of the text (words, sentences or paragraphs) that contain the essential information of the input text or texts. It can be seen as an copy and paste action for the most important fragments. Figure \ref{extract} shows the basic structure of an extractive summarizer, where the selection part is one of the three categorical types. The extractive approach has still some valid use cases, because:
+The extractive approach aims to give an overview of the source document. This is done by selection fragments of the text (words, sentences, or paragraphs) that contain the essential information of the input text or texts. It can be seen as a copy and paste action for the most important fragments. Figure \ref{extract} shows the basic structure of an extractive summarizer, where the selection part is one of the three categorical types. The extractive approach has still some valid use cases, because:
 
 \begin{itemize}
-	\item \textbf{Pros}: The approach is robust, because it uses existing natural-language phrases that are taken directly from the input.
-	\item \textbf{Cons}: It lacks in flexibility since it cannot use novel words or connectors. Furthermore it cannot paraphrase like a human could do it. Sometimes the approach even applied wrong grammar.
+	\item \textbf{Pros}: The approach is robust because it uses existing natural-language phrases that are taken directly from the input.
+	\item \textbf{Cons}: It lacks in flexibility since it cannot use original words or connectors. Furthermore, it cannot paraphrase as a human could do it. Sometimes the approach even applied wrong grammar.
 \end{itemize}
 
 According to Radev et av. in the 2002, extractive text summarization can be categorized as three different types \cite{ts-intro} (Pages 399-408):
@@ -548,13 +625,13 @@ According to Radev et av. in the 2002, extractive text summarization can be cate
 \end{figure}
 
 
-The \textbf{surface-level} algorithms scratches on the linguistic easy understandable parts on the text. It cannot detect deep connections and abstractive features. It rather uses certain linguistic elements to detect the most important segments of a document \cite{juan} (Page 32). The mentioned inventor of automatic text summarizer Luhn \cite{textmining1958} used a surface-level techniques weight the occurrences of words in sentences. This technique is good for headline or keyword summarization. 
+The \textbf{surface-level} algorithms scratch on the right linguistic parts of the text. It cannot detect deep connections and abstractive features. It instead uses certain linguistic elements to detect the essential segments of a document \cite{juan} (Page 32). The mentioned inventor of automatic text summarizer Luhn \cite{textmining1958} used surface-level techniques to weight the occurrences of words in sentences. This technique is useful for a headline or keyword summarization. 
 
-The \textbf{intermediate-level} categorization digs deeper into the meaning of certain paragraphs. It uses linguistic information to find relations between lexical semantic sequences. This approach is more appropriate for extractive text summary than the surface-level approach.
+The \textbf{intermediate-level} categorization digs deeper into the meaning of specific paragraphs. It uses linguistic information to find relations between lexical-semantic sequences. This approach is more appropriate for extractive text summary than the surface-level approach.
 
-The \textbf{deep parsing techniques} approaches make use of deep linguistic techniques that exploit the discursive structure of the input document or documents. It can find good relations in the text and one of the earliest methods was published by Marcu in the year 2002 \cite{marcu}. He split the text into discursive units and uses a minimal set of relations, called discourse segmentation. An algorithm weights and orders the elements accordingly. The highest weighted elements will be selected for the summary.
+The \textbf{deep parsing techniques} approaches make use of deep linguistic techniques that exploit the discursive structure of the input document or documents. It can find good relations in the text, and Marcu published one of the earliest methods in the year 2002 \cite{marcu}. He split the text into discursive units and uses a minimal set of relations, called discourse segmentation. An algorithm weighs and orders the elements accordingly. The highest weighted elements will be selected for the summary.
 
-Even though I proposed in the Section \ref{ss:input} for the single-document and multi-document different methods to compute the weights for the words, the extractive approach and the abstractive approach can be applied for both single- and multi-documents. The most common methods for the extractive approach to calculate weights are:
+Even though I proposed in Section \ref{ss:input} for the single-document and multi-document different methods to compute the weights for the words, the extractive approach and the abstractive approach can be applied for both single- and multi-documents. The most common methods for the extractive approach to calculate weights are:
 
 \begin{itemize}
 	\item Graph-based (both single-document and multi-document) like PAGERANK and Textrank
@@ -565,10 +642,10 @@ Even though I proposed in the Section \ref{ss:input} for the single-document and
 
 \subsubsection{Abstractive}\label{ss:abstractive}
 
-The abstractive method for automatic text summarization is one of latest achievements in the research for good automated summaries. When a system is based on an abstractive method, it means that it deeply understands the text and seeks to generate grammatically correct and human-like coherent sentences. One of the first approaches was the \textit{FRUMP} system. It was one of the first systems who used semantic representation for the input text to generate summaries. This system was built in 1982 by Gerald Francis DeJong \cite{Dej82} (Pages 149-176).
+The abstractive method for automatic text summarization is one of the latest achievements in the research for useful automated summaries. When a system is based on an abstractive method, it means that it profoundly understands the text and seeks to generate grammatically correct and human-like coherent sentences. One of the first approaches was the \textit{FRUMP} system. It was one of the first systems which used semantic representation for the input text to generate summaries. This system was built in 1982 by Gerald Francis DeJong \cite{Dej82} (Pages 149-176).
 
 
-The core features of FRUMP's algorithm was a complex architecture with the goal to understand documents written in natural language and it had a hard-coded so-called knowledge structure \cite{Dej82} to simulate human behavior. But still the module for understanding the input was conducted by a rather superficial analysis of the text. Frump's algorithm still made a lot mistakes. Taking into account the pros and cons from the extractive approach, the abstractive approach has different strengths and weaknesses:
+The core features of FRUMP's algorithm were a complex architecture to understand documents written in natural language, and it had a hard-coded so-called knowledge structure \cite{Dej82} to simulate human behavior. However, the module for understanding the input was still conducted by a rather superficial analysis of the text. Frump's algorithm still made many mistakes. Taking into account the pros and cons from the extractive approach, the abstractive approach has different strengths and weaknesses:
 
 \begin{itemize}
 	\item \textbf{Pros}: Generates summaries in a more fluent way, by using words which are not included in the original input documents
@@ -576,14 +653,14 @@ The core features of FRUMP's algorithm was a complex architecture with the goal 
 \end{itemize}
 
 
-Nowadays both he extractive and abstractive methods still are in use. It only depends on the to achieving task what to approach to chose. As I pointed out, the abstractive approach is more complex to use and requires more computitional power. There are even ways to collaborate with the human, as in the \textbf{Aided Summarization}:
+Nowadays, both the extractive and abstractive methods still are in use. It only depends on the to achieving task what to approach to chose. As I pointed out, the abstractive approach is more complex to use and requires more computational power. There are even ways to collaborate with the human, as in the \textbf{Aided Summarization}:
 
 \begin{itemize}
-	\item Combines automatic methods together with human input.
-	\item The algorithm suggests important information from the input document or documents and the human decide whether to use it or not. It uses information retrieval and text mining.
+	\item Combines automatic methods with human input.
+	\item The algorithm suggests important information from the input document or documents, and the human decides whether to use it or not. It uses information retrieval and text mining.
 \end{itemize}
 
-One of the pioneers for abstractive summarization, Banko et al. (2000) recommends to use a machine translatation model for the abstractive summarization model \cite{banko-etal-2000-headline} (Pages 318-325). I mentioned in the beginning of the thesis that sometimes innovative approaches for one discipline, in the example machine translation, can benefit other disciplines (text summarization). A machine translation model converts a source language into the to translating target language and the text summarization system converts a source document or documents into a target summary.
+One of the pioneers for abstractive summarization, Banko et al. (2000), recommends to use a machine translation model for the abstractive summarization model \cite{banko-etal-2000-headline} (Pages 318-325). I mentioned at the beginning of the thesis that sometimes innovative approaches for one discipline, for example, machine translation can benefit from other disciplines (text summarization). A machine translation model converts a source language into the translating target language, and the text summarization system converts a source document or documents into a target summary.
 
 The most common methods for the abstractive approach are:
 
@@ -594,14 +671,14 @@ The most common methods for the abstractive approach are:
 \end{itemize}
 
 The \textbf{encoder-decoder} model from Section \ref{ss:encdec} (Encoder-Decoder) was originally invented for the use of machine translation. 
-This model is also commonly used as an abstractive approach for text summarization. The text summarization model which used encoder-decoder model achieved state of the art results on the two sentence-level summarization datasets \textit{DUC-2004} and \textit{Gigaword}. Those two datasets are commonly used for evaluating the results of a summarization on a standardized way. This will be explained in the next section.
-The encoder-decoder model still faces some problems when using it directly for the text summarization. It needs to modified to work properly:
+This model is also commonly used as an abstractive approach for text summarization. The text summarization model, which used the encoder-decoder model achieved state of the art results on the two sentence-level summarization datasets \textit{DUC-2004} and \textit{Gigaword}. Those two datasets are commonly used for evaluating the results of summarization in a standardized way. This will be explained in the next section.
+The encoder-decoder model still faces some problems when using it directly for text summarization. It needs to be modified to work properly:
 
 \begin{itemize}
 	\item Set the focus on the important sentences and keywords.
-	\item Handle the novel, rare or made-up words in source document.
-	\item Handle a really long document.
-	\item Make more human-readable summary.
+	\item Handle the new, rare, or made-up words in the source document.
+	\item Handle a long document.
+	\item Make a more human-readable summary.
 	\item Use a large vocabulary.
 \end{itemize}
 
@@ -609,13 +686,13 @@ The encoder-decoder model still faces some problems when using it directly for t
 A \textbf{neural attention} model for sentence summarization is another applied abstractive method for text summary. I already explained how an attention model is built up in Section \ref{ss:atten}. To overcome issues, the attention model needs to take care of the following points:
 
 \begin{itemize}
-	\item Set the focus on the important sentences abd keywords, like the encoder-decoder, since attention is encoder-decoder based too.
-	\item Handle the novel, rare or made-up words in source document as well. 
+	\item Set the focus on the important sentences and keywords, like the encoder-decoder, since attention is encoder-decoder based too.
+	\item Handle the novel, rare or made-up words in the source document as well. 
 	\item Use beam-search to generate summary
 	\item Use the n-gram match term as the loss function
 \end{itemize}
 
-Beam-search is basically just an approximate search strategy to choose the best possible results from all available \textit{candidates} \cite{beam} (Pages 174-178). 
+Beam-search is an approximate search strategy to choose the best possible results from all available \textit{candidates} \cite{beam} (Pages 174-178). 
 
 N-grams are groups of \textit{N} consecutive words that can be extracted from
 a sentence. It can also be applied to characters instead of words. For example \cite{py} (Page 181):
@@ -634,7 +711,7 @@ a sentence. It can also be applied to characters instead of words. For example \
 Relations of words can be better concluded out of the n-gram method.
 
 
-The \textbf{Sequence-to-Sequence Recurrent Neural Networks} for abstractive Text Summarization. As with the previous two methods, this method has also already been introduced in Section \ref{ss:seq2seq} and Section \ref{ss:rnn}. This model uses slightly different approaches and faces therefore partly the same, but more issues:
+The \textbf{Sequence-to-Sequence Recurrent Neural Networks} for abstractive Text Summarization. As with the previous two methods, this method has also already been introduced in Section \ref{ss:seq2seq} and Section \ref{ss:rnn}. This model uses slightly different approaches and faces, therefore partly the same, but more issues:
 
 \begin{itemize}
 	\item Set the focus on the important sentences abd keywords, like the encoder-decoder, since sequence to sequence models are encoder-decoder based too.
@@ -643,11 +720,11 @@ The \textbf{Sequence-to-Sequence Recurrent Neural Networks} for abstractive Text
 	\item Use a subset of pre-trained models with a vocabulary \cite{jean-etal-2015-using} (Pages 1-10).
 \end{itemize}
 
-All of this methods achieving better results than the extractive approaches, but there are still even more advanced approach possible (Section \ref{ss:trends}). 
+All of these methods achieve better results than the extractive approaches, but there are still even more advanced approaches possible (Section \ref{ss:trends}) that are based on the abstractive models.  
 
 \subsection{Evaluation}\label{ss:ev}
 
-Evaluating automatically generated summaries has always been from the beginning on a really difficult task. New methods needed to be created especially for the summarization discipline. It is divided basically into two different approach to measure the quality of the generated summary \cite{Jones98automaticsummarising:} (Pages 1-12):
+Evaluating automatically generated summaries has always been a challenging task. New methods for evaluation were specially created for the summarization discipline. It is divided basically into two different approaches to measure the quality of the generated summary \cite{Jones98automaticsummarising:} (Pages 1-12):
 
 \begin{itemize}
 	\item The \textbf{intrinsic evaluation} directly evaluates the output of a summarized text. 
@@ -656,32 +733,31 @@ Evaluating automatically generated summaries has always been from the beginning 
 
 \textbf{Intrinsic Evaluation}
 
-Until today, there is no single best summarization evaluation method. The manual by hand evaluation is too expensive, as stated out by Lin in 2004 \cite{lin-2004-rouge} (Pages 74-81). For that reason he published a method for a cheap automated evaluation metric \textit{ROUGE}. Nowadays this approach is often coupled together with additional human ratings for the best result. ROGUE stands for Recall-Oriented Understudy for Gisting Evaluation. It is a set of methods that can automatically determine the quality of an generated summary by comparing it to a professional human created summary for the same input text. The three most widely ROUGE based methods are \cite{yue} (Pages 2-3):
+Until today, there is no single best summarization evaluation method. The manual by hand evaluation is too expensive, as stated out by Lin in 2004 \cite{lin-2004-rouge} (Pages 74-81). For that reason, he published a method for a cheap automated evaluation metric \textit{ROUGE}. Nowadays, this approach is often coupled together with additional human ratings for the best result. ROGUE stands for Recall-Oriented Understudy for Gisting Evaluation. It is a set of methods that can automatically determine the quality of a generated summary by comparing it to a professional human-created summary for the same input text. The three most widely ROUGE based methods are \cite{yue} (Pages 2-3):
 
 \begin{itemize}
-	\item \textbf{ROUGE-N}: it calculates the percentage of overlapped n-grams with the reference summaries. It requires the one by one matches of all the words in n-grams. It compares the reference and generated summary therefore one by one. The number of words \textit{n} needs to be predefined
-	\item \textbf{ROUGE-L}: it calculates the amount of the most one by one identical words. It therefore automatically identifies the longest in-sequence word overlapping without n being predefined.
-	\item \textbf{ROUGE-SU}: is not as straight forward as the other two. It measures the percentage of skip-bigrams (2-grams) and unigrams (1-grams) which overlap. When applying skip-bigrams without constraints on the distance between the words, it usually produces incorrect bigram matches. For that reason the skip distances is limited by a certain number like 4 (ROUGE-SU4) \cite{lin-2004-rouge}.
+	\item \textbf{ROUGE-N}: it calculates the percentage of overlapped n-grams with the reference summaries. It requires the one by one matches of all the words in n-grams. It compares the reference and generated summary, therefore, one by one. The number of words \textit{n} needs to be predefined
+	\item \textbf{ROUGE-L}: it calculates the amount of the most one by one identical words. Hence it automatically identifies the longest in-sequence word overlapping without \textit{n} being predefined.
+	\item \textbf{ROUGE-SU}: is not as straight forward as the other two. It measures the percentage of skip-bigrams (2-grams) and unigrams (1-grams), which overlap. When applying skip-bigrams without constraints on the distance between the words, it usually produces incorrect bigram matches. For that reason, the skip distances are limited by a certain number like 4 (ROUGE-SU4) \cite{lin-2004-rouge}.
 \end{itemize}
 
 An more advanced evaluation metric called \textbf{Pyramid} was also published by Nenkova and Passonneau in 2004 \cite{nenkova-passonneau-2004-evaluating} (Pages 145-152). Based on the assumption that there is no single best summary, but a variety of summaries can represent the input document in the same quality, Pyramid tries to evaluate summaries based on semantically matching content units. 
 
-Another well known approach which is originated from machine translation is \textbf{BLEU}, which means Bilingual Evaluation Understudy. BLEU can also be applied for evaluating text summaries. BLEU is calculated in general on the n-gram co-occerance between the generated summary and the ideal human written summary. It measure how many of the words or n-grams in the machine generated summary appeared in the  reference summary from a human. Not to be mixed up with ROGUE, which counts how many of the words or n-grams in the human reference summary appeared in the machine generated summary. Both approaches are relatively similar and can be used for evaluating, but they are not the same.
+Another well-known evaluation approach originated from machine translation is \textbf{BLEU}, which means Bilingual Evaluation Understudy. BLEU can also be applied for evaluating text summaries. In general, BLEU is calculated on the n-gram co-occurrence between the generated summary and the ideal human-written summary. It measures how many of the words or n-grams in the machine-generated summary appeared in the reference summary from a human. Not to be mixed up with ROGUE, which counts how many of the words or n-grams in the human reference summary appeared in the machine-generated summary. Both approaches are relatively similar and can be used for evaluating, but they are not the same.
 
 \textbf{Extrinsic Evaluation}
 
 This approach has three most commonly methods, namely \cite{journals/cai/SteinbergerJ09} (Pages 10-11):
 
 \begin{itemize}
-	\item \textbf{Document categorization}: the quality of a summary can be measured by its suitability for surrogating a full document for categorization. This means, is the summary categorizes in the correct way? For example is the summary of the topic international news? 
-	\item \textbf{Information retrieval}: a summary should capture the core points of a document, then an information retrieval 
-	machine indexed on a set of summaries should generate a good summary. 
+	\item \textbf{Document categorization}: its suitability can measure the quality of a summary for surrogating a full document for categorization. This means, is the summary categorizes in the correct way? For example, is the summary of the topic of international news? 
+	\item \textbf{Information retrieval}: a summary should capture the core points of a document, then an information retrieval machine indexed on a set of summaries should generate a good summary. 
 	\item \textbf{Question Answering}: multiple choice with a single answer to be selected should measure how many of the questions randomly chosen people answered correctly under different conditions based on the generated summary.
 \end{itemize}
 
 \section{Advanced Approaches for Text Summarization}\label{ss:trends}
 
-Since deep learning received more and more attraction, neural-based summarizers had an considerable influence on automatic summarization. Compared to the traditional models (extractive and party abstractive models), neural-based models achieve better performance with by relying less on the human intervention if the training data is big enough.
+Since deep learning received more and more attraction, neural-based summarizers had a considerable influence on automatic summarization. Compared to the traditional models (extractive and partly abstractive models), neural-based models achieve better performance by relying less on human intervention if the training data is big enough.
 
 \begin{figure}
 	\begin{center}
@@ -690,7 +766,7 @@ Since deep learning received more and more attraction, neural-based summarizers 
 	\end{center}
 \end{figure}
 
-The four white boxes in Figure \ref{summ} have been introduced throughout this thesis. The next step to an even better (human-like) summary is the use of neural text generation, the state of the art approach. In the following, combinational approaches and the reinforcement approach will be introduced. Those methods rely completely on neural networks (neural text generation), but achieve currently in 2020 the best state of the art results. Neural-based approaches are promising for text summarization in terms of the generated human-like summary when large data sets are available for training. Still many challenges and issues with neural-based models remain unsolved. Future research directions such as the combinational approach or even adding the reinforcement learning are still in research.
+The four white boxes in Figure \ref{summ} have been introduced throughout this thesis. The next step to an even better (human-like) summary is the use of neural text generation, the state of the art approach. In the following, combinational approaches and the reinforcement approach will be introduced. Those methods rely entirely on neural networks (neural text generation) but achieve currently in 2020, the best state of the art results. Neural-based approaches are promising for text summarization in terms of the generated human-like summary when large data sets are available for training. Still, many challenges and issues with neural-based models remain unsolved. Future research directions such as the combinational approach or even adding the reinforcement learning are still in research.
 
 \subsection{Combinational Approach}\label{ss:neuralgen}
 
@@ -699,9 +775,7 @@ The four white boxes in Figure \ref{summ} have been introduced throughout this t
 	\item \textbf{Extract then Abstract model}
 \end{itemize}
 
-
-The \textbf{Pointer Generator Network} proposed from See, Manning and Liu in 2017 \cite{see-etal-2017-get} makes use of an attention based distribution to generate a probability. 
-
+The \textbf{Pointer Generator Network} proposed from See, Manning, and Liu in 2017 \cite{see-etal-2017-get} make use of an attention-based distribution to generate a probability. 
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=6in]{photos/pointer}\\
@@ -711,25 +785,23 @@ The \textbf{Pointer Generator Network} proposed from See, Manning and Liu in 201
 
 Figure \ref{pointer} is based on the attention model (Figure \ref{attention1} from Section \ref{ss:atten}). 
 This model switches the decoder(generator) and the pointer network by a probability \(p_{gen}\).
-Furthermore it combines the vocabulary distribution and attention with \(p_{gen}\) and the (1 - \(p_{gen}\)) weight (Figure \ref{pointer}). The reason for choosing this probability multiplications exceed this bachelor thesis. The point for me to include it is to introduce the current state of the art models
+Furthermore it combines the vocabulary distribution and attention with \(p_{gen}\) and the (1 - \(p_{gen}\)) weight (Figure \ref{pointer}). The reason for choosing this probability multiplications exceed this bachelor thesis. The point for me to include it is to introduce the current state of the art models.
 
-The \textbf{extract then abstract model} uses extractive model first to select the sentence from a document or documents and then secondly it adopts the abstractive model to the selected sentences. 
-Basically saying, the model combines a query focused extractive and abstractive model. It extract the important sentences with an extractive approach and calculate then the relevance score for each word according to the query uses that as input for a pre-trained abstractive model.
-
-
+The \textbf{extract then abstract model} uses the extractive model first to select the sentence from a document or documents, and then secondly, it adopts the abstractive model to the selected sentences. 
+Basically saying, the model combines a query focused extractive and abstractive model. It extracts the meaningful sentences with an extractive approach and calculates then the relevance score for each word, according to the query uses that as input for a pre-trained abstractive model.
 
 \subsection{Transfer Learning}
 
-It is effective to reuse already learned models to make a new text summarization model. That is called \textit{Transfer Learning}. It allows to make a model by a tiny amount of new data and in a short period of time. This feature leads to domain-specific summarization.
+It is practical to reuse already learned models to make a new text summarization model. That is called \textit{Transfer Learning}. It allows to build a model by a tiny amount of new data and in a short period of time. This feature leads to domain-specific summarization.
 
-\textbf{BERT} is the representative model that enables getting good representation of sentences. Several methods are proposed to create summaries by BERT.
+\textbf{BERT} is the representative model that enables getting a good representation of sentences. Several methods are proposed to create summaries by BERT.
 
 \textit{Fine-tune BERT for Extractive Summarization}
 
 \begin{itemize}
 	\item Use the pre-trained models
 	\item Get good sentence representation.
-	\item BERT generates token based features. Therefore there is a need to convert token based features to sentence based representation. Liu and Lapata (2019) \cite{liu-lapata-2019-text} use \textit{Segmentation Embedding} to notice sentence boundaries and use the first token of the segmentation as the sentence embedding.
+	\item BERT generates token-based features. Therefore there is a need to convert token-based features to sentence based representation. Liu and Lapata (2019) \cite{liu-lapata-2019-text} use \textit{Segmentation Embedding} to notice sentence boundaries and use the first token of the segmentation as the sentence embedding.
 \end{itemize}
 
 \textit{Pretraining-Based Natural Language Generation for Text Summarization}
