@@ -19,6 +19,7 @@ scores. In the end, I further introduce some performance enhancements.
 
 - Python Notebook as [iPython](https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM/blob/master/project/Bachelor_Thesis_Text_Generation.ipynb)
 - Bachelor Thesis as [PDF](https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM/blob/master/report/thesis.pdf)
+- Presentation as PDF
 
 ## Getting Started
 
