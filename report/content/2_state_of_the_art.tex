@@ -10,7 +10,7 @@ As conducted from the Introduction Chapter 1, Text Generation is the generic ter
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=6.5in]{photos/used_methods.pdf}\\
-		\caption{Tabluar overview of the methods from the upcoming Chapter 2 which are going to be used in my prototype from Chapter 3. From the Text Generation Concepts, Advanced Approaches for Text Generation and Text Summarization Concepts, I introduce different approaches, but for my prototype I only use the most recent and advanced approaches and technologies. For the technologies from Advanced Approaches for Text Summarization I only introduce the concepts and don't implement them, because the complexity for the implementation exceeds the limit of this thesis}\label{used_methods}
+		\caption{Tabular overview of methods from the upcoming Chapter 2, which are going to be used in my prototype from Chapter 3. From the Text Generation Concepts, Advanced Approaches for Text Generation and Text Summarization Concepts, I introduce different approaches, but for my prototype, I only use only the text summarization concepts and not the most advanced approaches}\label{used_methods}
 	\end{center}
 \end{figure}
 
@@ -822,7 +822,7 @@ Furthermore it combines the vocabulary distribution and attention with \(p_{gen}
 The \textbf{extract then abstract model} uses the extractive model first to select the sentence from a document or documents, and then secondly, it adopts the abstractive model to the selected sentences. 
 Basically saying, the model combines a query focused extractive and abstractive model. It extracts the meaningful sentences with an extractive approach and calculates then the relevance score for each word, according to the query uses that as input for a pre-trained abstractive model.
 
-\subsection{Transfer Learning}
+\subsection{Transfer Learning}\label{ss:neuralgen2}
 
 It is practical to reuse already learned models to make a new text summarization model. That is called \textit{Transfer Learning}. It allows to build a model by a tiny amount of new data and in a short period of time. This feature leads to domain-specific summarization.
 
@@ -831,7 +831,7 @@ It is practical to reuse already learned models to make a new text summarization
 \textit{Fine-tune BERT for Extractive Summarization}
 
 \begin{itemize}
-	\item Use the pre-trained models
+	\item Use the pretrained models
 	\item Get good sentence representation.
 	\item BERT generates token-based features. Therefore there is a need to convert token-based features to sentence based representation. Liu and Lapata (2019) \cite{liu-lapata-2019-text} use \textit{Segmentation Embedding} to notice sentence boundaries and use the first token of the segmentation as the sentence embedding.
 \end{itemize}

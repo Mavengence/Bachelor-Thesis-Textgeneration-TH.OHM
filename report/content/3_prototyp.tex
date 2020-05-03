@@ -2,7 +2,7 @@
 
 \epigraph{\textit{Science is organized knowledge. Wisdom is organized life.}}{Immanuel Kant}
 
-In this third section of my thesis, I finally present my self-programmed prototype. The State of the Art chapter was structured in such a way, that it focuses on the necessary information for understanding my prototype as shown in Figure \ref{used_methods}. Hence I only gave some additional information about techniques that produce even more accurate results, but this is out of scope for my thesis. This section is divided into four sections, starting with the objective (Section \ref{ss:obj}) of this prototype. In There I propose my requirements for this prototype and what I expect to achieve from it. The next step is the technical concept (Section \ref{ss:tc}), which models the data flow and processes inside the program. After I explain which steps my algorithm goes through, I present snippets of my code in Section \ref{ss:imp} to further illustrate it. This code will be evaluated in Section \ref{ss:eval}.
+In this third section of my thesis, I finally present my self-programmed prototype. The State of the Art chapter was structured to focus on the necessary information for understanding my prototype, as shown in Figure \ref{used_methods}. Hence I only gave some additional information about techniques that produce even more accurate results, but this is out of scope for my thesis. This section is divided into four sections, starting with the objective (Section \ref{ss:obj}) of this prototype. There I propose my requirements for this prototype and what I expect to achieve from it. The next step is the technical concept (Section \ref{ss:tc}), which models the data flow and processes inside the program. After I explain which steps my algorithm goes through, I present snippets of my code in Section \ref{ss:imp} to illustrate it further. This code will be evaluated in Section \ref{ss:eval}.
 
 \section{Objective}\label{ss:obj}
 
@@ -12,17 +12,17 @@ In this third section of my thesis, I finally present my self-programmed prototy
 	\end{center}
 \end{tcolorbox}
 
-Many years ago, the challenge was to find the right information for specific tasks, nowadays the internet provides more information than anyone could ever read. Depending on the type of document or article, it is not always necessary to read it from the beginning to the end. Throughout my thesis, I often used my case study \textit{News Headline Summarization from Google} for illustrating certain concepts. I chose a different but related topic for my case study than my actual prototype to show another kind of task where automatic text summarization is useful.
+Many years ago, the challenge was to find the right information for specific tasks. Nowadays, the internet provides more information than anyone could ever read. Depending on the type of document or article, it is not always necessary to read it from the beginning to the end. Throughout my thesis, I often used my case study \textit{News Headline Summarization from Google} for illustrating certain concepts. I chose a different but related topic for my case study than my actual prototype to show another kind of task where automatic text summarization is useful.
 
-I chose the \textbf{Amazon Fine Food Reviews} provided from \textit{Stanford Network Analysis Project} hosted on the website Kaggle \footnote{https://www.kaggle.com/snap/amazon-fine-food-reviews/}. This website is commonly known for providing data-sets from private and organizational publishers. 
+I chose the \textbf{Amazon Fine Food Reviews} provided from \textit{Stanford Network Analysis Project} hosted on the website Kaggle \footnote{https://www.kaggle.com/snap/amazon-fine-food-reviews/}. This website is commonly known for giving data-sets from private and organizational publishers. 
 
 The project's objective is to build and train a model that can compute relevant summaries for reviews written about fine foods sold on Amazon. 
 
-This data-set contains around 500.000 entries with each entry containing one review from the amazon fine foods and its summary. The data is collected for eight years from October 2012 until now. 
+This data-set contains around 500.000 entries with each entry containing one review from the amazon fine foods and its summary. The data includes a collection over eight years from October 2012 until now. 
 
-The training process of the algorithm must be finished in a reasonable amount of time. Due of the size of the dataset and the complexity of the neural network, it is usual to rent a cloud computer with large graphic card. I regard this as a basic requirement, that a strong GPU is available for the training process. 
+The training process of the algorithm must be finished in a reasonable amount of time. Due to the size of the data-set and the complexity of the neural network, it is usual to rent a cloud computer with a large graphics card. I regard this as an essential requirement that a strong GPU is available for the training process. 
 
-After finishing the training of the model, the algorithm must be capable of taking an random review-like text as an input and respond within a reasonable time (seconds) with the corresponding review summarization. Since I am not using the really advanced technologies, I don't expect always perfect grammatical correctness of the output. As long as the same meaning is represented in the summary without too much information loss, I regard the prototype as a success. 
+After finishing the training of the model, the algorithm must be capable of taking a random review-like text as an input and respond within a reasonable time (seconds) with the corresponding review summarization. Since I am not using the latest technologies, I don't always expect perfect grammatical correctness of the output. I regard the summary as a success if it summarizes the input without too much information loss. This measurement is subjective because the scoring metrics are not perfect for my case.
 
 For example
 
@@ -49,12 +49,12 @@ For example
 
 \section{Technical concept}\label{ss:tc}
 
-An example review needs to pass from the given data-set file to the predicted summary of a lot of processes and transformations. The technical concept illustrates all necessary steps without yet going into the programming detail itself. The purpose of this section is to take all the previous explanations into a combined example and show the entire process from the beginning to the end. 
+An example review needs to be processed from the initially given data-set through many processes to be able to predict summaries. The technical concept illustrates all necessary steps without yet going into the programming detail itself. The purpose is to take all previous explanations into a combined example and show the entire process from the beginning to the end. 
 
 The processing steps follow in chronological order:
 
 \begin{itemize}
-	\item Data pre-processing
+	\item Data preprocessing
 	\item Building the Model
 	\item Training the Model
 	\item Generating Summary
@@ -64,7 +64,7 @@ These steps will be explained in the following Subsection.
 
 \subsection{Data Preprocessing}\label{ss:preprop}
 
-The computer does not understand words. It is not possible to feed the words from a review subsequently into a recurrent neural network and expect that the algorithm will learn it somehow. Performing pre-processing is a crucial step before feeding inputs into the neural network model. The data must be normalized into a clean and not messy way. The following is an example from the original dataset:
+The computer does not understand words. It is not possible to feed the words from a review subsequently into a recurrent neural network and expect that the algorithm will learn it somehow. Performing preprocessing is a crucial step before feeding inputs into the neural network model. The data must be normalized into a clean and not messy way. The following is an example from the original dataset:
 
 \begin{tcolorbox}
 	\textbf{Review} \\
@@ -74,7 +74,7 @@ The computer does not understand words. It is not possible to feed the words fro
 	Delicious product!
 \end{tcolorbox}
 
-For all the words occurring in the review and summary, a vocabulary dictionary needs to be created. This dictionary can be used to convert the words into numbers, and respectively numbers are what the recurrent neural network wants as an input. For creating the two vocabulary dictionaries, it needs to be careful though of how to handle the data. If the same word e.g., \textit{Still} and \text{still} is once with a capital letter and the second time without the encoding (\textit{UTF-8}) is different, and hence the computer regards this as two different words. Furthermore, the text can include punctuation, quotation marks or parenthesis. Consequently, I defined a chronological order of text transformation steps to normalize the text:
+For all the words occurring in the review and summary, a vocabulary dictionary must be created. This dictionary can be used to convert the words into numbers, and respectively numbers are what the recurrent neural network wants as an input. For creating the two vocabulary dictionaries, it needs to be careful though of how to handle the data. If the same word, e.g., \textit{Still} and \text{still} is once with a capital letter and the second time without the encoding (\textit{UTF-8}) is different, and hence the computer regards this as two different words. Furthermore, the text can include punctuation, quotation marks or parenthesis. Consequently, I defined a chronological order of text transformation steps to normalize the text:
 
 \begin{tcolorbox}
 	\begin{itemize}
@@ -89,13 +89,13 @@ For all the words occurring in the review and summary, a vocabulary dictionary n
 	\end{itemize}
 \end{tcolorbox}
 
-\textbf{Contraction mapping} describes the process of mapping contracted words into their original two words. For example \textit{haven't} will be mapped back to \textit{have not}. This is important because the algorithm can detect the word \textit{not} to be negatively connotated only this way. If a review says something is not bad, then the algorithm can summarize it by computing the word good. This relation can only be learned by the algorithm by providing it all the necessary words.
+\textbf{Contraction mapping} describes the process of mapping contracted words into their original two words. For example \textit{haven't} will be mapped back to \textit{have not}. This is important because the algorithm can only this way detect if the word \textit{not} is negatively connotated or not. If a review says something is not bad, then the algorithm can summarize it by computing the word good. 
 
-\textbf{Remove stopwords} limits the vocabulary size, which reduces the model's training time dramatically. I have already explained stopwords in Section \ref{ss:sd}. Those are words like and, that or there. 
+\textbf{Remove stopwords} limits the vocabulary size, which reduces the models training time dramatically. I have already explained stopwords in Section \ref{ss:sd}. Those are words like and, that or there. 
 
-\textbf{Remove short words} because they most likely do not play a vital role in predicting the output. Words like it, in or at not necessarily appear in the stopwords dictionary. For this reason, I remove them manually because they almost do not affect the text's meaning, but after removing, they reduced the training time further. 
+\textbf{Remove short words} because those words most likely do not play a vital role in predicting the output. Words like it, in or at not necessarily appear in the stopwords dictionary. For this reason, I remove them manually because they almost do not affect the meaning of the text, but after removing, they reduced the training time further. 
 
-After applying all of the pre-processing steps, the example will look like the following:
+After applying all of the preprocessing steps, the example will look like the following:
 
 \begin{tcolorbox}
 	\textbf{Input Review} \\
@@ -124,12 +124,12 @@ In order to build the mentioned vocabulary, the text needs to be \textbf{Tokeniz
 	
 	['remember': 678, 'buying': 142, 'candy': 360, 
 	'kid': 1017, 'quality': 87, 'dropped': 3724,
-	 'years': 108, 'still': 55, 'superb': 1893, 
-	 'product': 9, 'disappointed': 243, 'delicious': 1, ...] \\ 
- 
-    The dictionary contains the key-value pairs for all of the unique words in the trainable dataset. Those words are mapped into a tokenized and fixed length of 80 words padded sequence as shown below \\
-    
-    All of the input sequences are padded into the same length. Too short sentences will be filled up with zeros as below and too long sentences will be cut at exceeding limit. The predicted summary has as well a fixed length. \\
+	'years': 108, 'still': 55, 'superb': 1893, 
+	'product': 9, 'disappointed': 243, 'delicious': 1, ...] \\ 
+	
+	The dictionary contains the key-value pairs for all of the unique words in the trainable dataset. Those words are mapped into a tokenized and fixed length of 80 words padded sequence as shown below \\
+	
+	All of the input sequences are padded into the same length. Too short sentences will be filled up with zeros as below, and too long sentences will be cut at exceeding the limit. The predicted summary has as well a fixed length. \\
 	
 	\textbf{Tokenized and Padded Review}
 	
@@ -178,10 +178,10 @@ The mathematical notations for Figure \ref{build_model} are shown in the box bel
 \end{tcolorbox}
 
 The reason for choosing the LSTM over an underlying recurrent neural network architecture is that the generated summary can sometimes be quite long (up to 80 words), and the recurrent neural network cannot catch up with dependencies of this sequence length. Figure \ref{modelenc} illustrates the overall view of my model. 
-As explained in the last section, if an input or output has fewer words than the maximum length, the missing words are denoted as zero values. This allows the algorithm not to compute any further prediction, because it is a zero multiplication. The encoder-decoder architecture is mainly used when the input and output length vary from each other. \\
+As explained in the last section, if an input or output has fewer words than the maximum length, the missing words are denoted as zero values. This enables the algorithm not to compute any further predictions because it is a zero multiplication. The encoder-decoder architecture is mainly used when the input and output length vary from each other. \\
 
-This processing step has no input, since it is only about building a model. The output for this step is the generated and ready to train model. 
-The model is built based on the structure from Figure \ref{used_methods}. In order to use the attention layer for the neural network, it is necessary to use an underlying time-series capable layer like the LSTM cell as discussed in Chapter 2. The is based on the Recurrent Neural Network, but it is not necessary to implement a RNN cell, because the LSTM is just an advanced version of the RNN and substitutes it. 
+This processing step is an independent process of the model building step. The output for this step is generated and ready to train the model. 
+The model is built based on the structure from Figure \ref{used_methods}. In order to use the attention layer for the neural network, it is necessary to use an underlying time-series capable layer like the LSTM cell, as discussed in Chapter 2. This is based on the Recurrent Neural Network, but it is not necessary to implement an RNN cell because the LSTM is just an advanced version of the RNN and substitutes it. 
 
 \begin{figure}
 	\begin{center}
@@ -205,13 +205,13 @@ Figure \ref{build_model} shows the general sequence to sequence model, whereas F
 	\boldmath{\(c\)} represents the cell state, which is the horizontal line between multiple LSTM cells
 \end{tcolorbox}
 
-The output summarized model looks now like Figure \ref{model_sum} with its 81.380.367 parameters. Where the input layer is responsible for defining the shape and dimension of the input sequence I mentioned above. The shape [(None, 80)] says that every trainable input must be in the shape of an array with the length of 80. The embedding layer transforms the real word (\textit{remember buying ..}) respectively into their number-padded representation. The following layers are the LSTM layers which the neural network the required complexity. Finally the attention layer gives the additional \textit{intelligence} to further increase the accuracy of the model. It can be considered as the \textit{brain} of the summarization model. \\
+The output summarized model looks now like Figure \ref{model_sum} with its 81.380.367 parameters. Where the input layer is responsible for defining the shape and dimension of the input sequence. The shape [(None, 80)] says that every trainable input must be in the shape of an array with a length of 80. The embedding layer transforms the real word (\textit{remember buying ..}), respectively into its number-padded representation. The following layers are the LSTM layers, which the neural network the required complexity. Finally, the attention layer gives the additional \textit{intelligence} to further increase the accuracy of the model. It can be considered as the \textit{brain} of the summarization model. \\
 
 \begin{tcolorbox}
 	Going back to the tabular overview in Table \ref{used_methods}:\\\\
 	\textbf{Text Generation Concepts} \\
 	
-	\textit{Architectures and Approaches}:\\ Data-driven due of the large amount of data I have ~500000, but only 224814 are used \\ \\
+	\textit{Architectures and Approaches}:\\ Data-driven due to a large amount of data I have ~500000, but only 224814 are used \\ \\
 	
 	\textbf{Advanced Approaches for Text Generation} \\
 	
@@ -219,18 +219,48 @@ The output summarized model looks now like Figure \ref{model_sum} with its 81.38
 	
 	\textbf{Text Summarization Concepts} \\
 	
-	\textit{Input}: \\ Multi document due of the 224814 different training samples I am going to use. 500000 would take too much time. \\ \\
-	\textit{Purpose}:\\ Headline Summary due of the fixed length output vector of length 10. \\ \\
-	\textit{Output}: \\ Abstractive approach due of the implemented attention layer, which gives the neural network the ability to chose from a wide range of words which are not used in the currently inputted review.
+	\textit{Input}: \\ Multi-document due to the 224814 different training samples I am going to use. 500000 would take too much time. \\ \\
+	\textit{Purpose}:\\ Headline Summary due to the fixed-length output vector of length 10. \\ \\
+	\textit{Output}: \\ Abstractive approach due to the implemented attention layer, which gives the neural network the ability to chose from a wide range of words that are not used in the currently inputted review.
 \end{tcolorbox}
 
+\newpage
 
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=6in]{photos/model_sum}\\
-		\caption{Model summarization with parameters}\label{model_sum}
-	\end{center}
-\end{figure}
+\begin{python}[caption={Model Summary for my Prototype with corresponding parameters},captionpos=b]
+	Layer (type)                    Output Shape         Param #                        
+	================================================================
+	input_1 (InputLayer)            [(None, 80)]         0                                            
+	________________________________________________________________
+	embedding (Embedding)           (None, 80, 500)      40049500                     
+	________________________________________________________________
+	lstm (LSTM)                     [(None, 80, 500), (N 2002000                      
+	________________________________________________________________
+	input_2 (InputLayer)            [(None, None)]       0                                            
+	________________________________________________________________
+	lstm_1 (LSTM)                   [(None, 80, 500), (N 2002000                            
+	________________________________________________________________
+	embedding_1 (Embedding)         (None, None, 500)    10933500                        
+	________________________________________________________________
+	lstm_2 (LSTM)                   [(None, 80, 500), (N 2002000                 
+	________________________________________________________________
+	lstm_3 (LSTM)                   [(None, None, 500),  2002000                    
+	lstm_2[0][1]                     
+	lstm_2[0][2]                     
+	________________________________________________________________
+	attention_layer (AttentionLayer ((None, None, 500),  500500                          
+	lstm_3[0][0]                     
+	________________________________________________________________
+	concat_layer (Concatenate)      (None, None, 1000)   0                               
+	attention_layer[0][0]            
+	________________________________________________________________
+	time_distributed (TimeDistribut (None, None, 21867)  21888867                 
+	================================================================
+	Total params: 81,380,367
+	Trainable params: 81,380,367
+	Non-trainable params: 0
+\end{python}
+
+This listing visualizes the models summary for my Prototype with all corresponding parameters. Everything I explained in the model building section is summarized together in this 31 lines.
 
 
 \subsection{Training the Model}
@@ -246,7 +276,7 @@ The \textbf{Encoder} in Figure \ref{trainenc} uses LSTM cells to read all of the
 	\end{center}
 \end{figure}
 
-The encoder and the decoder are two different LSTM architectures. The initial state of the encoder LSTM is a zero matrix and the finally computed output state of the encoder LSTM is the initial state of the decoder LSTM.
+The encoder and the decoder are two different LSTM architectures. The initial state of the encoder LSTM is a zero matrix, and the finally computed output state of the encoder LSTM is the initial state of the decoder LSTM.
 
 The \textbf{ decoder} is based on an LSTM network as well, which has the target sequence as a word-by-word input and predicts the same sequence offset by a single time step. The decoder is trained to predict the upcoming word in the sequence with respect to the previous word. The \textit{start} and \textit{end} boxes in Figure \ref{traindec} represent an appended string to the beginning and ending of the original summary. This is done to create the one time step offset.
 
@@ -257,18 +287,18 @@ The \textbf{ decoder} is based on an LSTM network as well, which has the target 
 	\end{center}
 \end{figure}
 
-The target sequence is unknown during the decoding part of the test sequence. The target sequence is predicted by passing the first word into the decoder which is always the \textit{start} token. Moreover, the \textit{end} token signals the end of the sentence, followed by potentially zero values.
+The target sequence is unknown during the decoding part of the test sequence. The target sequence is predicted by passing the first word into the decoder, which is always the \textit{start} token. Moreover, the \textit{end} token signals the end of the sentence, followed by potentially zero values.
 
 
 \begin{tcolorbox}
 	Model training \textbf{Input}:\\
 	
 	- An array of the size [224814, 80] representing 224814 unique training reviews encoded into the length 80. \\
-	- An array of the size [224814, 1] representing 224814 unique training review labels (ground truth) of the reviews. There labels are the original summarizations for the given review. So the model can train on a review and its correct corresponding summarization in order to learn from that
+	- An array of the size [224814, 1] representing 224814 unique training review labels (ground truth) of the reviews. Their labels are the original summarizations for the given review. So the model can train on a review and its correct corresponding summarization in order to learn from that
 	\\\\
 	Model training \textbf{Output}:\\
 	
-	At this step there is no concrete output, just a trained model of a huge size. The model can be saved with a special format, for example .h5. The size for this saved model is around 651,1MByte. This model can now be used to summarize my own reviews.
+	At this step, there is no concrete output, just a trained model with a huge size. The model can be saved in a special format, for example .h5. The size of this saved model is around 651,1MByte. This model can now be used to summarize my own reviews.
 \end{tcolorbox}
 
 \subsection{Generate the Summary}\label{ss:generate}
@@ -325,14 +355,14 @@ With this mechanism, it is possible for the decoder to first look at all the wor
 	The output will be in the form of the padded \textit{y} array of length 10. So a possible output could look like this: \\\\
 	\([23, 13, 5, 1, 0, 0, 0, 0, 0, 0]\) \\
 	
-	Those numbers must be back transformed with the original dictionary into their corresponding words. Then the output is readable for humans.
+	Those numbers must be back-transformed with the original dictionary into their corresponding words. Then the output is readable for humans.
 \end{tcolorbox}
 
 \newpage
 
 \section{Implementation}\label{ss:imp}
 
-This is were the technical concepts comes to life. I will not provide the entire code in this section, but I will introduce the most crucial aspects of the code. I used python version 3.7.6, and I programmed it entirely in the \textbf{Anaconda}\footnote{https://www.anaconda.com/} IDE (Integrated Development Environment). This IDE makes it especially easy for programming data science-related topics like text summarization in python because it can preview each cell one-by-one. Anaconda is for free and an open-source platform. The python packages I used for this project are listed in the following Listing:
+This is where the technical concepts comes to life. I will not provide the entire code in this section, but I will introduce the most crucial aspects of the code. I used python version 3.7.6, and I programmed it entirely in the \textbf{Anaconda}\footnote{https://www.anaconda.com/} IDE (Integrated Development Environment). This IDE makes it especially easy for programming data science-related topics like text summarization in python because it can preview each cell one-by-one. Anaconda is for free and an open-source platform. The python packages I used for this project are listed in the following Listing:
 
 \begin{python}
 	import numpy as np  
@@ -373,27 +403,29 @@ The first step \textit{data preprocessing} consists of multiple transformations 
 	newString = re.sub("[^a-zA-Z]", " ", newString) 
 	tokens = [w for w in newString.split() if not w in stop_words]
 	long_words=[]
+	
 	for i in tokens:
-	if len(i)>=3:                  #removing short word
-	long_words.append(i)   
+		if len(i)>=3:                  #removing short word
+			long_words.append(i) 
+			  
 	return (" ".join(long_words)).strip()
 \end{python}
 
-Where this code refers to the example of Section 3.2.1. 
+Where this code refers to the example of Section 3.2.1. I can't explain every single step from the code above, but it performs exactly the transformation steps I have already explained. The last line of code returns a single preprocessed review as an entire sentence. The \textit{.join()} and the \textit{.strip()} commands assure that a single formatted sentence is returned as a string. 
 
 \begin{tcolorbox}
 	\textbf{Review} \\
 	I can remember buying this candy as a kid and the quality hasn't dropped in all these years. Still a superb product you won't be disappointed with. \\
 	
-	\textbf{Summary} \\
+	\textbf{Original provided Summary} \\
 	Delicious product!
 \end{tcolorbox}
 
-This python function will apply this text transformation. This cleaning transformation is applied both for the training reviews, as well as the corresponding available training summary. The next step is the tokenization from the same Section in the box \textbf{Generated Word Vocabulary}.
-This tokenized and padded review is created by funneling the cleaned summaries and reviews into the provided tokinzation function from Keras.
+This python function will apply this text transformation. The cleaning transformation is applied both for the training reviews, as well as the corresponding available training summary. The next step is the tokenization from the same Section in the box \textbf{Generated Word Vocabulary}.
+This tokenized and padded review is created by funneling the cleaned summaries and reviews into the provided tokenization function from Keras.
 
 \begin{python}
-	#padding zero upto maximum length
+	#padding zero up to the maximum length
 	X_train = pad_sequences(X_train,  maxlen=max_len_text, padding='post') 
 	X_test = pad_sequences(X_test, maxlen=max_len_text, padding='post')
 	
@@ -403,7 +435,7 @@ This tokenized and padded review is created by funneling the cleaned summaries a
 
 \subsection{Building the model}
 
-Building the model is essentially constructed by combining two different parts as shown in Figure \ref{modelenc}. I need to create the \textbf{Encoder} and the \textbf{Decoder} on their own and combine them at the end.
+Building the model is essentially constructed by combining two different parts, as shown in Figure \ref{modelenc}. I need to create the \textbf{Encoder}, and the \textbf{Decoder} on their own and combine them at the end.
 
 \begin{python}[caption={Encoder in Python}]
 # Encoder 
@@ -440,7 +472,7 @@ Those parameters are used the same way for the decoder part of the model. The de
 
 The output of the decoder is fed into the \textit{TimeDistributed} layer, which creates the time steps \textit{t}. The attention layer is concatenated with the decoder layer and the defined model at the end of the following code combines the encoder, attention and the decoder together: \\ \\ \\
 
-\begin{python}
+\begin{python}[caption={Decoder in Python}]
 # Decoder. 
 decoder_inputs = Input(shape = (None,)) 
 dec_emb_layer = Embedding(y_voc_size, latent_dim, trainable=True) 
@@ -465,19 +497,19 @@ decoder_outputs = decoder_dense(decoder_concat_input)
 model = Model([encoder_inputs, decoder_inputs], decoder_outputs) 
 \end{python}
 
-Finally this two parts are concatenated together as following:
+This is the right part of Figure \ref{infer}. In this way we completed the architecture of the text summarization model. The only remaining building step is to combine the encoder and the decoder. Finally this two parts are concatenated together as following:
 
-\begin{python}
+\begin{python}[caption={Concatenation of Encoder and Decoder}]
 	model = Model([encoder_inputs, decoder_inputs], decoder_outputs) 
 \end{python}
 
-This creates the final model summary from Figure \ref{model_sum}
+This creates the final model summary from the last Listing in Section \ref{ss:build}. 
 
 \subsection{Training the model}
 
-The training is now the easiest, but the most time-consuming part. The training process itself requires only a couple lines of code:
+The training is now the easiest, but the most time-consuming part. The training process itself requires only a couple lines of code which specifies how to training should be proceeded:
 
-\begin{python}
+\begin{python}[caption={Fitting process for the concatenated model}]
 	history = model.fit([X_train, y_train[:,:-1]], 
 	y_train.reshape(y_train.shape[0], y_train.shape[1], 1)[:,1:],
 			epochs=30,
@@ -497,7 +529,7 @@ The training is now the easiest, but the most time-consuming part. The training 
 	\item \textit{validation\_data} provides a batch report during training of the model accuracy
 \end{itemize}
 
-The entire training process can be seen in Figure \ref{tpm}. The picture shows that my model finished due of the early stopping (callback function) at epoch 12. Each epoch took around 979 seconds, which are around 16 minutes. Multiplying this by 12 equals 3.5 hours of training. On a computer with a weaker graphics card this training process can easily take 5 times as long. It highly depends on the available graphics power. 
+The entire training process can be seen in Figure \ref{tpm}. The picture shows that my model finished due to the early stopping (callback function) at epoch 12. Each epoch took around 979 seconds, which is around 16 minutes. Multiplying this by 12 equals 3.5 hours of training. On a computer with a weaker graphics card, this training process can easily take five times as long. It highly depends on the available graphics power.
 
 \begin{figure}
 	\begin{center}
@@ -508,11 +540,11 @@ The entire training process can be seen in Figure \ref{tpm}. The picture shows t
 
 \subsection{Generating Summary}
 
-I compare my generated summary with the origin ground truth summary in the next Section \ref{ss:eval}, because the quality of the generation can either be measured by our human understanding itself. Whether the summary is legit or not, or by other evaluation metrics mentioned in Section \ref{ss:eval}.
+I compare my generated summary with the origin ground truth summary in the next Section \ref{ss:eval}, because the quality of the generation can either be measured by our human understanding or by other evaluation metrics mentioned in Section \ref{ss:eval}. The generated summaries are shown in Table 3.1.
 
 \section{Evaluation}\label{ss:eval}
 
-The model and output can be evaluated in multiple ways, as explained in Section \ref{ss:ev}. A common approach for evaluating a model is by saving the training and testing loss during each training epoch. The loss function used for this model is the \textit{sparse\_categorical\_crossentropy}, because it converts the integer sequences to a one-hot encoded vector. This prevents a lot of memory issue related problems. One-hot encoding transform arrays into only ones and zeros. The stored losses of each epoch can be plotted into a graph shown in Figure \ref{eval}.
+The model and its output can be evaluated in multiple ways, as explained in Section \ref{ss:ev}. A common approach for evaluating a model is by saving the training and testing loss during each training epoch. The loss function used for this model is the \textit{sparse\_categorical\_crossentropy}, because it converts the integer sequences to a one-hot encoded vector. This prevents a lot of memory issue related problems. One-hot encoding transform arrays into only ones and zeros. The stored losses of each epoch can be plotted into a graph shown in Figure \ref{eval}.
 
 \textbf{Loss}
 
@@ -523,11 +555,11 @@ The model and output can be evaluated in multiple ways, as explained in Section 
 	\end{center}
 \end{figure}
 
-Figure \ref{eval} shows that the training can be stopped at epoch ten, because the loss is beginning to increase again, which is bad because the loss needs to be as small as possible. 
+Figure \ref{eval} shows that the training can be stopped at epoch ten because the loss is beginning to increase again, which is bad because the loss needs to be as small as possible. 
 
-Keras provides a prediction function for the model, which can be used for a review to generate the summary. The output of the prediction is an integer array that can be mapped back into the original, but cleaned words. The following table presents the computed summaries with the input reviews and the original summaries as a check for the quality of the summaries:
+Keras provides a prediction function for the model, which can be used for a review to generate the summary. The output of the prediction is an integer array that can be mapped back into the original but cleaned words. The following table presents the computed summaries with the input reviews and the original summaries as a check for the quality of the summaries:
 
-\textbf{Predictions}
+\textbf{Predictions}q
 
 \begin{table}[]
 	\begin{tabular}{@{}cccl@{}}
@@ -542,7 +574,7 @@ Keras provides a prediction function for the model, which can be used for a revi
 	\caption{\label{tab:pred}This table shows some example outputs for the training data from my trained model} 
 \end{table}
 
-The following predictions have been made with a training of 224814 samples and was validated on 24980 samples for the validation (testing) loss. After epoch 12, the training stopped due to early stopping, because the loss increased again instead of further decreasing. 
+The following predictions have been made with a training of 224814 samples and were validated on 24980 samples for the validation (testing) loss. After epoch 12, the training stopped due to early stopping, because the loss increased again instead of further decreasing. 
 
 \textbf{BLEU Score}
 
@@ -562,7 +594,7 @@ As introduced in Section \ref{ss:ev}, there are two main approaches for evaluati
 	\caption{\label{tab:rouge}The generated Sentences evaluated with the Rouge Score}
 \end{table}
 
-It can be seen that the Rouge score produces semantically incorrect scores because it only looks whether the words in the original and predicted summaries are similar. 
+It can be seen that the Rouge score produces semantically incorrect scores because it only looks at whether the words in the original and predicted summaries are similar. 
 
 For that reason, the prediction 
 
@@ -571,14 +603,14 @@ For that reason, the prediction
 	Prediction: "love these"
 \end{tcolorbox}
 
-produces a Rouge score of 0, even though there is a semantic similarity. Whereas the summary
+Produces a Rouge score of 0, even though there is a semantic similarity. Whereas the summary
 
 \begin{tcolorbox}
 	Original: "wrong coffee received" \\
 	Prediction: "coffee received"
 \end{tcolorbox}
 
-scores really high, even though the summary is incorrect. The summary model did not capture the dependency of \textbf{wrong}. For this reason, I tried evaluating the five summaries with the \textit{BLEU Score} mentioned in Section \ref{ss:ev}.
+Scores really high, even though the summary is incorrect. The summary model did not capture the dependency of \textbf{wrong}. For this reason, I tried evaluating the five summaries with the \textit{BLEU Score} mentioned in Section \ref{ss:ev}.
 
 \textbf{BLEU Score}
 
