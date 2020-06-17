@@ -57,7 +57,7 @@ Technische Hochschule Nürnberg Georg Simon OHM\\ % Your institution for the tit
 
 \begin{frame}
 \frametitle{Clarify the Keywords}
-Noticeably almost annually Artificial Intelligence is finding more and more its way into businesses. 
+Artificial Intelligence is increasingly finding its way more and more into businesses. 
 \begin{columns}
 	\column{0.3\textwidth}
 	\begin{figure}
@@ -70,23 +70,24 @@ Noticeably almost annually Artificial Intelligence is finding more and more its 
 			\item \textit{We now use Deep Learning for a better performance!}
 		\end{enumerate}
 	\end{block}
-\textbf{In conclusion:} Deep Learning is a technique making use of Neural networks. Those are methods of Machine Learning, which is itself just an application of the entire AI ecosystem.
+\textbf{In conclusion:} Deep Learning is a technique making use of Neural networks. Those are methods of Machine Learning, which 
+ itself is just an application of the entire AI ecosystem.
 \end{columns}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Classify my Thesis in this Ecosystem}
+\frametitle{Localize my thesis within this Ecosystem}
 \begin{block}{NLP}
-	Natural Language Processing (NLP) deals and manipulates data in form of our language to gain new information from it or perform other related tasks such as Text Summarization.
+	Natural Language Processing (NLP) deals with language and manipulates it to gain new information from it or perform other related tasks such as Text Summarization.
 \end{block}
 
 \begin{center}
-	\textbf{Where is NLP located?} \\
+	\textbf{What do I use?} \\
 \end{center}
 
-Depending on what is performed, Natural Language Processing is either just an ML application, or like in my case, it can even make use of Neural Networks with Deep Learning methods to generate better results!
+Using Natural Language Processing (NLP) with e.g. Hidden Markov Models is categorized as Machine Learning, whereas using Sequence Networks with e.g. the Tensorflow library is categorized Deep Learning. That is what my prototype uses.
 
 \end{frame}
 
@@ -94,29 +95,34 @@ Depending on what is performed, Natural Language Processing is either just an ML
 \section{State of the Art}
 %---------------------------------------------
 \begin{frame}
-\frametitle{General Methology}
-Using data analysis and show how it can be used to improve the marketing of Airbnb in Seattle according to each policy of the marketing-mix.
+\frametitle{Text Generation}
+Isn't my topic about Text Summarization? What is Text Generation?
+\begin{figure}
+	\includegraphics[width=0.9\linewidth]{photo/encoder_decoder}
+\end{figure}
+This is Text Generation performed by eight LSTM cells, which are split into four encoder and four decoder cells.
 \end{frame}
 %
 %------------------------------------------------
 %
 \begin{frame}
-\frametitle{Marketing}
+\frametitle{Text Generation: commonly used technologies}
 \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
 
 \column{.45\textwidth} % Left column and width
-\textbf{The 4 P's of the Marketing-Mix}
+\textbf{State of the Art in ascending order}
 \begin{enumerate}
-\item Product
-\item Price
-\item Promotion
-\item Place
+\item Recurrent Neural Networks (RNN)
+\item Long Short Term Memory (LSTM)
+\item Sequence to Sequence Models
+\item Encoder Decoder
+\item Attention based Models
 \end{enumerate}
 
 \column{.5\textwidth} % Right column and width
 
-\begin{block}{Definition Marketing}
-Marketing is about the firm’s effort to address customer needs and expectations, which influences the demands made by the customers on the product and need to be fulfilled by the product.
+\begin{block}{Definition Text Generation}
+Text Generation is a generic term for the output part of an automatic text summarizer (decoder part from the last slide). In order to understand Text Summarization, we need to know about Text Generation.
 \end{block}
 \end{columns}
 \end{frame}
@@ -124,45 +130,55 @@ Marketing is about the firm’s effort to address customer needs and expectation
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{How to use Data Analysis to improve the Airbnb Marketing?}
-\begin{itemize}
-\item \textbf{Descriptive analysis:} Reviews, locations, review and price correlation, details of listings and price correlation
-\item \textbf{Descriptive analysis:} Predict the number of customer
-\item \textbf{Optimization:} Optimize the booking of listings 
-\item \textbf{Adaptive learning:} Learn from the results generated and combine results to give out suggestion in marketing campaigns may hold by Airbnb
-\end{itemize}
+\frametitle{Text Summarization}
+To make this clear. Text Generation is the tool which produces output language, based on the preprocessed input language. Text Summarization focusses on making use of this techniques, for generating fewer words out of the original input sentence with the preferably same information content. \\
+\textit{This is commonly known as summarization.}
+
+\begin{block}{Today}
+	Text Summarization in 2020 is almost not distinguishable anymore from a human summarization. A famous example is that Google uses it to automatically generate headlines for their news section, which is basically an summarization or abstraction from the news itself.
+\end{block}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
-	\frametitle{Reviews comparison}
-	We can see a correlation between the amount of reviews and the accommodation counts. 
-	\begin{figure}
-		\includegraphics[width=0.8\linewidth]{photo/3_count_per_district}
-	\end{figure}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-	\frametitle{Linear Regression}
-	\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+	\frametitle{Latest Technologies in Text Summarization}
+	\begin{columns}[c]
 		
-		\column{.45\textwidth} % Left column and width
-		\begin{itemize}
-			\item Use a Linear function and estimate its parameters
-			\item There are different approaches to estimate the parameters
-			\item The accuracy of a model can be compared with different loss functions
-		\end{itemize}
-		
-		\column{.45\textwidth} % Right column and width
-		The fitted line can mathematically described as:
-		\begin{equation}
-		Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
-		\end{equation}
-		
+		\column{.5\textwidth} % Right column and width
+		\begin{block}{Deep Learning}
+			
+			Deep Learning is the best technique for Text Summarization in 2020. E.g. the famous technology \textit{Attention,} which is based on the LSTM Neural Network, was published and open sourced by Google. Other technologies just build further up on this concept.
+		\end{block}
+	
+	   \column{.5\textwidth} % Right column and width
+	   \textbf{State of the Art in ascending order}
+		\begin{enumerate}
+			\item Extractive approaches
+			\item Abstractive approaches
+			\item Attention 
+			\item Pointer Generator Networks
+			\item Transfer Learning
+		\end{enumerate}
 	\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{How does the machine understand our language?}
+	\begin{columns}
+		\column{.7\textwidth} % Right column and width
+		\begin{figure}
+			\includegraphics[width=.9\linewidth]{photo/generate_text}
+		\end{figure}
+	   Here are shown the distribution of words by their word types in the vector space.
+	
+				\column{.3\textwidth} % Right column and width
+				Well it acutally doesn't. The machine learns the structure of sentences and occurences of words in our language. In order to make them computable for the algorithm, the words will be vectorized.
+	\end{columns}
+	
 \end{frame}
 
 %------------------------------------------------
@@ -171,37 +187,21 @@ Marketing is about the firm’s effort to address customer needs and expectation
 %--------------------------------------------
 
 \begin{frame}
-\frametitle{Multinomial Naive Bayes}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+\frametitle{Basic structure}
+\begin{figure}
+	\includegraphics[width=.9\linewidth]{photo/infer-1}
+\end{figure}
 
-\column{.45\textwidth} % Left column and width
-\begin{itemize}
-\item Assumes conditionally independent classes
-\item Probability of observing features \(f_1\)  \\
-through \(f_n\) , given some class \(c\)
-\end{itemize}
-
-\column{.45\textwidth} % Right column and width
-\begin{equation}
-p(f_1,..., f_n|c) = \prod_{i=1}^n p(f_i|c)
-\end{equation}
-This means that when I want to use a Naive Bayes model to classify a new example, the posterior probability is much simpler to work with:
-\begin{equation}
-p(c|f_1,...,f_n) \propto p(c)p(f_1|c)...p(f_n|c)
-\end{equation}
-\end{columns}
+\begin{block}{Architecture}
+	My prototype is built upon multiple LSTM cells which were extended by the Attention Layer from Google. It took around ~3.5 hours to train on my PC with around 222.000 training data points.
+\end{block}
 \end{frame}
 
 %------------------------------------------------
 \begin{frame}
-\frametitle{LSTM Neural Network}
-\begin{itemize}
-\item Long Short Term Memory Neural Network is based on the Recurrent Neural Network
-\item It is very well suited for timeseries analysis like the prediction of price
-\item Futher explanation exceeds this presentation
-\end{itemize}
+\frametitle{Model results}
 \begin{figure}
-\includegraphics[width=0.8\linewidth]{photo/nn}
+	\includegraphics[width=0.9\linewidth]{photo/prototype_outputs}
 \end{figure}
 \end{frame}
 
@@ -209,13 +209,14 @@ p(c|f_1,...,f_n) \propto p(c)p(f_1|c)...p(f_n|c)
 \section{Evaluation}
 %--------------------------------------------
 \begin{frame}
-The team around Josh Keating reached a mean absolute error between 32\$ to 35\$
-\begin{itemize}
-\item Our network design was way to simple
-\item We didn't include the important neighbourhood feature
-\item Our result with our LSTM neural network was 64.04\$ (MSA)
-\item Nevertheless, our best model was the linear regression with a MAE of 43.89\$
-\end{itemize}
+	\frametitle{Evaluate the summary}
+It was necessary to clean the input text before funneling it into the model. The \textbf{cleaned summary} is the ground truth which was provided together with the dataset as labels. It can be seen, that the most important words were captures and only minor mistakes occured.
+
+\begin{figure}
+	\includegraphics[width=0.5\linewidth]{photo/eval}
+\end{figure}
+
+This is the Loss curve for my model from the Neural Network.
 \end{frame}
 
 %------------------------------------------------
