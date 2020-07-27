@@ -19,7 +19,8 @@ scores. In the end, I further introduce some performance enhancements.
 
 - Python Notebook as [iPython](https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM/blob/master/project/Bachelor_Thesis_Text_Generation.ipynb)
 - Bachelor Thesis as [PDF](https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM/blob/master/report/thesis.pdf)
-- Presentation as PDF
+- Presentation as [PDF](https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM/blob/master/presentation/presentation.pdf)
+- Methoden Matrix as [PDF](https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM/blob/master/report/methoden_matrix.pdf)
 
 ## Getting Started
 
@@ -36,7 +37,7 @@ git clone https://github.com/Mavengence/Bachelor-Thesis-Textgeneration-TH.OHM.gi
 
 ## Author
 
-* **Tim Löhr** - *Coding, Report* - [GitHub Mavengence](https://github.com/Mavengence)
+* **Tim Löhr** - *Coding, Report, Presentation* - [GitHub Mavengence](https://github.com/Mavengence)
 
 ## License
 
