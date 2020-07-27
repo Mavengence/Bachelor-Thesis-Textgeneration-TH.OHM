@@ -193,7 +193,6 @@ _minted*
 *.pax
 
 # pdfpcnotes
-*.pdfpc
 
 # sagetex
 *.sagetex.sage
