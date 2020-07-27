@@ -14,6 +14,9 @@
 *.cb2
 .*.lb
 
+.floydexpt
+.floydignore
+floyd.yml
 /project/.ipynb_checkpoints
 /projects/.DS_Store
 /projects/.ipynb_checkpoints
@@ -34,7 +37,6 @@ CS4487_Group_Project_CIFAR10_PyTorch.ipynb
 /models/model_92.h5
 /models/model_88.h5
 /report/ML_Working_Paper.pdf
-/presentation/presentation.pdf
 /report/Projekt_Paper.pdf
 /report/.DS_Store
 /.DS_Store
